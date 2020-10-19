@@ -32,12 +32,14 @@ ALLOWED_HOSTS = ['172.23.4.118']
 # Application definition
 
 INSTALLED_APPS = [
+    'APIP.apps.ApipConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +82,7 @@ DATABASES = {
         'NAME': 'sqldatabase',
         'USER':'ggarcia',
         'PASSWORD':'7PjN29tFATTCQF6',
-        'HOST':'serv-gi-15.utbm.fr',
+        'HOST':'172.23.4.118',
         'PORT':'5432',
     }
 }
