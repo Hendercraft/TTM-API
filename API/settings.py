@@ -26,13 +26,14 @@ SECRET_KEY = '2p_@cc_j5f=#-lua88p*tqpg(dng#obz7fixne3j-v_-0vo@r='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.23.4.118']
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'APIP.apps.ApipConfig',
+    'authentification.apps.AuthentificationConfig',
+    'database.apps.DatabaseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -72,6 +73,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'API.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
