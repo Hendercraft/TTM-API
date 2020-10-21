@@ -6,6 +6,7 @@ Implementation of relationnal models define in static files of the API
 
 To do:
     -check link (foreign key)
+    -update all choices
     -check translation
     -test model
     -test critical test case
@@ -152,9 +153,18 @@ class Caracteristics(models.Model):
     width = models.FloatField()
     height = models.FloatField()
     weight = models.FloatField()
-    state = models.CharField(max_length=500)#To update
-    color = models.CharField(max_length=100)#To update
-    material = models.CharField(max_length=200)#To update
+    detail_caracteristics = models.ForeignKey(Detail_Caracteristics, on_delete=models.Model)
+    surface = models.FloatField()
+
+class Type_Object(models.Model):
+    class Object_Type(models.TextChoices): #To update
+        TOOL = 'TOOL'
+    type_object = models.CharField(max_length=100, choices=Object_Type.choices)
+
+class Energy(models.Model):
+    class Energy_Type(models.TextChoices):
+        ELECTRICITY = 'ELECTRICITY'
+    energy = models.CharField(max_length=100, choices=Energy_Type.choices)
 
 class Object(models.Model):
     name = models.CharField(max_length=200)
@@ -166,3 +176,5 @@ class Object(models.Model):
     definition = models.CharField(max_length=200)
     content = models.CharField(max_length=200)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
+    type_object = models.ForeignKey(Type_Object, on_delete=models.CASCADE)
+    energy = models.ForeignKey(Energy, on_delete=models.CASCADE)
