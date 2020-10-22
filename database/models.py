@@ -6,6 +6,7 @@ Implementation of relationnal models define in static files of the API
 
 To do:
     -check link (foreign key)
+    -put __str__ to all models
     -update all choices
     -check translation
     -test model
@@ -21,6 +22,9 @@ class Date(models.Model):
     date = models.DateField()
     duration_date = models.DurationField()
 
+    def __str__(self):
+        return self.name
+
 """
 Quality table
 """
@@ -29,15 +33,21 @@ class Quality(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.name
+
 """
 Sources & associates tables
 """
 class Types(models.Model):
-    class type_choice(models.TextChoices):
+    class TypeChoice(models.TextChoices):
         SCAN = 'SCAN'
         DDD_MODELS = '3D MODEL'
         
-    types_source = models.CharField(max_length=10,choices=type_choice.choices)
+    types_source = models.CharField(max_length=10,choices=TypeChoice.choices)
+
+    def __str__(self):
+        return self.TypeChoice
 
 class Author(models.Model):
     name = models.CharField(max_length=200)
@@ -97,6 +107,41 @@ class Place(models.Model):
     place_type = models.ForeignKey(Place_Type, on_delete=models.CASCADE) 
 
 """
+Knowledge table
+"""
+
+class Knowledge(models.Model):
+    name = models.CharField(max_length=200)
+    definition = models.CharField(max_length=1000)
+
+"""
+Collective actor table
+"""
+
+class CollectiveActor(models.Model):
+    name = models.CharField(max_length=200)
+    definition = models.CharField(max_length=1000)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE)
+    date = models.ForeignKey(Date, on_delete=models.CASCADE)
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE)
+
+"""
+Abstract object table
+"""
+
+class AbstractObject(models.Model):
+    name = models.CharField(max_length=200)
+    definition = models.CharField(max_length=1000)
+    collectiveActor = models.ManyToManyField(CollectiveActor)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE)
+    date = models.ForeignKey(Date, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+
+"""
 Profession table
 """
 
@@ -104,12 +149,13 @@ class Profession(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=500)
     autonomous = models.BooleanField(default=False)
-    #abstract_objects = models.ManyToManyField(Abstract_Objects)
+    abstractobjects = models.ManyToManyField(AbstractObject)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
     source = models.ManyToManyField(Source)
 
     def __str__(self):
         return self.name
+
 """
 Social table
 """
@@ -129,14 +175,14 @@ class Actor(models.Model):
     sexe = models.BooleanField()
     profession = models.ManyToManyField(Profession)
     social = models.ForeignKey(Social, on_delete=models.CASCADE)
-    #collective_actors = models.ForeignKey(Collective_Actors, on_delete=models.CASCADE)
-    #quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
+    collectiveActors = models.ForeignKey(CollectiveActor, on_delete=models.CASCADE)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
     #social_link = models.ForeignKey(Link, on_delete=models.CASCADE)
     place = models.ManyToManyField(Place)
     source = models.ManyToManyField(Source)
 
 #    def __str__(self):  Return id of the actor
-#        return self.
+#        return self.name
 
 class name_actor(models.Model):
     actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
@@ -147,13 +193,17 @@ class name_actor(models.Model):
 """
 Object and associate tables
 """
+class DetailCaracteristics(models.Model):
+    class ObjectCaracteristics(models.TextChoices):
+        DETAIL1 = 'DETAIL1'
+    detailCaracteristicsObject = models.CharField(max_length=50, choices=ObjectCaracteristics.choices)
 
 class Caracteristics(models.Model):
     length = models.FloatField()
     width = models.FloatField()
     height = models.FloatField()
     weight = models.FloatField()
-    detail_caracteristics = models.ForeignKey(Detail_Caracteristics, on_delete=models.Model)
+    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.Model)
     surface = models.FloatField()
 
 class Type_Object(models.Model):
@@ -170,9 +220,9 @@ class Object(models.Model):
     name = models.CharField(max_length=200)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
     caracteristics = models.ForeignKey(Caracteristics, on_delete=models.CASCADE)
-    #collective_actors = models.ManyToManyField(Collective_Actor)
+    collectiveActors = models.ManyToManyField(CollectiveActor)
     actor = models.ManyToManyField(Actor)
-    #abstract_object = models.ManyToManyField(Abstract_Object)
+    abstract_object = models.ManyToManyField(AbstractObject)
     definition = models.CharField(max_length=200)
     content = models.CharField(max_length=200)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
