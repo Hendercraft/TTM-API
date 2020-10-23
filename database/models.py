@@ -55,6 +55,9 @@ class Author(models.Model):
     status = models.CharField(max_length=200) #To upgrade
     organisation = models.CharField(max_length=200) #To upgrade
 
+    def __str__(self):
+        return self.name
+
 class Content(models.Model):
     source_content = models.CharField(max_length=1000) 
 
@@ -83,7 +86,7 @@ class Source(models.Model):
 Place & associates tables
 """
 
-class Place_Location(models.Model):
+class PlaceLocation(models.Model):
     street_number = models.IntegerField()
     street_type = models.CharField(max_length=3)
     street_name = models.CharField(max_length=200) #To update
@@ -92,19 +95,22 @@ class Place_Location(models.Model):
     country = models.CharField(max_length=100)
     lieu_dit = models.CharField(max_length=200)
 
-class Place_Type(models.Model):
-    class Type_Place(models.TextChoices):
+class PlaceType(models.Model):
+    class TypePlace(models.TextChoices):
         BUILDING = 'BUILDING'
-    place_type = models.CharField(max_length=10,choices=Type_Place.choices)
+    placeType = models.CharField(max_length=10,choices=TypePlace.choices)
 
 class Place(models.Model):
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=500) #To update
-    place_location = models.ForeignKey(Place_Location, on_delete=models.CASCADE)
+    place_location = models.ForeignKey(PlaceLocation, on_delete=models.CASCADE, default=None)
     longitude = models.FloatField()
     latitude = models.FloatField()
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    place_type = models.ForeignKey(Place_Type, on_delete=models.CASCADE) 
+    place_type = models.ForeignKey(PlaceType, on_delete=models.CASCADE, default=None) 
+
+    def __str__(self):
+        return self.name
 
 """
 Knowledge table
@@ -114,6 +120,9 @@ class Knowledge(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=1000)
 
+    def __str__(self):
+        return self.name
+
 """
 Collective actor table
 """
@@ -121,11 +130,14 @@ Collective actor table
 class CollectiveActor(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=1000)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
     quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     date = models.ForeignKey(Date, on_delete=models.CASCADE)
     knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 """
 Abstract object table
@@ -139,7 +151,10 @@ class AbstractObject(models.Model):
     knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     date = models.ForeignKey(Date, on_delete=models.CASCADE)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.name
 
 """
 Profession table
@@ -150,7 +165,7 @@ class Profession(models.Model):
     definition = models.CharField(max_length=500)
     autonomous = models.BooleanField(default=False)
     abstractobjects = models.ManyToManyField(AbstractObject)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
     source = models.ManyToManyField(Source)
 
     def __str__(self):
@@ -165,6 +180,20 @@ class Social(models.Model):
     place = models.ManyToManyField(Place)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
+
+"""
+Social link table
+"""
+
+class SocialLink(models.Model):
+    class SocialLinkType(models.TextChoices):
+        FATHER = 'FATHER'
+        MOTHER = 'MOTHER'
+    socialLink = models.CharField(max_length=50, choices=SocialLinkType.choices)
+
 
 """
 Actor & associate class
@@ -177,17 +206,20 @@ class Actor(models.Model):
     social = models.ForeignKey(Social, on_delete=models.CASCADE)
     collectiveActors = models.ForeignKey(CollectiveActor, on_delete=models.CASCADE)
     quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
-    #social_link = models.ForeignKey(Link, on_delete=models.CASCADE)
+    socialLink = models.ForeignKey(SocialLink, on_delete=models.CASCADE)
     place = models.ManyToManyField(Place)
     source = models.ManyToManyField(Source)
 
 #    def __str__(self):  Return id of the actor
 #        return self.name
 
-class name_actor(models.Model):
+class NameActor(models.Model):
     actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return (self.name + " " + self.last_name)
 
 
 """
@@ -203,22 +235,22 @@ class Caracteristics(models.Model):
     width = models.FloatField()
     height = models.FloatField()
     weight = models.FloatField()
-    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.Model)
+    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.CASCADE)
     surface = models.FloatField()
 
-class Type_Object(models.Model):
-    class Object_Type(models.TextChoices): #To update
+class TypeObject(models.Model):
+    class ObjectType(models.TextChoices): #To update
         TOOL = 'TOOL'
-    type_object = models.CharField(max_length=100, choices=Object_Type.choices)
+    type_object = models.CharField(max_length=100, choices=ObjectType.choices)
 
 class Energy(models.Model):
-    class Energy_Type(models.TextChoices):
+    class EnergyType(models.TextChoices):
         ELECTRICITY = 'ELECTRICITY'
-    energy = models.CharField(max_length=100, choices=Energy_Type.choices)
+    energy = models.CharField(max_length=100, choices=EnergyType.choices)
 
 class Object(models.Model):
     name = models.CharField(max_length=200)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
     caracteristics = models.ForeignKey(Caracteristics, on_delete=models.CASCADE)
     collectiveActors = models.ManyToManyField(CollectiveActor)
     actor = models.ManyToManyField(Actor)
@@ -226,5 +258,8 @@ class Object(models.Model):
     definition = models.CharField(max_length=200)
     content = models.CharField(max_length=200)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    type_object = models.ForeignKey(Type_Object, on_delete=models.CASCADE)
+    type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE)
     energy = models.ForeignKey(Energy, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
