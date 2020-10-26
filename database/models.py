@@ -89,7 +89,7 @@ class PlaceLocation(models.Model):
     city = models.CharField(max_length=100)
     post_code = models.IntegerField(default=None, null=True, blank=True)
     country = models.CharField(max_length=100)
-    lieu_dit = models.CharField(max_length=200, null=True, blank=True)
+    lieu_dit = models.CharField(max_length=200, null=True, blank=True) #Place or said place
 
     def __str__(self):
         return (str(self.street_number) + " " + self.street_name + " " + self.city + " " + self.country)
@@ -106,8 +106,8 @@ class Place(models.Model):
     place_location = models.ForeignKey(PlaceLocation, on_delete=models.CASCADE, default=None, null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
+    place_type = models.ForeignKey(PlaceType, on_delete=models.CASCADE, default=None)
     source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
-    place_type = models.ForeignKey(PlaceType, on_delete=models.CASCADE, default=None) 
 
     def __str__(self):
         return self.name
@@ -130,11 +130,11 @@ Collective actor table
 class CollectiveActor(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=1000)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    quality = models.ForeignKey(Quality, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
     date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE, default=None, null=True, blank=True)
     knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
@@ -146,12 +146,12 @@ Abstract object table
 class AbstractObject(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=1000)
-    collectiveActor = models.ManyToManyField(CollectiveActor, blank=True)
-    quality = models.ForeignKey(Quality, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
     date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    collectiveActor = models.ManyToManyField(CollectiveActor, blank=True)
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE, default=None, null=True, blank=True)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
@@ -221,6 +221,7 @@ class NameActor(models.Model):
     actor = models.ForeignKey(Actor, on_delete=models.CASCADE, default=None)
     name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
+    typeOfActor = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return (self.name + " " + self.last_name)
@@ -235,13 +236,6 @@ class DetailCaracteristics(models.Model):
     def __str__(self):
         return self.detailCaracteristicsObject
 
-class Caracteristics(models.Model):
-    length = models.FloatField(null=True, blank=True, default=None)
-    width = models.FloatField(null=True, blank=True, default=None)
-    height = models.FloatField(null=True, blank=True, default=None)
-    weight = models.FloatField(null=True, blank=True, default=None)
-    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.CASCADE, default=None)
-    surface = models.FloatField(null=True, blank=True, default=None)
 
 class TypeObject(models.Model):
     typeObject = models.CharField(max_length=100)
@@ -260,7 +254,6 @@ class Object(models.Model):
     definition = models.CharField(max_length=200)
     content = models.CharField(max_length=200, null=True, blank=True)
     type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None)
-    caracteristics = models.ForeignKey(Caracteristics, on_delete=models.CASCADE, default=None)
     collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
     actor = models.ManyToManyField(Actor, blank=True)
     abstract_object = models.ManyToManyField(AbstractObject, blank=True)
@@ -270,3 +263,17 @@ class Object(models.Model):
 
     def __str__(self):
         return self.name
+
+class Caracteristic(models.Model):
+    objectCaracteristic = models.ForeignKey(Object, on_delete=models.CASCADE)
+    length = models.FloatField(null=True, blank=True, default=None)
+    width = models.FloatField(null=True, blank=True, default=None)
+    height = models.FloatField(null=True, blank=True, default=None)
+    weight = models.FloatField(null=True, blank=True, default=None)
+    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.CASCADE, default=None)
+    surface = models.FloatField(null=True, blank=True, default=None)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return ("Caracteristics of " + self.objectCaracteristic.name)
+
