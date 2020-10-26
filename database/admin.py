@@ -4,7 +4,7 @@ from .models import *
 
 #Source tables
 admin.site.register(Source)
-admin.site.register(Types)
+admin.site.register(SourceTypes)
 admin.site.register(Author)
 admin.site.register(Content)
 admin.site.register(Url)
@@ -33,7 +33,7 @@ admin.site.register(AbstractObject)
 admin.site.register(Profession)
 
 #Social tables
-admin.site.register(Social)
+admin.site.register(SocialActivitie)
 admin.site.register(SocialLink)
 
 #Actor tables
