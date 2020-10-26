@@ -69,9 +69,9 @@ class Source(models.Model):
         NOTRELIABLE = 0
         RELIABLE  = 1
     name = models.CharField(max_length=200)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    date = models.ForeignKey(Date, on_delete=models.CASCADE)
-    types = models.ForeignKey(Types, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
+    date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None)
+    types = models.ForeignKey(Types, on_delete=models.CASCADE, default=None)
     content = models.ManyToManyField(Content)
     url = models.ManyToManyField(Url)
     viability = models.IntegerField(choices=Rank.choices)
@@ -106,7 +106,7 @@ class Place(models.Model):
     place_location = models.ForeignKey(PlaceLocation, on_delete=models.CASCADE, default=None)
     longitude = models.FloatField()
     latitude = models.FloatField()
-    source = models.ForeignKey(Source, on_delete=models.CASCADE)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
     place_type = models.ForeignKey(PlaceType, on_delete=models.CASCADE, default=None) 
 
     def __str__(self):
@@ -130,11 +130,11 @@ Collective actor table
 class CollectiveActor(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=1000)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
-    quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    date = models.ForeignKey(Date, on_delete=models.CASCADE)
-    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE, default=None)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
+    date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None)
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
@@ -147,11 +147,11 @@ class AbstractObject(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=1000)
     collectiveActor = models.ManyToManyField(CollectiveActor)
-    quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
-    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    date = models.ForeignKey(Date, on_delete=models.CASCADE)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE, default=None)
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE, default=None)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
+    date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
@@ -165,7 +165,7 @@ class Profession(models.Model):
     definition = models.CharField(max_length=500)
     autonomous = models.BooleanField(default=False)
     abstractobjects = models.ManyToManyField(AbstractObject)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None)
     source = models.ManyToManyField(Source)
 
     def __str__(self):
@@ -178,7 +178,7 @@ class Social(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=500)
     place = models.ManyToManyField(Place)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
@@ -203,10 +203,10 @@ Actor & associate class
 class Actor(models.Model):
     sexe = models.BooleanField()
     profession = models.ManyToManyField(Profession)
-    social = models.ForeignKey(Social, on_delete=models.CASCADE)
-    collectiveActors = models.ForeignKey(CollectiveActor, on_delete=models.CASCADE)
-    quality = models.ForeignKey(Quality, on_delete=models.CASCADE)
-    socialLink = models.ForeignKey(SocialLink, on_delete=models.CASCADE)
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None)
+    collectiveActors = models.ForeignKey(CollectiveActor, on_delete=models.CASCADE, default=None)
+    quality = models.ForeignKey(Quality, on_delete=models.CASCADE, default=None)
+    socialLink = models.ForeignKey(SocialLink, on_delete=models.CASCADE, default=None)
     place = models.ManyToManyField(Place)
     source = models.ManyToManyField(Source)
 
@@ -214,7 +214,7 @@ class Actor(models.Model):
 #        return self.name
 
 class NameActor(models.Model):
-    actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
+    actor = models.ForeignKey(Actor, on_delete=models.CASCADE, default=None)
     name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
 
@@ -235,7 +235,7 @@ class Caracteristics(models.Model):
     width = models.FloatField()
     height = models.FloatField()
     weight = models.FloatField()
-    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.CASCADE)
+    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.CASCADE, default=None)
     surface = models.FloatField()
 
 class TypeObject(models.Model):
@@ -250,16 +250,16 @@ class Energy(models.Model):
 
 class Object(models.Model):
     name = models.CharField(max_length=200)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
-    caracteristics = models.ForeignKey(Caracteristics, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None)
+    caracteristics = models.ForeignKey(Caracteristics, on_delete=models.CASCADE, default=None)
     collectiveActors = models.ManyToManyField(CollectiveActor)
     actor = models.ManyToManyField(Actor)
     abstract_object = models.ManyToManyField(AbstractObject)
     definition = models.CharField(max_length=200)
     content = models.CharField(max_length=200)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE)
-    energy = models.ForeignKey(Energy, on_delete=models.CASCADE)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
+    type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None)
+    energy = models.ForeignKey(Energy, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
