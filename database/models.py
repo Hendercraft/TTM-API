@@ -47,7 +47,7 @@ class SourceTypes(models.Model):
 
 class Author(models.Model):
     name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200, null=True, blank=True)
+    lastName = models.CharField(max_length=200, null=True, blank=True)
     status = models.CharField(max_length=200, null=True, blank=True) #To upgrade
     organisation = models.CharField(max_length=200, null=True, blank=True) #To upgrade
 
@@ -55,7 +55,7 @@ class Author(models.Model):
         return self.name
 
 class Content(models.Model):
-    source_content = models.CharField(max_length=1000) 
+    sourceContent = models.CharField(max_length=1000) 
 
 class Url(models.Model):
     url = models.URLField()
@@ -192,8 +192,13 @@ class SocialLink(models.Model):
     class SocialLinkType(models.TextChoices):
         FATHER = 'FATHER'
         MOTHER = 'MOTHER'
-    socialLink = models.CharField(max_length=50, choices=SocialLinkType.choices)
+        SISTER = 'SISTER'
+        BROTHER = 'BROTHER'
+        FRIEND = 'FRIEND'
+        COWORKER = 'CO-WORKERS'
 
+    link = models.CharField(max_length=50, choices=SocialLinkType.choices)
+    actorlink = models.ForeignKey('Actor', on_delete=models.CASCADE, default=None, null=True, blank=True)
 
 """
 Actor & associate class
@@ -201,11 +206,11 @@ Actor & associate class
 
 
 class Actor(models.Model):
-    class Sex(models.TextChoices):
+    class Gender(models.TextChoices):
         Male = 'Male'
         Female = 'Female'
         Other = 'Other'
-    sexe = models.CharField(max_length=50, choices=Sex.choices)
+    gender = models.CharField(max_length=50, choices=Gender.choices)
     profession = models.ManyToManyField(Profession, blank=True)
     socialActivities = models.ForeignKey(SocialActivitie, on_delete=models.CASCADE, default=None, null=True, blank=True)
     collectiveActors = models.ForeignKey(CollectiveActor, on_delete=models.CASCADE, default=None, null=True, blank=True)
@@ -214,11 +219,9 @@ class Actor(models.Model):
     place = models.ManyToManyField(Place, blank=True)
     source = models.ManyToManyField(Source)
 
-#    def __str__(self):  Return id of the actor
-#        return self.name
 
 class NameActor(models.Model):
-    actor = models.ForeignKey(Actor, on_delete=models.CASCADE, default=None)
+    actors = models.ForeignKey(Actor, on_delete=models.CASCADE, default=None)
     name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     typeOfActor = models.CharField(max_length=200, null=True, blank=True)
@@ -252,6 +255,7 @@ class Energy(models.Model):
 class Object(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=200)
+    brand = models.CharField(max_length=100, null=True, blank=True)
     content = models.CharField(max_length=200, null=True, blank=True)
     type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None)
     collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
