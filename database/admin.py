@@ -4,7 +4,7 @@ from .models import *
 
 #Source tables
 admin.site.register(Source)
-admin.site.register(SourceTypes)
+admin.site.register(SourceType)
 admin.site.register(Author)
 admin.site.register(Content)
 admin.site.register(Url)

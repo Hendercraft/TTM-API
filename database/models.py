@@ -39,8 +39,8 @@ class Quality(models.Model):
 """
 Sources & associates tables
 """
-class SourceTypes(models.Model):
-    typesSource = models.CharField(max_length=10)
+class SourceType(models.Model):
+    typesSource = models.CharField(max_length=100)
 
     def __str__(self):
         return self.typesSource
@@ -67,7 +67,7 @@ class Source(models.Model):
     name = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
     date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None)
-    types = models.ForeignKey(SourceTypes, on_delete=models.CASCADE, default=None)
+    types = models.ForeignKey(SourceType, on_delete=models.CASCADE, default=None)
     content = models.ManyToManyField(Content, blank=True)
     url = models.ManyToManyField(Url)
     viability = models.IntegerField(choices=Rank.choices)

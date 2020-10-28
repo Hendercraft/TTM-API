@@ -1,22 +1,27 @@
 from django.test import TestCase
-from .models import *
+from django.utils import timezone
+
+from database.models import *
 
 # Create your tests here.
 
 """
-Testing source table with Date table and associates
+Testing the database with tests data
+Bugy for now
 """
 class DatabaseTestCase(TestCase):
+
 
     def setUp(self):
 
         """ Source/Date & associates """
-        self.dateTest = Date.objects.create(name="Date of birth", date= date(1998,10,23))
+        time = timezone.now()
+        self.dateTest = Date.objects.create(name="Date of birth", date=time)
         self.authorTest = Author.objects.create(name="Jean", lastName="Martin", status="Teacher", organisation="School")
         self.sourceTypeTest = SourceTypes.objects.create(typesSource="Digital document")
         self.contentTest = Content.objects.create(sourceContent="This is a content of the source")
         self.urlTest = Url.objects.create(url="https://www.django-rest-framework.org/api-guide/serializers/")
-        self.sourceTest = Source.objects.create(name="SourceTest", author=authorTest, date=dateTest, types=sourceTypeTest, content=contentTest, url=urlTest, viability=1, conservationPlace="Museum", cote=42)
+        self.sourceTest = Source.objects.create(name="SourceTest", author=self.authorTest, date=self.dateTest, types=self.sourceTypeTest, content=self.contentTest, url=self.urlTest, viability=1, conservationPlace="Museum", cote=42)
 
         """ Quality/Knowledge """
         qualityTest = Quality.objects.create(name="Test award", definition="Test award allow the user to master all types of test")
@@ -60,5 +65,13 @@ class DatabaseTestCase(TestCase):
         caracteristicTest2 = Caracteristic.objects.create(objectCaracteristic=objectTest2, length=0.2, width=0.01, height=0.1, weight=1.2, detail_caracteristics=detailCaracteristicsTest, surface=0.5, source=sourceTest)
 
     def test_get_objects_by_actors(self):
-        """ Get all objects filtered by actors """
-        lsit_object = Object.objects.filter()
+        """ 
+        Get all objects filtered by actors 
+        """
+
+        list_object = Object.objects.all()
+        """
+        self.assertQuerysetEqual(
+            len(list_object),2
+        )
+        """
