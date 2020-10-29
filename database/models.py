@@ -89,7 +89,7 @@ class PlaceLocation(models.Model):
     city = models.CharField(max_length=100)
     post_code = models.IntegerField(default=None, null=True, blank=True)
     country = models.CharField(max_length=100)
-    lieu_dit = models.CharField(max_length=200, null=True, blank=True) #Place or said place
+    place_said = models.CharField(max_length=200, null=True, blank=True) #Place or said place
 
     def __str__(self):
         return (str(self.street_number) + " " + self.street_name + " " + self.city + " " + self.country)
@@ -164,7 +164,7 @@ class Profession(models.Model):
     name = models.CharField(max_length=200)
     definition = models.CharField(max_length=500)
     autonomous = models.BooleanField(default=False)
-    abstractobjects = models.ManyToManyField(AbstractObject, blank=True)
+    abstractObject = models.ManyToManyField(AbstractObject, blank=True)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None)
     source = models.ManyToManyField(Source)
 
@@ -233,7 +233,7 @@ class NameActor(models.Model):
 """
 Object and associate tables
 """
-class DetailCaracteristics(models.Model):
+class DetailCaracteristic(models.Model):
     detailCaracteristicsObject = models.CharField(max_length=50)
 
     def __str__(self):
@@ -274,7 +274,7 @@ class Caracteristic(models.Model):
     width = models.FloatField(null=True, blank=True, default=None)
     height = models.FloatField(null=True, blank=True, default=None)
     weight = models.FloatField(null=True, blank=True, default=None)
-    detail_caracteristics = models.ForeignKey(DetailCaracteristics, on_delete=models.CASCADE, default=None)
+    detail_caracteristics = models.ForeignKey(DetailCaracteristic, on_delete=models.CASCADE, default=None)
     surface = models.FloatField(null=True, blank=True, default=None)
     source = models.ForeignKey(Source, on_delete=models.CASCADE, default=None)
 
