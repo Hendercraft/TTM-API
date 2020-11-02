@@ -43,22 +43,22 @@ class QualitySerializer(serializers.HyperlinkedModelSerializer):
 class SourceTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SourceType
-        fields = ['type_source']
+        fields = ['typesSource']
 
 class AuthorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Author
-        fields = ['name', 'last_name', 'status', 'organisation']
+        fields = ['name', 'lastName', 'status', 'organisation']
 
 class ContentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Content
-        fields = ['source_content']
+        fields = ['sourceContent']
 
 class UrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Url
-        field = ['url']
+        fields = ['url']
 
 class SourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

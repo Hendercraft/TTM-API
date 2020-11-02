@@ -1,0 +1,29 @@
+@startuml Usecase
+left to right direction
+actor User as us
+actor register_user as ru
+rectangle Register{
+    usecase "Can register" as cr
+    usecase "Can approve" as ca
+}
+rectangle "Temporary database"{
+    usecase "Can modify" as cm
+    usecase "Can approve" as cap
+}
+rectangle "Primary database"{
+    usecase "Can add" as cadd
+    usecase "Can read" as cread
+    usecase "Can delete" as cd
+}
+us -> cr: if database modification is > 10\n or if admin approved
+us --> cread
+us -> cm
+
+cm <-ru
+
+ru ---> ca: need 3 validations\n to be approved
+ru ---> cap
+ru ---> cadd
+ru ---> cd
+
+@enduml

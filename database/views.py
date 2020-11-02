@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 from django.contrib.auth.models import User, Group
 from database.serializers import *
-from database.models import Source
+from database.models import *
 
 # Create your views here.
 
