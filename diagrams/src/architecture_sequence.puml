@@ -1,0 +1,25 @@
+@startuml architecture_sequence
+
+actor client
+entity "Frontend (Vue)" as Fend
+entity "Backend (Fjango rest framework)" as Bdrf
+entity "Backend (Django)" as Bdj
+database "Database" as db
+database "Server(s)" as s
+
+client -> Fend: Request Http
+Fend --> client: (Bad request)
+Fend -> Bdrf: Authentification
+Bdrf --> client: (Bad authentification)
+Fend -> Bdrf: Access to right endpoint
+Bdrf -> Bdj: Access to right model
+Bdj -> db: Access to relationnal model and urls
+db -> s: Request url(s)
+s -> db: Return url(s)
+db -> Bdj: Return semantic & url(s)
+Bdj -> Fend: Return semantic & url(s) to associate
+Fend -> client: Response (static page)
+Fend -> client: Response (dynamic page)
+
+
+@enduml
