@@ -1,0 +1,286 @@
+@startuml model_overview
+
+class Date {
+    name: char
+    date: date
+    duration: duration
+
+    __str__()
+}
+
+class Quality {
+    name: char
+    definition: char
+    
+    __str__()
+}
+
+
+class SourceType {
+    typesource: char
+}
+
+class Author {
+    name: char
+    lastName: char
+    status: char
+    organisation: char
+
+    __str__()
+}
+
+class Content {
+    sourceContent: char
+}
+
+class Url {
+    url: url
+}
+
+class Source {
+    name: char
+    author: foreignKey
+    date: foreignKey
+    type: foreignKey
+    content: manyToMany
+    url: manyToMany
+    viability: int
+    conservationPlace: char
+    cote: char
+
+    __str__()
+}
+
+enum Rank {
+    NotReliable : 0
+    Reliable : 1
+}
+
+class PlaceLocation {
+    street_number: int
+    street_type: char
+    street_name: char
+    city: char
+    post_code: int
+    country: char
+    place_said: char
+
+    __str__()
+}
+
+class PlaceType {
+    placeType: char
+
+    __str__()
+}
+
+class Place {
+    name: char
+    description: char
+    place_location:foreignKey
+    longitude: float
+    latitude: float
+    place_type: foreignKey
+    source: foreignKey
+
+    __str__()
+}
+
+class Knowledge {
+    name: char
+    definition: char
+
+    __str__()
+}
+
+class CollectiveActor {
+    name: char
+    definition: char
+    date: foreignKey
+    quality: foreignKey
+    knowledge: foreignKey
+    place: foreignKey
+    source: foreignKey
+
+    __str__()
+}
+
+class AbstractObject {
+    name: char
+    definition: char
+    date: foreignKey
+    quality: foreignKey
+    collectiveActor: manyToMany
+    knowledge: foreignKey
+    place: foreignKey
+    source: foreignKey
+
+    __str__()
+}
+
+class Profession {
+    name: char
+    definition: char
+    autonomous: bool
+    abstractObject: manyToMany
+    place: foreignKey
+    source: manyToMany
+
+    __str__()
+}
+
+class SocialActivities{
+    name: char
+    definition: char
+    place: manyToMany
+    source: foreignKey
+
+    __str__()
+}
+
+class SocialLink {
+    link: char
+    actorLink: foreignKey
+}
+
+enum SocialLinkType{
+    Father
+    Mother
+    Sister
+    Brother
+    Friend
+    Coworker
+}
+
+class Actor {
+    gender: char
+    profession: manyToMany
+    socialActivities: foreignKey
+    collectiveActor: foreignKey
+    quality: foreignKey
+    socialLink: foreignKey
+    place: manyToMany
+    source: manyToMany
+}
+
+enum Gender {
+    Male
+    Female
+    Other
+}
+
+class NameActor {
+    actors: foreignKey
+    name: char
+    last_name: char
+    typeOfActor: char
+    
+    __str__()
+}
+
+class DetailCaracteristic {
+    detailCaracteristic: char
+
+    __str__()
+}
+
+class TypeObject {
+    typeObject: char
+
+    __str__()
+}
+
+class Energy {
+    energy: char
+
+    __str__()
+}
+
+class Object {
+    name: char
+    definition: char
+    brand: char
+    content: char
+    type_object: foreignKey
+    collectiveActors: manyToMany
+    actor: manyToMany
+    abstract_object: manyToMany
+    energy: foreignKey
+    place: foreignKey
+    source: foreignKey
+
+    __str__()
+}
+
+class Caracteristic {
+    objectCaracteristic: foreignKey
+    lenght: float
+    width: float
+    height: float
+    weight: float
+    detail_caracteristics: foreignKey
+    surface: float
+    source: foreignKey
+
+    __str__()
+}
+
+Source -- SourceType
+Source -- Url
+Source -- Author
+Source -- Content
+
+Rank -- Source
+
+Date -- Source
+
+Place -- PlaceType
+Place -- PlaceLocation
+Place -- Source
+
+CollectiveActor -- Date
+CollectiveActor -- Quality
+CollectiveActor -- Knowledge
+CollectiveActor -- Source
+CollectiveActor -- Place
+
+AbstractObject -- Date
+AbstractObject -- Quality
+AbstractObject -- Knowledge
+AbstractObject -- CollectiveActor
+AbstractObject -- Place
+AbstractObject -- Source
+
+Profession -- Place
+Profession -- Source
+
+SocialActivities -- Place
+SocialActivities -- Source
+
+SocialLink -- Actor
+SocialLinkType -- SocialLink
+
+Actor -- Profession
+Actor -- SocialActivities
+Actor -- CollectiveActor
+Actor -- Quality
+Actor -- SocialLink
+Actor -- Place
+Actor -- Source
+
+Gender -- Actor
+
+NameActor -- Actor
+
+Object -- TypeObject
+Object -- Energy
+Object -- CollectiveActor
+Object -- AbstractObject
+Object -- Actor
+Object -- Place
+Object -- Source
+
+Caracteristic -- Object
+Caracteristic -- DetailCaracteristic
+
+@enduml
