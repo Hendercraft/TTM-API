@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 from django.contrib.auth.models import User, Group
-from database.serializers import *
-from database.models import *
+from database.serializers import UserSerializer, GroupSerializer, DateSerializer, QualitySerializer, SourceTypeSerializer, AuthorSerializer, ContentSerializer, UrlSerializer, SourceSerializer
+from database.models import Date, Quality, SourceType, Author, Content, Url, Source
 
 # Create your views here.
 
@@ -70,7 +70,7 @@ class UrlViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows urls to be edited or viewed
     """
-    queryset = Content.objects.all()
+    queryset = Url.objects.all()
     serializer_class = UrlSerializer
 
 class SourceViewSet(viewsets.ModelViewSet):

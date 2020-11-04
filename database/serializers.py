@@ -108,7 +108,7 @@ class ProfessionSerializer(serializers.HyperlinkedModelSerializer):
 #Social activities
 class SocialActivitiesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = SocialActivitie
+        model = SocialActivity
         fields = ['name', 'definition', 'place', 'source']
 
 #Social link
@@ -123,3 +123,33 @@ class ActorSerializer(serializers.HyperlinkedModelSerializer):
         model = Actor
         fields = ['gender', 'profession', 'socialActivities', 'collectiveActors', 'quality', 'socialLink', 'place', 'source']
 
+class NameActorSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = NameActor
+        fields = ['actors', 'name', 'last_name', 'typeOfActor']
+
+#Object & associates
+class DetailCaracteristicSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = DetailCaracteristic
+        fields = ['detailCaracteristicsObject']
+
+class TypeObjectSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = TypeObject
+        fields = ['typeObject']
+
+class EnergySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Energy
+        fields = ['energy']
+
+class ObjectSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Object
+        fields = ['name', 'definition', 'brand', 'content', 'date', 'type_object', 'collectiveActors', 'actor', 'abstract_object', 'energy', 'place', 'source']
+
+class CaracteristicSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Caracteristic
+        fields = ['objectCaracteristic', 'length', 'width', 'height', 'weight', 'surface', 'detail_caracteristics', 'source']

@@ -33,7 +33,7 @@ admin.site.register(AbstractObject)
 admin.site.register(Profession)
 
 #Social tables
-admin.site.register(SocialActivitie)
+admin.site.register(SocialActivity)
 admin.site.register(SocialLink)
 
 #Actor tables

@@ -40,7 +40,7 @@ class Url {
 class Source {
     name: char
     author: foreignKey
-    date: foreignKey
+    date: manyToMany
     type: foreignKey
     content: manyToMany
     url: manyToMany
@@ -80,8 +80,8 @@ class Place {
     place_location:foreignKey
     longitude: float
     latitude: float
-    place_type: foreignKey
-    source: foreignKey
+    place_type: manyToMany
+    source: manyToMany
 
     __str__()
 }
@@ -96,11 +96,11 @@ class Knowledge {
 class CollectiveActor {
     name: char
     definition: char
-    date: foreignKey
-    quality: foreignKey
-    knowledge: foreignKey
-    place: foreignKey
-    source: foreignKey
+    date: manyToMany
+    quality: manyToMany
+    knowledge: manyToMany
+    place: manyToMany
+    source: manyToMany
 
     __str__()
 }
@@ -108,12 +108,12 @@ class CollectiveActor {
 class AbstractObject {
     name: char
     definition: char
-    date: foreignKey
-    quality: foreignKey
+    date: manyToMany
+    quality: manyToMany
     collectiveActor: manyToMany
-    knowledge: foreignKey
-    place: foreignKey
-    source: foreignKey
+    knowledge: manyToMany
+    place: manyToMany
+    source: manyToMany
 
     __str__()
 }
@@ -129,11 +129,11 @@ class Profession {
     __str__()
 }
 
-class SocialActivities{
+class SocialActivity{
     name: char
     definition: char
     place: manyToMany
-    source: foreignKey
+    source: manyToMany
 
     __str__()
 }
@@ -155,10 +155,10 @@ enum SocialLinkType{
 class Actor {
     gender: char
     profession: manyToMany
-    socialActivities: foreignKey
-    collectiveActor: foreignKey
-    quality: foreignKey
-    socialLink: foreignKey
+    socialActivities: manyToMany
+    collectiveActor: manyToMany
+    quality: manyToMany
+    socialLink: manyToMany
     place: manyToMany
     source: manyToMany
 }
@@ -201,13 +201,14 @@ class Object {
     definition: char
     brand: char
     content: char
+    date: manyToMany
     type_object: foreignKey
     collectiveActors: manyToMany
     actor: manyToMany
     abstract_object: manyToMany
     energy: foreignKey
-    place: foreignKey
-    source: foreignKey
+    place: manyToMany
+    source: manyToMany
 
     __str__()
 }
@@ -218,9 +219,9 @@ class Caracteristic {
     width: float
     height: float
     weight: float
-    detail_caracteristics: foreignKey
     surface: float
-    source: foreignKey
+    detail_caracteristics: manyToMany
+    source: manyToMany
 
     __str__()
 }
@@ -254,14 +255,14 @@ AbstractObject -- Source
 Profession -- Place
 Profession -- Source
 
-SocialActivities -- Place
-SocialActivities -- Source
+SocialActivity -- Place
+SocialActivity -- Source
 
 SocialLink -- Actor
 SocialLinkType -- SocialLink
 
 Actor -- Profession
-Actor -- SocialActivities
+Actor -- SocialActivity
 Actor -- CollectiveActor
 Actor -- Quality
 Actor -- SocialLink
