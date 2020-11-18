@@ -1,7 +1,6 @@
 @startuml architecture_sequence
 
-actor client
-entity "Frontend (Vue)" as Fend
+actor "client (Vue)"
 entity "Backend (Fjango rest framework)" as Bdrf
 entity "Backend (Django)" as Bdj
 database "Database" as db
@@ -20,6 +19,5 @@ db -> Bdj: Return semantic & url(s)
 Bdj -> Fend: Return semantic & url(s) to associate
 Fend -> client: Response (static page)
 Fend -> client: Response (dynamic page)
-
 
 @enduml

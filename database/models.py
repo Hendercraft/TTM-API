@@ -73,10 +73,10 @@ class Source(models.Model):
     date = models.ManyToManyField(Date, blank=True)
     types = models.ForeignKey(SourceType, on_delete=models.CASCADE, default=None)
     content = models.ManyToManyField(Content, blank=True)
-    url = models.ManyToManyField(Url)
-    viability = models.IntegerField(choices=Rank.choices)
+    url = models.ManyToManyField(Url, blank=True)
+    viability = models.IntegerField(choices=Rank.choices, default=0)
     conservationPlace = models.CharField(max_length=500, null=True, blank=True)
-    cote = models.CharField(max_length=200) #To translate
+    cote = models.CharField(max_length=200, blank=True) #To translate
     
 
     def __str__(self):

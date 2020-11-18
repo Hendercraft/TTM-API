@@ -1,0 +1,38 @@
+@startuml Context_Overview
+actor User
+actor SpecialUser
+
+rectangle System{
+    rectangle Register{
+        usecase "Can connect" as CanConnect
+        usecase "Can enroll" as CanEnroll
+    }
+    rectangle "Temporary database"{
+        usecase "Can modify" as CanModifyTemp
+        usecase "Can approve" as CanApproveTemp
+    }
+    rectangle "Primary database"{
+        usecase "Can Modify" as CanModifyPrimary
+        usecase "Can read" as CanRead
+    }
+}
+package Users{
+    actor Public
+    actor Anonymous
+    Actor Researcher
+    Actor Admin 
+}
+User <|-- Public
+User <|-- Anonymous
+SpecialUser --|> User
+SpecialUser <|- Researcher
+SpecialUser <|- Admin
+
+User -- CanRead
+User -- CanEnroll
+User -- CanConnect
+User -- CanModifyTemp
+
+CanModifyPrimary -- SpecialUser
+CanApproveTemp -- SpecialUser
+@enduml
