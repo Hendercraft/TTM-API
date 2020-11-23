@@ -1,25 +1,6 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User, Group
-
 from .models import *
 
-
-"""
-Users & groups
-"""
-
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        #fields = ['url', 'username','first_name','last_name', 'email', 'groups','user_permissions','password', 'is_staff', 'is_active']
-        fields = '__all__'
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['url', 'name']
 
 """
 Database
