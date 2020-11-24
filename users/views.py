@@ -1,12 +1,16 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, status
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from users.serializers import UserSerializer, GroupSerializer
+from users.serializers import UserSerializer, GroupSerializer, DisciplineSerializer, ResearchEstablishmentSerializer, ResearchFieldSerializer
 from users.utils import create_user_account
 from . import serializers
 
-# Create your views here.
+from users.models import Discipline, ResearchEstablishment, ResearchField
+from API import accessPolicy
+
+
+
 """
 Users & groups
 """
@@ -16,40 +20,28 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [accessPolicy.UsersPolicy]
 
-    # @action(detail=True, methods=['post'])
-    # def reset_password(self, request, pk=None):
-    #     user = self.get_object()
-    #     serializer = PasswordSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         user.set_password(serializer.data['password'])
-    #         user.save()
-    #         return Response({'status': 'password set'})
-    #     else:
-    #         return Response(serializer.errors,
-    #                         status=status.HTTP_400_BAD_REQUEST)
+    @property
+    def access_policy(self):
+        return self.permission_classes[0]
+    
+    # def get_queryset(self):
+    #     return self.access_policy.scope_queryset(
+    #         self.request, User.objects.all()
+    #     )
 
-    # def create(self, request, *args, **kwargs):
-
-    #     try:
-    #         User.objects.create_user(request, *args, **kwargs)
-    #     except:
-    #         return Response({'status': 'Error during creation'})
-    #     return Response({'status': 'User created successfully'})
-
-
-    # def update(self,request):
-    #     pass
-
-    # @action(methods=['POST', ], detail=False)
-    # def register(self, request):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     user = create_user_account(**serializer.validated_data)
-    #     data = serializers.UserSerializer(user).data
-    #     return Response(data=data, status=status.HTTP_201_CREATED)
-
+    @action(detail=True, methods=['put'])
+    def set_password(self, request, pk=None):
+        user = self.get_object()
+        serializer=UserSerializer(request.data)
+        if serializer.is_valid():
+            user.set_password(serializer.data['password'])
+            user.save()
+            return Response({'status': 'password set'})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -57,4 +49,65 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [accessPolicy.GroupPolicy]
+
+    @property
+    def access_policy(self):
+        return self.permission_classes[0]
+    
+    # def get_queryset(self):
+    #     return self.access_policy.scope_queryset(
+    #         self.request, Group.objects.all()
+    #     )
+
+class DisciplineViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allow discipline model to be viewed or edited
+    """
+    queryset = Discipline.objects.all()
+    serializer_class = DisciplineSerializer
+    permission_classes = [accessPolicy.DisciplinePolicy]
+
+    @property
+    def access_policy(self):
+        return self.permission_classes[0]
+    
+    # def get_queryset(self):
+    #     return self.access_policy.scope_queryset(
+    #         self.request, Discipline.objects.all()
+    #     )
+
+
+class ResearchFieldViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allow research field model to be viewed or edited
+    """
+    queryset = ResearchField.objects.all()
+    serializer_class = ResearchFieldSerializer
+    permission_classes = [accessPolicy.ResearchFieldPolicy]
+
+    @property
+    def access_policy(self):
+        return self.permission_classes[0]
+    
+    # def get_queryset(self):
+    #     return self.access_policy.scope_queryset(
+    #         self.request, ResearchField.objects.all()
+    #     )
+
+class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allow research establishment model to be viewed or edited
+    """
+    queryset = ResearchEstablishment.objects.all()
+    serializer_class = ResearchEstablishmentSerializer
+    permission_classes = [accessPolicy.ResearchEstablishmentPolicy]
+
+    @property
+    def access_policy(self):
+        return self.permission_classes[0]
+    
+    # def get_queryset(self):
+    #     return self.access_policy.scope_queryset(
+    #         self.request, ResearchEstablishment.objects.all()
+    #     )

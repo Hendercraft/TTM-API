@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager
 from rest_framework import serializers
+from users.models import *
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,4 +32,24 @@ class UserSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
+        fields = '__all__'
+
+class UserInformationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserInformation
+        fields = '__all__'
+
+class DisciplineSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Discipline
+        fields = '__all__'
+
+class ResearchFieldSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ResearchField
+        fields = '__all__'
+
+class ResearchEstablishmentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ResearchEstablishment
         fields = '__all__'
