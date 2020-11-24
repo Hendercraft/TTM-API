@@ -2,11 +2,11 @@ from rest_framework import viewsets, status
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from users.serializers import UserSerializer, GroupSerializer, DisciplineSerializer, ResearchEstablishmentSerializer, ResearchFieldSerializer
-from users.utils import create_user_account
+from community.serializers import UserSerializer, GroupSerializer, DisciplineSerializer, ResearchEstablishmentSerializer, ResearchFieldSerializer
+from community.utils import create_user_account
 from . import serializers
 
-from users.models import Discipline, ResearchEstablishment, ResearchField
+from community.models import Discipline, ResearchEstablishment, ResearchField
 from API import accessPolicy
 
 

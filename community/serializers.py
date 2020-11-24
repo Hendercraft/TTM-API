@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager
 from rest_framework import serializers
-from users.models import *
+from community.models import *
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
