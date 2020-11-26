@@ -7,8 +7,8 @@ from community.models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        # fields = ['url', 'username','first_name','last_name', 'email', 'groups','user_permissions','password', 'is_staff', 'is_active']
-        fields = '__all__'
+        fields = ['id', 'username','first_name','last_name', 'email', 'last_login', 'date_joined', 'groups', 'is_active', 'is_staff']
+        # fields = '__all__'
     
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -34,22 +34,22 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = '__all__'
 
-class UserInformationSerializer(serializers.HyperlinkedModelSerializer):
+class UserInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInformation
         fields = '__all__'
 
-class DisciplineSerializer(serializers.HyperlinkedModelSerializer):
+class DisciplineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discipline
         fields = '__all__'
 
-class ResearchFieldSerializer(serializers.HyperlinkedModelSerializer):
+class ResearchFieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResearchField
         fields = '__all__'
 
-class ResearchEstablishmentSerializer(serializers.HyperlinkedModelSerializer):
+class ResearchEstablishmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResearchEstablishment
         fields = '__all__'

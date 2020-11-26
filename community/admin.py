@@ -1,3 +1,8 @@
 from django.contrib import admin
+from community.models import *
 
-# Register your models here.
+
+admin.site.register(UserInformation)
+admin.site.register(Discipline)
+admin.site.register(ResearchField)
+admin.site.register(ResearchEstablishment)

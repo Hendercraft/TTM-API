@@ -9,7 +9,7 @@ from . import serializers
 from community.models import Discipline, ResearchEstablishment, ResearchField
 from API import accessPolicy
 
-
+from django.shortcuts import get_object_or_404
 
 """
 Users & groups
@@ -67,6 +67,12 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     queryset = Discipline.objects.all()
     serializer_class = DisciplineSerializer
     permission_classes = [accessPolicy.DisciplinePolicy]
+
+    # def retrieve(self, request, pk=None):
+    #     queryset = Discipline.objects.all()
+    #     Discipline = get_object_or_404(queryset, pk=pk)
+    #     serializer = DisciplineSerializer(Discipline)
+    #     return Response(serializer.data)
 
     @property
     def access_policy(self):

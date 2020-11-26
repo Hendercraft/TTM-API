@@ -1,7 +1,7 @@
 from django.db import models
 
 """
-Implementation of relationnal models define in static files of the API
+Secondary database, used for public users
 
 To do:
     -update all choices
@@ -285,4 +285,3 @@ class Caracteristic(models.Model):
 
     def __str__(self):
         return ("Caracteristics of " + self.objectCaracteristic.name)
-

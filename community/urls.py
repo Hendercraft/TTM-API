@@ -9,10 +9,14 @@ router = routers.DefaultRouter()
 
 router.register('users', views.UserViewSet)
 router.register('groups', views.GroupViewSet)
-router.register('users/<int:pk>/Discipline', views.DisciplineViewSet)
-router.register('users/<int:pk>/ResearchFields', views.ResearchFieldViewSet)
-router.register('users/<int:pk>/ResearchEstablishment', views.ResearchEstablishmentViewSet)
+
+router.register('discipline', views.DisciplineViewSet, basename='discipline')
+router.register('researchFields', views.ResearchFieldViewSet)
+router.register('researchEstablishment', views.ResearchEstablishmentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('users/extra/discipline/', views.DisciplineViewSet.as_view({'get':'list'})),
+    path('users/extra/researchfields/', views.ResearchFieldViewSet.as_view({'get':'list'})),
+    path('users/extra/researchestablishment/', views.ResearchEstablishmentViewSet.as_view({'get':'list'})),
 ]

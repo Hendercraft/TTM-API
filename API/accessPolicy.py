@@ -34,7 +34,7 @@ class UsersPolicy(AccessPolicy):
 class GroupPolicy(AccessPolicy):
     statements = [
         {
-            "action": ["list","put", "retrieve"],
+            "action": ["list", "put", "retrieve"],
             "principal": ["group:researcher","group:admin"],
             "effect": "allow"
         },
@@ -60,7 +60,7 @@ class UsersInformationPolicy(AccessPolicy):
             "effect": "allow"
         },
         {
-            "action": ["list","put", "retrieve"],
+            "action": ["list", "put", "retrieve"],
             "principal": ["group:admin"],
             "effect": "allow"
         }
@@ -71,23 +71,22 @@ class UsersInformationPolicy(AccessPolicy):
 
 class DisciplinePolicy(AccessPolicy):
     statements = [
-        
         {
-            "action": ["list", "put", "retrieve"],
+            "action": ["create", "list", "put", "retrieve"],
+            "principal": ["group:admin", "group:researcher"],
+            "effect": "allow"
+        },
+        {
+            "action": ["create", "list", "retrieve"],
+            "principal": ["group:publicUser"],
+            "effect": "allow"
+        },
+        {
+            "action": ["create", "put", "retrieve"],
             "principal": "*",
             "effect": "allow",
             "condition": "is_user"
         },
-        {
-            "action": ["list", "retrieve"],
-            "principal": ["group:researcher", "group:publicUser"],
-            "effect": "allow"
-        },
-        {
-            "action": ["list","put", "retrieve"],
-            "principal": ["group:admin"],
-            "effect": "allow"
-        }
     ]
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
@@ -97,21 +96,22 @@ class ResearchFieldPolicy(AccessPolicy):
     statements = [
         
         {
-            "action": ["list", "put", "retrieve"],
-            "principal": "*",
-            "effect": "allow",
-            "condition": "is_user"
-        },
-        {
-            "action": ["list", "retrieve"],
-            "principal": ["group:researcher", "group:publicUser"],
+            "action": ["create", "list", "put", "retrieve"],
+            "principal": ["group:admin", "group:researcher"],
             "effect": "allow"
         },
         {
-            "action": ["list","put", "retrieve"],
-            "principal": ["group:admin"],
+            "action": ["create", "list", "retrieve"],
+            "principal": ["group:publicUser"],
             "effect": "allow"
-        }
+        },
+        
+        # {
+        #     "action": ["create","list", "put", "retrieve"],
+        #     "principal": "*",
+        #     "effect": "allow",
+        #     "condition": "is_user"
+        # }
     ]
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
@@ -121,25 +121,26 @@ class ResearchEstablishmentPolicy(AccessPolicy):
     statements = [
         
         {
-            "action": ["list", "put", "retrieve"],
-            "principal": "*",
-            "effect": "allow",
-            "condition": "is_user"
-        },
-        {
-            "action": ["list", "retrieve"],
-            "principal": ["group:researcher", "group:publicUser"],
+            "action": ["create", "list", "put", "retrieve"],
+            "principal": ["group:admin", "group:researcher"],
             "effect": "allow"
         },
         {
-            "action": ["list","put", "retrieve"],
-            "principal": ["group:admin"],
+            "action": ["create", "list", "retrieve"],
+            "principal": ["group:publicUser"],
             "effect": "allow"
-        }
+        },
+        
+        # {
+        #     "action": ["create","list", "put", "retrieve"],
+        #     "principal": "*",
+        #     "effect": "allow",
+        #     "condition": "is_user"
+        # },
     ]
-    def is_user(self, request, view, action) -> bool:
-        user = view.get_object()
-        return request.id == user.id
+    # def is_user(self, request, view, action) -> bool:
+    #     user = view.get_object()
+    #     return request.id == user.id
 
 """
 database and related policy
