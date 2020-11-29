@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User, Group
 from database.serializers import DateSerializer, QualitySerializer, SourceTypeSerializer, AuthorSerializer, ContentSerializer, UrlSerializer, SourceSerializer
 from database.models import Date, Quality, SourceType, Author, Content, Url, Source

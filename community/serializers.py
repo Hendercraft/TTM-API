@@ -11,9 +11,10 @@ class UserSerializer(serializers.ModelSerializer):
         # fields = '__all__'
     
     def create(self, validated_data):
-        password = validated_data.pop('password')
-        groups = validated_data.pop('groups')
-        user_permissions = validated_data.pop('user_permissions')
+        print(validated_data)
+        password = validated_data.pop('password') # As a result password can be set proprely (hash)
+        groups = validated_data.pop('groups') # Because many to many relationship
+        user_permissions = validated_data.pop('user_permissions') # Because many to many relationship
         user = User.objects.create(**validated_data)
         user.groups.set(groups)
         user.user_permissions.set(user_permissions)
@@ -34,9 +35,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = '__all__'
 
-class UserInformationSerializer(serializers.ModelSerializer):
+class Profile(serializers.ModelSerializer):
     class Meta:
-        model = UserInformation
+        model = Profile
         fields = '__all__'
 
 class DisciplineSerializer(serializers.ModelSerializer):

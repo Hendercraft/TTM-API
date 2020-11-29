@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import action
 from rest_framework.response import Response
+# from rest_framework import request
 from community.serializers import UserSerializer, GroupSerializer, DisciplineSerializer, ResearchEstablishmentSerializer, ResearchFieldSerializer
 from community.utils import create_user_account
 from . import serializers
@@ -14,13 +15,13 @@ from django.shortcuts import get_object_or_404
 """
 Users & groups
 """
-class UserViewSet(viewsets.ModelViewSet):
+class ProfileViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [accessPolicy.UsersPolicy]
+    permission_classes = [accessPolicy.UsersPolicy, ]
 
     @property
     def access_policy(self):
@@ -28,20 +29,20 @@ class UserViewSet(viewsets.ModelViewSet):
     
     # def get_queryset(self):
     #     return self.access_policy.scope_queryset(
-    #         self.request, User.objects.all()
+    #         self.request.data, User.objects.all()
     #     )
 
-    @action(detail=True, methods=['put'])
-    def set_password(self, request, pk=None):
-        user = self.get_object()
-        serializer=UserSerializer(request.data)
-        if serializer.is_valid():
-            user.set_password(serializer.data['password'])
-            user.save()
-            return Response({'status': 'password set'})
-        else:
-            return Response(serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
+    # @action(detail=True, methods=['put'])
+    # def set_password(self, request, pk=None):
+    #     user = self.get_object()
+    #     serializer=UserSerializer(request.data)
+    #     if serializer.is_valid():
+    #         user.set_password(serializer.data['password'])
+    #         user.save()
+    #         return Response({'status': 'password set'})
+    #     else:
+    #         return Response(serializer.errors,
+    #                         status=status.HTTP_400_BAD_REQUEST)
 
 class GroupViewSet(viewsets.ModelViewSet):
     """

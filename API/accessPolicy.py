@@ -1,6 +1,5 @@
 from rest_access_policy import AccessPolicy
-
-
+# from django.http import HttpRequest
 
 
 """
@@ -10,26 +9,27 @@ Users and related policy
 class UsersPolicy(AccessPolicy):
     statements = [
         {
-            "action": ["list", "create", "retrieve"],
+            "action": ["list", "create"],
             "principal": "*",
             "effect": "allow"
         },
         {
-            "action": ["put","patch"],
+            "action": ["put", "patch", "delete", "retrieve"],
+            "principal": "group:admin",
+            "effect": "allow"
+        },
+        {
+            "action": ["put", "patch", "retrieve"],
             "principal": "*",
             "effect": "allow",
             'condition': "is_user"
         },
-        {
-            "action": ["delete"],
-            "principal": "group:admin",
-            "effect": "allow"
-        }
     ]
 
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
-        return request.id == user.id
+        print(request.user.id)
+        return request.user.id == user.id
 
 class GroupPolicy(AccessPolicy):
     statements = [
@@ -47,7 +47,11 @@ class GroupPolicy(AccessPolicy):
 
 class UsersInformationPolicy(AccessPolicy):
     statements = [
-        
+        {
+            "action": ["list", "put", "retrieve"],
+            "principal": ["group:admin"],
+            "effect": "allow"
+        },        
         {
             "action": ["list", "put", "retrieve"],
             "principal": "*",
@@ -59,15 +63,11 @@ class UsersInformationPolicy(AccessPolicy):
             "principal": ["group:researcher", "group:publicUser"],
             "effect": "allow"
         },
-        {
-            "action": ["list", "put", "retrieve"],
-            "principal": ["group:admin"],
-            "effect": "allow"
-        }
+        
     ]
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
-        return request.id == user.id
+        return request.user.id == user.id
 
 class DisciplinePolicy(AccessPolicy):
     statements = [
@@ -90,7 +90,7 @@ class DisciplinePolicy(AccessPolicy):
     ]
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
-        return request.id == user.id
+        return request.user.id == user.id
 
 class ResearchFieldPolicy(AccessPolicy):
     statements = [
@@ -115,7 +115,7 @@ class ResearchFieldPolicy(AccessPolicy):
     ]
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
-        return request.id == user.id
+        return request.user.id == user.id
 
 class ResearchEstablishmentPolicy(AccessPolicy):
     statements = [
@@ -138,9 +138,10 @@ class ResearchEstablishmentPolicy(AccessPolicy):
         #     "condition": "is_user"
         # },
     ]
-    # def is_user(self, request, view, action) -> bool:
-    #     user = view.get_object()
-    #     return request.id == user.id
+
+    def is_user(self, request, view, action) -> bool:
+        user = view.get_object()
+        return request.user.id == user.id
 
 """
 database and related policy
