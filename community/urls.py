@@ -10,9 +10,9 @@ router = routers.DefaultRouter()
 router.register('users', views.UserViewSet)
 router.register('groups', views.GroupViewSet)
 
-router.register('discipline', views.DisciplineViewSet, basename='discipline')
-router.register('researchFields', views.ResearchFieldViewSet)
-router.register('researchEstablishment', views.ResearchEstablishmentViewSet)
+# router.register('discipline', views.DisciplineViewSet, basename='discipline')
+# router.register('researchFields', views.ResearchFieldViewSet)
+# router.register('researchEstablishment', views.ResearchEstablishmentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
