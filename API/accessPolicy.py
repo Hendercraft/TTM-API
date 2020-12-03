@@ -6,7 +6,7 @@ from rest_access_policy import AccessPolicy
 Users and related policy
 """
 
-class UsersPolicy(AccessPolicy):
+class ProfilePolicy(AccessPolicy):
     statements = [
         {
             "action": ["list", "create"],
@@ -67,6 +67,7 @@ class UsersInformationPolicy(AccessPolicy):
     ]
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
+        print(request.user.id)
         return request.user.id == user.id
 
 class DisciplinePolicy(AccessPolicy):
@@ -90,6 +91,7 @@ class DisciplinePolicy(AccessPolicy):
     ]
     def is_user(self, request, view, action) -> bool:
         user = view.get_object()
+        print(request.user.id)
         return request.user.id == user.id
 
 class ResearchFieldPolicy(AccessPolicy):
