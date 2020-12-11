@@ -21,27 +21,31 @@ urlpatterns = [
     # path('', include(router.urls)),
 
     #User profile
-    path('', views.ListProfile.as_view()),
-    path('user/', views.ListUser.as_view()),
-    path('create/', views.CreateProfile.as_view()),
-    path('<int:pk>/', views.RetrieveProfile.as_view()),
-    path('update/<int:pk>/', views.UpdateProfile.as_view()),
+    path('', views.ListProfile.as_view(), name='list-users-profile'),
+    # path('user/', views.ListUser.as_view(), name='list-users'),
+    path('create/', views.CreateProfile.as_view(), name='create-user-profile'),
+    path('<int:pk>/', views.RetrieveProfile.as_view(), name='retrieve-user-profile'),
+    path('update/<int:pk>/', views.UpdateProfile.as_view(), name='update-user-profile'),
+    path('delete/<int:pk>/', views.DeleteProfile.as_view(), name='delete-user-profile'),
 
     #Discipline
-    path('discipline/', views.DisciplineViewSet.as_view({'get':'list'})),
-    path('discipline/create/', views.DisciplineViewSet.as_view({'post':'create'})),
-    path('discipline/<int:pk>/', views.DisciplineViewSet.as_view({'get':'retrieve'})),
-    path('discipline/update/<int:pk>/', views.DisciplineViewSet.as_view({'put': 'update'})),
+    path('discipline/', views.DisciplineViewSet.as_view({'get':'list'}), name='list-discipline'),
+    path('discipline/create/', views.DisciplineViewSet.as_view({'post':'create'}), name='create-discipline'),
+    path('discipline/<int:pk>/', views.DisciplineViewSet.as_view({'get':'retrieve'}), name='retrieve-discipline'),
+    path('discipline/update/<int:pk>/', views.DisciplineViewSet.as_view({'put': 'update'}), name='update-discipline'),
+    path('discipline/delete/<int:pk>/', views.DisciplineViewSet.as_view({'delete': 'destroy'}), name='delete-user-profile'),
 
     #Research Fields
-    path('researchField/', views.ResearchFieldViewSet.as_view({'get':'list'})),
-    path('researchField/create/', views.ResearchFieldViewSet.as_view({'post':'create'})),
-    path('researchField/<int:pk>/', views.DisciplineViewSet.as_view({'get':'retrieve'})),
-    path('researchField/update/<int:pk>/', views.ResearchFieldViewSet.as_view({'put': 'update'})),
+    path('researchField/', views.ResearchFieldViewSet.as_view({'get':'list'}), name='list-research-field'),
+    path('researchField/create/', views.ResearchFieldViewSet.as_view({'post':'create'}), name='create-research-field'),
+    path('researchField/<int:pk>/', views.DisciplineViewSet.as_view({'get':'retrieve'}), name='retrieve-research-field'),
+    path('researchField/update/<int:pk>/', views.ResearchFieldViewSet.as_view({'put': 'update'}), name='update-research-field'),
+    path('researchField/delete/<int:pk>/', views.ResearchFieldViewSet.as_view({'delete': 'destroy'}), name='delete-user-profile'),
 
     #Research Establishment
-    path('researchEstablishment/', views.ResearchEstablishmentViewSet.as_view({'get':'list'})),
-    path('researchEstablishment/create/', views.ResearchEstablishmentViewSet.as_view({'post':'create'})),
-    path('researchEstablishment/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'get':'retrieve'})),
-    path('researchEstablishment/update/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'put': 'update'})),
+    path('researchEstablishment/', views.ResearchEstablishmentViewSet.as_view({'get':'list'}), name='list-research-establishment'),
+    path('researchEstablishment/create/', views.ResearchEstablishmentViewSet.as_view({'post':'create'}), name='create-research-establishment'),
+    path('researchEstablishment/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'get':'retrieve'}), name='retrieve-research-establishment'),
+    path('researchEstablishment/update/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'put': 'update'}), name='update-research-establishment'),
+    path('researchEstablishment/delete/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'delete': 'destroy'}), name='delete-user-profile'),
 ]

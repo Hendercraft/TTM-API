@@ -25,7 +25,6 @@ from django.contrib.auth.models import UserManager
 Users & groups
 """
 
-
 class ListProfile(generics.ListAPIView):
     """
     View to list all users in the system.
@@ -46,30 +45,15 @@ class CreateProfile(generics.CreateAPIView):
     """
 
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = RegisterSerializer
 
-    def create(self, request, *args, **kwargs):
-        username = request.user.username
-        user = UserManager.create_user(username, email=None, password=None, **kwargs)
-        return user
-
-class ListUser(generics.ListAPIView):
-    """
-    View to list all users in the system.
-
-    * Requires token authentication.
-    * Only admin users are able to access this view.
-    """
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 class RetrieveProfile(generics.RetrieveAPIView):
     """
-    View to list all users in the system.
+    View to retrieve a user in the system.
 
     * Requires token authentication.
-    * Only admin users are able to access this view.
+    * Only admin users and (is_user) are able to access this view.
     """
 
     queryset = Profile.objects.all()
@@ -77,33 +61,35 @@ class RetrieveProfile(generics.RetrieveAPIView):
 
 class UpdateProfile(generics.UpdateAPIView):
     """
-    View to list all users in the system.
+    View to update a user in the system.
 
     * Requires token authentication.
-    * Only admin users are able to access this view.
+    * Only admin users or (is_user) are able to access this view.
+    """
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class DeleteProfile(generics.DestroyAPIView):
+    """
+    View to delete a user in the system.
+
+    * Requires token authentication.
+    * Only admin users or (is_user) are able to access this view.
     """
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
 
-
-
 class ProfileViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    # Profile.objects.order_by('id').values()
-    # queryset = Profile.objects.values('id')
-    # queryset = Profile.objects.all()
-    # queryset = Profile.objects.values('id', 'user_id', 'phoneNumber', 'postalAdress', 'profileImage', 'discipline', 'researchEstablishment', 'researchEstablishment_id', 'researchField', 'researchField_id', 'workTimeDuration', 'workedInCompany', 'workedOnTheSite')
+    
     serializer_class = ProfileSerializer
     permission_classes = [accessPolicy.ProfilePolicy, ]
 
-    # def get(self, request):
-    #    queryset = Person.objects.all()
-    #    serializer_class = PersonListSerializer(queryset, many=True) #It may change the things
-    #    return Response(serializer_class.data)
 
     @property
     def access_policy(self):
@@ -118,17 +104,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         queryset = Profile.objects.values('id').filter('user')
         return queryset
 
-    # @action(detail=True, methods=['put'])
-    # def set_password(self, request, pk=None):
-    #     user = self.get_object()
-    #     serializer=UserSerializer(request.data)
-    #     if serializer.is_valid():
-    #         user.set_password(serializer.data['password'])
-    #         user.save()
-    #         return Response({'status': 'password set'})
-    #     else:
-    #         return Response(serializer.errors,
-    #                         status=status.HTTP_400_BAD_REQUEST)
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -154,16 +129,7 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     queryset = Discipline.objects.all()
     serializer_class = DisciplineSerializer
     # permission_classes = [accessPolicy.DisciplinePolicy, ]
-    lookup_field = 'pk'
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return serializer
-
-    def perform_create(self, serializer):
-        serializer.save()
+    # lookup_field = 'pk'
 
 
     @property
@@ -182,7 +148,7 @@ class ResearchFieldViewSet(viewsets.ModelViewSet):
     """
     queryset = ResearchField.objects.all()
     serializer_class = ResearchFieldSerializer
-    permission_classes = [accessPolicy.ResearchFieldPolicy]
+    # permission_classes = [accessPolicy.ResearchFieldPolicy]
 
     @property
     def access_policy(self):
@@ -199,7 +165,7 @@ class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
     """
     queryset = ResearchEstablishment.objects.all()
     serializer_class = ResearchEstablishmentSerializer
-    permission_classes = [accessPolicy.ResearchEstablishmentPolicy]
+    # permission_classes = [accessPolicy.ResearchEstablishmentPolicy]
 
     @property
     def access_policy(self):
