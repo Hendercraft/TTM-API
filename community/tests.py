@@ -19,10 +19,12 @@ class CommunityTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Profile.objects.count(), 1)
         self.assertEqual(User.objects.count(), 1)
-        id = User.objects.get().id
+        id = str(User.objects.get().id)
+        print(id)
         # url = reverse('update-user-profile')
         data = {"username": "ModifiedTestUsername","email" : "testmodified@email.com"}
-        response = self.client.put('discipline/update/1/', data, format='json')
+        response = self.client.put('update/1/', data, format='json')
+        print(response)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(User.objects.get().username, "ModifiedTestUsername")

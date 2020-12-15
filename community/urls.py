@@ -5,13 +5,13 @@ from rest_framework_simplejwt import views as jwt_views
 from community import views
 
 
-router = routers.DefaultRouter()
+# router = routers.DefaultRouter()
 
-router.register('profile', views.ProfileViewSet, basename='Profile')
+# router.register('profile', views.ProfileViewSet, basename='Profile')
 #router.register('groups', views.GroupViewSet)
-router.register('discipline', views.DisciplineViewSet)
-router.register('researchField', views.ResearchFieldViewSet)
-router.register('researchEstablishment', views.ResearchEstablishmentViewSet)
+# router.register('discipline', views.DisciplineViewSet)
+# router.register('researchField', views.ResearchFieldViewSet)
+# router.register('researchEstablishment', views.ResearchEstablishmentViewSet)
 
 # router.register('discipline', views.DisciplineViewSet, basename='discipline')
 # router.register('researchFields', views.ResearchFieldViewSet)
