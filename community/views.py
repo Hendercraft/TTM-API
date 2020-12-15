@@ -65,11 +65,11 @@ class UpdateProfile(generics.UpdateAPIView):
     * Requires token authentication.
     * Only admin users or (is_user) are able to access this view.
     """
-    print(Request.content_type)
+    print("In the update view")
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
-class DeleteProfile(generics.DestroyAPIView):
+class DeleteProfile(generics.RetrieveDestroyAPIView):
     """
     View to delete a user in the system.
 

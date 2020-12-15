@@ -46,12 +46,6 @@ class DisciplineSerializer(serializers.ModelSerializer):
     #     return discipline  
 
 
-    # def create(self, validated_data):
-    #     print(validated_data)
-    #     discipline = Discipline.objects.create(**validated_data)
-    #     discipline.save()
-    #     return discipline
-
 class ResearchFieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResearchField
@@ -63,51 +57,66 @@ class ResearchEstablishmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProfileSerializer(serializers.Serializer):
-    id = serializers.PrimaryKeyRelatedField(read_only=True)
-    user = UserSerializer(required=False)  # May be an anonymous user.
-    postalAdress = serializers.CharField(required=False)
-    phoneNumber = serializers.IntegerField(required=False)
-    profileImage = serializers.URLField(required=False)
-    
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False,required=False)  # May be an anonymous user.
 
-    #If the user had worked on the site
-    workedOnTheSite = serializers.BooleanField(required=False)
-    workedInCompany = serializers.CharField(max_length=255, required=False)
-    workTimeDuration = serializers.IntegerField(required=False) # Number of years
-    
-
-    #If the user is a researcher
+    # #If the user is a researcher
     discipline = DisciplineSerializer(required=False)
     researchField = ResearchFieldSerializer(required=False)
     researchEstablishment = ResearchEstablishmentSerializer(required=False)
     
+    class Meta:
+        model = Profile
+        fields = ['id','user','postalAdress','phoneNumber','profileImage','workedOnTheSite','workedInCompany','workTimeDuration','discipline','researchField','researchEstablishment']
+    
+    # id = serializers.PrimaryKeyRelatedField(read_only=True)
+    # user = UserSerializer(required=False)  # May be an anonymous user.
+    # postalAdress = serializers.CharField(required=False)
+    # phoneNumber = serializers.IntegerField(required=False)
+    # profileImage = serializers.URLField(required=False)
+    
+
+    # #If the user had worked on the site
+    # workedOnTheSite = serializers.BooleanField(required=False)
+    # workedInCompany = serializers.CharField(max_length=255, required=False)
+    # workTimeDuration = serializers.IntegerField(required=False) # Number of years
+    
+
+    # #If the user is a researcher
+    # discipline = DisciplineSerializer(required=False)
+    # researchField = ResearchFieldSerializer(required=False)
+    # researchEstablishment = ResearchEstablishmentSerializer(required=False)
+    
     def update(self, instance, validated_data):
-        # raise_errors_on_nested_writes('update', self, validated_data)
-        info = model_meta.get_field_info(instance)
-
-        # Simply set each attribute on the instance, and then save it.
-        # Note that unlike `.create()` we don't need to treat many-to-many
-        # relationships as being a special case. During updates we already
-        # have an instance pk for the relationships to be associated with.
-        m2m_fields = []
-        for attr, value in validated_data.items():
-            if attr in info.relations and info.relations[attr].to_many:
-                m2m_fields.append((attr, value))
-            else:
-                setattr(instance, attr, value)
-
+        user_data = validated_data.pop('user')
+        user = instance.user
+        instance.postalAdress = validated_data.get('postalAdress', instance.postalAdress)
+        instance.phoneNumber = validated_data.get('phoneNumber', instance.phoneNumber)
+        instance.profileImage = validated_data.get('profileImage', instance.profileImage)
+        instance.workedOnTheSite = validated_data.get('workedOnTheSite', instance.workedOnTheSite)
+        instance.workedInCompany = validated_data.get('workedInCompany', instance.workedInCompany)
+        instance.workTimeDuration = validated_data.get('workTimeDuration', instance.workTimeDuration)
         instance.save()
-
-        # Note that many-to-many fields are set after updating instance.
-        # Setting m2m fields triggers signals which could potentially change
-        # updated instance and we do not want it to collide with .update()
-        for attr, value in m2m_fields:
-            field = getattr(instance, attr)
-            field.set(value)
-
+    
+        user.username = user_data.get(
+            'username',
+            user.username
+        )
+        user.first_name = user_data.get(
+            'first_name',
+            user.first_name
+        )
+        user.last_name = user_data.get(
+            'last_name',
+            user.last_name
+        )
+        user.email = user_data.get(
+            'email',
+            user.email
+        )
+        user.save()
         return instance
 
-    def delete(self,user):
-        user.is_active = False
-        return user
+    def delete(self,instance):
+        instance.user.is_active = False
+        return instance
