@@ -106,13 +106,19 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     queryset = Discipline.objects.all()
     serializer_class = DisciplineSerializer
     pagination_class = StandardResultsSetPagination
-    print(request.user)
+    # print(request.user) Ce n'est pas possible que tu utilises request ici. Lis bien la doc sur les fonction et les multiples paramètres que peuvent prendre les fonctions
     # permission_classes = [accessPolicy.DisciplinePolicy, ]
 
 
     @property
     def access_policy(self):
         return self.permission_classes[0]
+    
+    # Pour utiliser request, il te faut le passer en paramètre d'une fonction
+    @action(detail=True, methods=['get'])
+    def check_user(self, request):
+        print(request.user.is_authenticated())
+        return Response({'status': 'OK'})
     
     # def get_queryset(self):
     #     return self.access_policy.scope_queryset(
