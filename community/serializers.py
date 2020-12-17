@@ -2,8 +2,11 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager
 from rest_framework.utils import model_meta
-from rest_framework import serializers
+from rest_framework import serializers,request
+from rest_framework.request import Request
 from community.models import *
+
+from django.http import request
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
@@ -15,7 +18,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username','first_name','last_name', 'email', 'last_login', 'date_joined', 'groups', 'is_active', 'is_staff']
-
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,18 +34,18 @@ class RegisterSerializer(serializers.ModelSerializer):
             user=user
         )
         profile.save()
-        return user    
+        return user
 
 class DisciplineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discipline
         fields = '__all__'
-    
-    # def create(self, validated_data):
-    #     print(validated_data)
-    #     discipline = Discipline.objects.create(**validated_data)
-    #     discipline.save()
-    #     return discipline  
+
+    def create(self, validated_data):
+        print(validated_data)
+        discipline = Discipline.objects.create(**validated_data)
+        discipline.save()
+        return discipline  
 
 
 class ResearchFieldSerializer(serializers.ModelSerializer):
@@ -60,7 +62,7 @@ class ResearchEstablishmentSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False,required=False)  # May be an anonymous user.
 
-    # #If the user is a researcher
+    #If the user is a researcher
     discipline = DisciplineSerializer(required=False)
     researchField = ResearchFieldSerializer(required=False)
     researchEstablishment = ResearchEstablishmentSerializer(required=False)

@@ -65,7 +65,6 @@ class UpdateProfile(generics.UpdateAPIView):
     * Requires token authentication.
     * Only admin users or (is_user) are able to access this view.
     """
-    print("In the update view")
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
@@ -107,8 +106,8 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     queryset = Discipline.objects.all()
     serializer_class = DisciplineSerializer
     pagination_class = StandardResultsSetPagination
+    print(request.user)
     # permission_classes = [accessPolicy.DisciplinePolicy, ]
-    # lookup_field = 'pk'
 
 
     @property

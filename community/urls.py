@@ -33,19 +33,19 @@ urlpatterns = [
     path('discipline/create/', views.DisciplineViewSet.as_view({'post':'create'}), name='create-discipline'),
     path('discipline/<int:pk>/', views.DisciplineViewSet.as_view({'get':'retrieve'}), name='retrieve-discipline'),
     path('discipline/update/<int:pk>/', views.DisciplineViewSet.as_view({'put': 'update'}), name='update-discipline'),
-    path('discipline/delete/<int:pk>/', views.DisciplineViewSet.as_view({'delete': 'destroy'}), name='delete-user-profile'),
+    path('discipline/delete/<int:pk>/', views.DisciplineViewSet.as_view({'delete': 'destroy'}), name='delete-discipline'),
 
     #Research Fields
     path('researchField/', views.ResearchFieldViewSet.as_view({'get':'list'}), name='list-research-field'),
     path('researchField/create/', views.ResearchFieldViewSet.as_view({'post':'create'}), name='create-research-field'),
-    path('researchField/<int:pk>/', views.DisciplineViewSet.as_view({'get':'retrieve'}), name='retrieve-research-field'),
+    path('researchField/<int:pk>/', views.ResearchFieldViewSet.as_view({'get':'retrieve'}), name='retrieve-research-field'),
     path('researchField/update/<int:pk>/', views.ResearchFieldViewSet.as_view({'put': 'update'}), name='update-research-field'),
-    path('researchField/delete/<int:pk>/', views.ResearchFieldViewSet.as_view({'delete': 'destroy'}), name='delete-user-profile'),
+    path('researchField/delete/<int:pk>/', views.ResearchFieldViewSet.as_view({'delete': 'destroy'}), name='delete-research-field'),
 
     #Research Establishment
     path('researchEstablishment/', views.ResearchEstablishmentViewSet.as_view({'get':'list'}), name='list-research-establishment'),
     path('researchEstablishment/create/', views.ResearchEstablishmentViewSet.as_view({'post':'create'}), name='create-research-establishment'),
     path('researchEstablishment/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'get':'retrieve'}), name='retrieve-research-establishment'),
     path('researchEstablishment/update/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'put': 'update'}), name='update-research-establishment'),
-    path('researchEstablishment/delete/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'delete': 'destroy'}), name='delete-user-profile'),
+    path('researchEstablishment/delete/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'delete': 'destroy'}), name='delete-research-establishment'),
 ]
