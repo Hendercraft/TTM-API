@@ -117,7 +117,7 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     # Pour utiliser request, il te faut le passer en paramètre d'une fonction
     @action(detail=True, methods=['get'])
     def check_user(self, request):
-        print(request.user.is_authenticated())
+        print(request.user.is_authenticated)
         return Response({'status': 'OK'})
     
     # def get_queryset(self):
