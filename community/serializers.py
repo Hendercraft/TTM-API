@@ -41,11 +41,11 @@ class DisciplineSerializer(serializers.ModelSerializer):
         model = Discipline
         fields = '__all__'
 
-    def create(self, validated_data):
-        print(validated_data)
-        discipline = Discipline.objects.create(**validated_data)
-        discipline.save()
-        return discipline  
+    # def create(self, validated_data):
+    #     print(validated_data)
+    #     discipline = Discipline.objects.create(**validated_data)
+    #     discipline.save()
+    #     return discipline  
 
 
 class ResearchFieldSerializer(serializers.ModelSerializer):

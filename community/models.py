@@ -1,15 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-# User add on model
-
-
-
-
-
 
 # Discipline model
 class Discipline (models.Model):
-    user = models.ForeignKey(User, on_delete= models.CASCADE, default=None)
+    user = models.ForeignKey(User, on_delete= models.CASCADE, default=None, null=True, blank=True)
     discipline = models.CharField(max_length=255, null=True, blank=True)
     commentsDiscipline = models.CharField(max_length=255, null=True, blank=True)
 
