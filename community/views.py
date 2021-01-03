@@ -117,9 +117,10 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     
     # Pour utiliser request, il te faut le passer en paramètre d'une fonction
     @action(detail=True, methods=['post'])
-    def create(self, request, **kwargs):
+    def create(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             discipline_obj = Discipline.objects.create(**kwargs)
+            print(discipline_obj)
             discipline_obj.save()
             discipline_obj.user.set(request.user.id)
             discipline_obj.save()

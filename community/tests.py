@@ -32,7 +32,7 @@ class CommunityTestCase(APITestCase):
             "user":
             {
                 "username": "ModifiedTestUsername","email" : "testmodified@email.com"
-                }
+            }
             }
         response = self.client.put(reverse('update-user-profile', args=(self.id,)), self.data, format='json')
 
