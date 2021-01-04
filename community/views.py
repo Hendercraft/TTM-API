@@ -17,6 +17,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from rest_framework.permissions import IsAdminUser
+import json
 
 
 """
@@ -110,23 +111,26 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     # print(request.user) Ce n'est pas possible que tu utilises request ici. Lis bien la doc sur les fonction et les multiples paramètres que peuvent prendre les fonctions
     # permission_classes = [accessPolicy.DisciplinePolicy, ]
 
-
-    @property
-    def access_policy(self):
-        return self.permission_classes[0]
+    # @property
+    # def access_policy(self):
+    #     return self.permission_classes[0]
     
     # Pour utiliser request, il te faut le passer en paramètre d'une fonction
     @action(detail=True, methods=['post'])
     def create(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            discipline_obj = Discipline.objects.create(**kwargs)
-            print(discipline_obj)
+        print(request.user)
+        data = request.body
+
+        request_body = json.loads(data)
+
+        if request.user.is_authenticated:            
+            discipline_obj = Discipline.objects.create(user=request.user, discipline=request_body["discipline"],commentsDiscipline=request_body["commentsDiscipline"])
+            print("affichage =", discipline_obj)
+            print("user", discipline_obj.user)
             discipline_obj.save()
-            discipline_obj.user.set(request.user.id)
-            discipline_obj.save()
-            return Response({'status': 'Bad request'})
+            return Response(201)
         else:
-            return Response({'status': 'unauthorized'})
+            return Response(401)
     
     # def get_queryset(self):
     #     return self.access_policy.scope_queryset(

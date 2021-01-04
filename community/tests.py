@@ -1,6 +1,6 @@
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, APIClient
+from rest_framework.test import APITestCase, APIClient, force_authenticate
 from django.contrib.auth.models import User, Group 
 
 from .models import Profile, Discipline, ResearchField, ResearchEstablishment
@@ -9,21 +9,26 @@ class CommunityTestCase(APITestCase):
     def setUp(self):
         #Create profile
         self.data = {"username": "TestUsername","password": "testPassword","email" : "test@email.com"}
-        # self.client = APIClient()
         self.client.post(reverse('create-user-profile'), self.data, format='json')
-        self.data = {"username": "TestUsername","password": "testPassword"}
         
-        response = self.client.login(username='TestUsername',password='testPassword')
 
+        self.id = User.objects.get().id #get the id from user to update data
+
+        print("User "+str(self.id)+" created with name "+User.objects.get().username)
+        
         #With JWT
+        # self.data = {"username": "TestUsername","password": "testPassword"}
         # response = self.client.post(reverse('token_obtain_pair'), self.data, format='json')
         # self.client.credentials(HTTP_AUTHORIZATION='Token ' + response.data['access'])
         # print(self.client.head(reverse('token_obtain_pair'), self.data))
         # print(self.client.credentials(HTTP_AUTHORIZATION='Token ' + response.data['access']))
-
-        self.id=User.objects.get().id #get the id from user to update data
+        # print(self.client.login)
+        
+        # print(self.assertTrue(
+        # print(User.objects.get().password)
+        # print(self.id)
     
-    def test_create_update_retrieve_delete_profile(self):
+    def test_update_retrieve_delete_profile(self):
         """
         Test profile create_update_retrieve_delete
         """
@@ -55,10 +60,15 @@ class CommunityTestCase(APITestCase):
         """        
         #Create discipline
         
+        user = User.objects.get(username='TestUsername')
+        self.client.force_authenticate(user=user)
+
+        # self.client.login(username='TestUsername',password='testPassword')
+
         self.data = {"user": self.id, "discipline": "Test discipline","commentsDiscipline": "Test comment discipline"}
         response = self.client.post(reverse('create-discipline'), self.data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.content.decode(), '201')
         self.assertEqual(Discipline.objects.count(), 1)
         self.assertEqual(Discipline.objects.get().discipline, 'Test discipline')
         self.id = Discipline.objects.get().id
