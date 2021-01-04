@@ -27,6 +27,8 @@ class CommunityTestCase(APITestCase):
         # print(self.assertTrue(
         # print(User.objects.get().password)
         # print(self.id)
+        user = User.objects.get(username='TestUsername')
+        self.client.force_authenticate(user=user)
     
     def test_update_retrieve_delete_profile(self):
         """
@@ -59,9 +61,6 @@ class CommunityTestCase(APITestCase):
         Test discipline create_update_retrieve_delete
         """        
         #Create discipline
-        
-        user = User.objects.get(username='TestUsername')
-        self.client.force_authenticate(user=user)
 
         # self.client.login(username='TestUsername',password='testPassword')
 
