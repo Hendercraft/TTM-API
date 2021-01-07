@@ -2,6 +2,9 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
+#Modify table
+admin.site.register(Modify)
+
 #Source tables
 admin.site.register(Source)
 admin.site.register(SourceType)

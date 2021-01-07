@@ -40,7 +40,7 @@ class Quality(models.Model):
 Sources & associates tables
 """
 class SourceType(models.Model):
-    typesSource = models.CharField(max_length=200)
+    typeSource = models.CharField(max_length=200)
 
     def __str__(self):
         return self.typesSource
@@ -334,3 +334,5 @@ class Modify(models.Model):
     y_value = models.IntegerField()
     content = models.CharField(max_length=10000)
 
+    def __str__(self):
+        return self.content

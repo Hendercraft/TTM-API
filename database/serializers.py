@@ -7,130 +7,135 @@ Database
 """
 
 #DATE
-class DateSerializer(serializers.HyperlinkedModelSerializer):
+class DateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Date
-        fields = ['name', 'date', 'duration_date']
+        fields = '__all__'
 
 
 #Quality
-class QualitySerializer(serializers.HyperlinkedModelSerializer):
+class QualitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Quality
-        fields = ['name', 'definition']
+        fields = '__all__'
 
 
 #Source & associates
-class SourceTypeSerializer(serializers.HyperlinkedModelSerializer):
+class SourceTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = SourceType
-        fields = ['typesSource']
+        fields = '__all__'
 
-class AuthorSerializer(serializers.HyperlinkedModelSerializer):
+class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ['name', 'lastName', 'status', 'organisation']
+        fields = '__all__'
 
-class ContentSerializer(serializers.HyperlinkedModelSerializer):
+class ContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
-        fields = ['sourceContent']
+        fields = '__all__'
 
-class UrlSerializer(serializers.HyperlinkedModelSerializer):
+class UrlSerializer(serializers.ModelSerializer):
     class Meta:
         model = Url
-        fields = ['url']
+        fields = '__all__'
 
-class SourceSerializer(serializers.HyperlinkedModelSerializer):
+class SourceSerializer(serializers.ModelSerializer):
     class Meta:
        model = Source
-       fields = ['name','author','date','types','content','url','viability','conservationPlace','cote']
+       fields = '__all__'
 
 # Place & associates
-class PlaceLocationSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceLocation
-        fields = ['street_number', 'street_type', 'street_name', 'city', 'post_code', 'country', 'said_place']
+        fields = '__all__'
 
-class PlaceTypeSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceType
-        fields = ['placeType']
+        fields = '__all__'
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Place
-        fields = ['name', 'description', 'place_location', 'longitude', 'latitude', 'place_type', 'source']
+        fields = '__all__'
 
 #Knowledge
-class KnowledgeSerializer(serializers.HyperlinkedModelSerializer):
+class KnowledgeSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Knowledge
-        fields = ['name', 'definition']
+        model = Knowledge
+        fields = '__all__'
 
 #Collective Actor
-class CollectiveActorSerializer(serializers.HyperlinkedModelSerializer):
+class CollectiveActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = CollectiveActor
-        fields = ['name', 'definition', 'date', 'quality', 'knowledge', 'place', 'source']
+        fields = '__all__'
 
 #Abstract object
-class AbstractOvjectSerializer(serializers.HyperlinkedModelSerializer):
+class AbstractOvjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = AbstractObject
-        fields = ['name', 'definition', 'date', 'quality', 'collectiveActor', 'place', 'source']
+        fields = '__all__'
 
 #Profession
-class ProfessionSerializer(serializers.HyperlinkedModelSerializer):
+class ProfessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profession
-        fields = ['name', 'definition', 'autonomous', 'abstractObject', 'place', 'source']
+        fields = '__all__'
 
 #Social activities
-class SocialActivitiesSerializer(serializers.HyperlinkedModelSerializer):
+class SocialActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialActivity
-        fields = ['name', 'definition', 'place', 'source']
+        fields = '__all__'
 
 #Social link
-class SocialLinkSerializer(serializers.HyperlinkedModelSerializer):
+class SocialLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialLink
-        fields = ['link', 'actorlink']
+        fields = '__all__'
 
 #Actor & associates
-class ActorSerializer(serializers.HyperlinkedModelSerializer):
+class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
-        fields = ['gender', 'profession', 'socialActivities', 'collectiveActors', 'quality', 'socialLink', 'place', 'source']
+        fields = '__all__'
 
-class NameActorSerializer(serializers.HyperlinkedModelSerializer):
+class NameActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = NameActor
-        fields = ['actors', 'name', 'last_name', 'typeOfActor']
+        fields = '__all__'
 
 #Object & associates
-class DetailCaracteristicSerializer(serializers.HyperlinkedModelSerializer):
+class DetailCaracteristicSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetailCaracteristic
-        fields = ['detailCaracteristicsObject']
+        fields = '__all__'
 
-class TypeObjectSerializer(serializers.HyperlinkedModelSerializer):
+class TypeObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeObject
-        fields = ['typeObject']
+        fields = '__all__'
 
-class EnergySerializer(serializers.HyperlinkedModelSerializer):
+class EnergySerializer(serializers.ModelSerializer):
     class Meta:
         model = Energy
-        fields = ['energy']
+        fields = '__all__'
 
-class ObjectSerializer(serializers.HyperlinkedModelSerializer):
+class ObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Object
-        fields = ['name', 'definition', 'brand', 'content', 'date', 'type_object', 'collectiveActors', 'actor', 'abstract_object', 'energy', 'place', 'source']
+        fields = '__all__'
 
-class CaracteristicSerializer(serializers.HyperlinkedModelSerializer):
+class CaracteristicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Caracteristic
-        fields = ['objectCaracteristic', 'length', 'width', 'height', 'weight', 'surface', 'detail_caracteristics', 'source']
+        fields = '__all__'
+
+class ModifySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Modify
+        fields = '__all__'

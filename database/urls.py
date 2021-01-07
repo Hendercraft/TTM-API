@@ -16,5 +16,6 @@ router.register('sources', views.SourceViewSet)
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # path('', include(router.urls)),
+    path('search/', views.Search, name='search')
 ]
