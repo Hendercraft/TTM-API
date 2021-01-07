@@ -19,6 +19,7 @@ from community import views
 
 urlpatterns = [
     # path('', include(router.urls)),
+    path('group/', views.GroupViewSet, name='group'),
 
     #User profile
     path('', views.ListProfile.as_view(), name='list-users-profile'),

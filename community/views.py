@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from django.contrib.auth.models import User, Group
 
 from rest_framework.decorators import action
+from rest_framework.permissions import BasePermission, AllowAny, SAFE_METHODS
 
 from community.pagination import *
 from community.serializers import *
@@ -47,7 +48,7 @@ class CreateProfile(generics.CreateAPIView):
 
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-
+    permission_classes = [AllowAny]
 
 class RetrieveProfile(generics.RetrieveAPIView):
     """
@@ -96,10 +97,10 @@ class GroupViewSet(viewsets.ModelViewSet):
     def access_policy(self):
         return self.permission_classes[0]
     
-    def get_queryset(self):
-        return self.access_policy.scope_queryset(
-            self.request, Group.objects.all()
-        )
+    # def get_queryset(self):
+    #     return self.access_policy.scope_queryset(
+    #         self.request, Group.objects.all()
+    #     )
 
 class DisciplineViewSet(viewsets.ModelViewSet):
     """
@@ -108,29 +109,25 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     queryset = Discipline.objects.all()
     serializer_class = DisciplineSerializer
     pagination_class = StandardResultsSetPagination
-    # print(request.user) Ce n'est pas possible que tu utilises request ici. Lis bien la doc sur les fonction et les multiples paramètres que peuvent prendre les fonctions
+
     # permission_classes = [accessPolicy.DisciplinePolicy, ]
 
     # @property
     # def access_policy(self):
     #     return self.permission_classes[0]
     
-    # Pour utiliser request, il te faut le passer en paramètre d'une fonction
     @action(detail=True, methods=['post'])
     def create(self, request, *args, **kwargs):
-        print(request.user)
         data = request.body
 
         request_body = json.loads(data)
 
-        if request.user.is_authenticated:            
+        if request.user.is_authenticated:
             discipline_obj = Discipline.objects.create(user=request.user, discipline=request_body["discipline"],commentsDiscipline=request_body["commentsDiscipline"])
-            print("affichage =", discipline_obj)
-            print("user", discipline_obj.user)
-            discipline_obj.save()
-            return Response(201)
+            serializer = DisciplineSerializer(discipline_obj)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(401)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
     
     # def get_queryset(self):
     #     return self.access_policy.scope_queryset(
@@ -150,6 +147,7 @@ class ResearchFieldViewSet(viewsets.ModelViewSet):
     @property
     def access_policy(self):
         return self.permission_classes[0]
+    
     
     # def get_queryset(self):
     #     return self.access_policy.scope_queryset(

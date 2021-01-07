@@ -81,34 +81,38 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
+    # ,
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
 }
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 #Test 1
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'database',
-#         'USER':'postgres',
-#         'PASSWORD':'2019@ETudianTInfEn',
-#         'HOST':'localhost',
-#         'PORT':'5432',
-#     }
-# }
-
-#Test 2
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sqldatabase',
-        'USER':'ggarcia',
-        'PASSWORD':'7PjN29tFATTCQF6',
-        'HOST':'serv-gi-15.utbm.fr',
+        'NAME': 'database',
+        'USER':'postgres',
+        'PASSWORD':'2019@ETudianTInfEn',
+        'HOST':'localhost',
         'PORT':'5432',
     }
 }
+
+#Test 2
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'sqldatabase',
+#         'USER':'ggarcia',
+#         'PASSWORD':'7PjN29tFATTCQF6',
+#         'HOST':'serv-gi-15.utbm.fr',
+#         'PORT':'5432',
+#     }
+# }
 
 
 # Password validation

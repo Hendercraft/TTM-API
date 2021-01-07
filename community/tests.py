@@ -67,7 +67,7 @@ class CommunityTestCase(APITestCase):
         self.data = {"user": self.id, "discipline": "Test discipline","commentsDiscipline": "Test comment discipline"}
         response = self.client.post(reverse('create-discipline'), self.data, format='json')
 
-        self.assertEqual(response.content.decode(), '201')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Discipline.objects.count(), 1)
         self.assertEqual(Discipline.objects.get().discipline, 'Test discipline')
         self.id = Discipline.objects.get().id

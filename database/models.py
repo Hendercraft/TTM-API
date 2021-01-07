@@ -30,7 +30,7 @@ Quality table
 
 class Quality(models.Model):
     name = models.CharField(max_length=200)
-    definition = models.CharField(max_length=200)
+    definition = models.CharField(max_length=1000)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Quality(models.Model):
 Sources & associates tables
 """
 class SourceType(models.Model):
-    typesSource = models.CharField(max_length=100)
+    typesSource = models.CharField(max_length=200)
 
     def __str__(self):
         return self.typesSource
@@ -55,7 +55,7 @@ class Author(models.Model):
         return self.name
 
 class Content(models.Model):
-    sourceContent = models.CharField(max_length=1000)
+    sourceContent = models.CharField(max_length=10000)
 
     def __str__(self):
         return self.sourceContent
@@ -70,14 +70,14 @@ class Source(models.Model):
     class Rank(models.IntegerChoices):
         NOTRELIABLE = 0
         RELIABLE  = 1
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=500)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
     date = models.ManyToManyField(Date, blank=True)
     types = models.ForeignKey(SourceType, on_delete=models.CASCADE, default=None)
     content = models.ManyToManyField(Content, blank=True)
     url = models.ManyToManyField(Url, blank=True)
     viability = models.IntegerField(choices=Rank.choices, default=0)
-    conservationPlace = models.CharField(max_length=500, null=True, blank=True)
+    conservationPlace = models.CharField(max_length=1000, null=True, blank=True)
     cote = models.CharField(max_length=200, blank=True) #To translate
     validated = models.BooleanField(default=False)
 
@@ -91,18 +91,18 @@ Place & associates tables
 class PlaceLocation(models.Model):
     street_number = models.IntegerField()
     street_type = models.CharField(max_length=3, null=True, blank=True)
-    street_name = models.CharField(max_length=200) #To update
-    city = models.CharField(max_length=100)
+    street_name = models.CharField(max_length=500) #To update
+    city = models.CharField(max_length=500)
     post_code = models.IntegerField(default=None, null=True, blank=True)
-    country = models.CharField(max_length=100)
-    place_said = models.CharField(max_length=200, null=True, blank=True) #Place or said place
+    country = models.CharField(max_length=500)
+    place_said = models.CharField(max_length=1000, null=True, blank=True) #Place or said place
     validated = models.BooleanField(default=False)
 
     def __str__(self):
         return (str(self.street_number) + " " + self.street_name + " " + self.city + " " + self.country)
 
 class PlaceType(models.Model):
-    placeType = models.CharField(max_length=100)
+    placeType = models.CharField(max_length=500)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -110,7 +110,7 @@ class PlaceType(models.Model):
 
 class Place(models.Model):
     name = models.CharField(max_length=200)
-    description = models.CharField(max_length=500) #To update
+    description = models.CharField(max_length=1000) #To update
     place_location = models.ForeignKey(PlaceLocation, on_delete=models.CASCADE, default=None, null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
@@ -174,7 +174,7 @@ Profession table
 
 class Profession(models.Model):
     name = models.CharField(max_length=200)
-    definition = models.CharField(max_length=500)
+    definition = models.CharField(max_length=1000)
     autonomous = models.BooleanField(default=False)
     abstractObject = models.ManyToManyField(AbstractObject, blank=True)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None)
@@ -189,7 +189,7 @@ Social table
 """
 class SocialActivity(models.Model):
     name = models.CharField(max_length=200)
-    definition = models.CharField(max_length=500)
+    definition = models.CharField(max_length=1000)
     place = models.ManyToManyField(Place, blank=True)
     source = models.ManyToManyField(Source)
     validated = models.BooleanField(default=False)
@@ -225,7 +225,7 @@ class Actor(models.Model):
         Male = 'Male'
         Female = 'Female'
         Other = 'Other'
-    gender = models.CharField(max_length=50, choices=Gender.choices)
+    gender = models.CharField(max_length=100, choices=Gender.choices)
     profession = models.ManyToManyField(Profession, blank=True)
     socialActivities = models.ManyToManyField(SocialActivity, blank=True)
     collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
@@ -251,7 +251,7 @@ class NameActor(models.Model):
 Object and associate tables
 """
 class DetailCaracteristic(models.Model):
-    detailCaracteristicsObject = models.CharField(max_length=50)
+    detailCaracteristicsObject = models.CharField(max_length=1000)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -259,14 +259,14 @@ class DetailCaracteristic(models.Model):
 
 
 class TypeObject(models.Model):
-    typeObject = models.CharField(max_length=100)
+    typeObject = models.CharField(max_length=500)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.typeObject
 
 class Energy(models.Model):
-    energy = models.CharField(max_length=100)
+    energy = models.CharField(max_length=200)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -274,9 +274,9 @@ class Energy(models.Model):
 
 class Object(models.Model):
     name = models.CharField(max_length=200)
-    definition = models.CharField(max_length=200)
-    brand = models.CharField(max_length=100, null=True, blank=True)
-    content = models.CharField(max_length=200, null=True, blank=True)
+    definition = models.CharField(max_length=1000)
+    brand = models.CharField(max_length=500, null=True, blank=True)
+    content = models.CharField(max_length=1000, null=True, blank=True)
     date = models.ManyToManyField(Date, blank=True)
     type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None)
     collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
@@ -303,4 +303,34 @@ class Caracteristic(models.Model):
 
     def __str__(self):
         return ("Caracteristics of " + self.objectCaracteristic.name)
+
+class Modify(models.Model):
+    class Table(models.TextChoices):
+        Date = 'Date'
+        Quality = 'Quality'
+        SourceType = 'SourceType'
+        Author = 'Author'
+        Content = 'Content'
+        Url = 'Url'
+        Source = 'Source'
+        PlaceLocation = 'PlaceLocation'
+        PlaceType = 'PlaceType'
+        Place = 'Place'
+        Knowledge = 'Knowledge'
+        CollectiveActor = 'CollectiveActor'
+        AbstractObject = 'AbstractObject'
+        Profession = 'Profession'
+        SocialActivity = 'SocialActivity'
+        SocialLink = 'SocialLink'
+        Actor = 'Actor'
+        NameActor = 'NameActor'
+        DetailCaracteristic = 'DetailCaracteristic'
+        TypeObject = 'TypeObject'
+        Energy = 'Energy'
+        Object = 'Object'
+        Caracteristic = 'Caracteristic'
+    table = models.CharField(max_length=250, choices=Table.choices)
+    x_value = models.IntegerField()
+    y_value = models.IntegerField()
+    content = models.CharField(max_length=10000)
 
