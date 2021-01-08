@@ -17,25 +17,20 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = '__all__'
-        # fields = ['id', 'username','first_name','last_name', 'email', 'last_login', 'date_joined', 'groups', 'is_active', 'is_staff']
+        exclude = ['password']
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['id','username','password','first_name','last_name','email']
 
-    # def create(self, validated_data):
-    #     password = validated_data.pop('password') # As a result password can be set proprely (hash)
-    #     user = User.objects.create_user(**validated_data)
-    #     user.groups.set(Group.objects.filter(name='publicUser')) #For new users -> automaticaly publicUsers
-    #     user.set_password(password)
-    #     user.save()
-    #     profile = Profile(
-    #         user=user
-    #     )
-    #     profile.save()
-    #     return user
+    def create(self, validated_data):
+        password = validated_data.pop('password') # As a result password can be set proprely (hash)
+        user = UserProfile.objects.create_user(**validated_data)
+        user.groups.set(Group.objects.filter(name='publicUser')) #For new users -> automaticaly publicUsers
+        user.set_password(password)
+        user.save()
+        return user
 
 class DisciplineSerializer(serializers.ModelSerializer):
     class Meta:

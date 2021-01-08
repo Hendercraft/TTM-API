@@ -52,16 +52,16 @@ class CreateProfile(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
-# class RetrieveProfile(generics.RetrieveAPIView):
-#     """
-#     View to retrieve a user in the system.
+class ProfileView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    View to retrieve a user in the system.
 
-#     * Requires token authentication.
-#     * Only admin users and (is_user) are able to access this view.
-#     """
+    * Requires token authentication.
+    * Only admin users and (is_user) are able to access this view.
+    """
 
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileSerializer
+    queryset = UserProfile.objects.all()
+    serializer_class = UserSerializer
 
 # class UpdateProfile(generics.UpdateAPIView):
 #     """
