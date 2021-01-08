@@ -22,7 +22,6 @@ urlpatterns = [
     
     #User profile
     path('', views.ListProfile.as_view(), name='list-users-profile'),
-    # path('user/', views.ListUser.as_view(), name='list-users'),
     path('create/', views.CreateProfile.as_view(), name='create-user-profile'),
     path('<int:pk>/', views.ProfileView.as_view(), name='retrieve-user-profile'),
     path('update/<int:pk>/', views.ProfileView.as_view(), name='update-user-profile'),

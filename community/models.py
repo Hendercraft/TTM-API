@@ -16,9 +16,9 @@ class UserProfile(AbstractUser):
     
 
     #If the user is a researcher
-    disciplineFK = models.ForeignKey("Discipline", on_delete=models.CASCADE, default=None, null=True)
-    researchFieldFK = models.ForeignKey("ResearchField", on_delete=models.CASCADE, default=None, null=True)
-    researchEstablishmentFK = models.ForeignKey("ResearchEstablishment", on_delete=models.CASCADE, default=None, null=True)
+    disciplineFK = models.ForeignKey("Discipline", on_delete=models.CASCADE, default=None, null=True, blank=True)
+    researchFieldFK = models.ForeignKey("ResearchField", on_delete=models.CASCADE, default=None, null=True, blank=True)
+    researchEstablishmentFK = models.ForeignKey("ResearchEstablishment", on_delete=models.CASCADE, default=None, null=True, blank=True)
 
     class Meta:
         verbose_name = 'user'
