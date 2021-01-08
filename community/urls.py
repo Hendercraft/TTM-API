@@ -19,15 +19,14 @@ from community import views
 
 urlpatterns = [
     # path('', include(router.urls)),
-    path('group/', views.GroupViewSet, name='group'),
-
+    
     #User profile
     path('', views.ListProfile.as_view(), name='list-users-profile'),
     # path('user/', views.ListUser.as_view(), name='list-users'),
     path('create/', views.CreateProfile.as_view(), name='create-user-profile'),
-    path('<int:pk>/', views.RetrieveProfile.as_view(), name='retrieve-user-profile'),
-    path('update/<int:pk>/', views.UpdateProfile.as_view(), name='update-user-profile'),
-    path('delete/<int:pk>/', views.DeleteProfile.as_view(), name='delete-user-profile'),
+    # path('<int:pk>/', views.RetrieveProfile.as_view(), name='retrieve-user-profile'),
+    # path('update/<int:pk>/', views.UpdateProfile.as_view(), name='update-user-profile'),
+    # path('delete/<int:pk>/', views.DeleteProfile.as_view(), name='delete-user-profile'),
 
     #Discipline
     path('discipline/', views.DisciplineViewSet.as_view({'get':'list'}), name='list-discipline'),

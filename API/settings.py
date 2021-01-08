@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'database.apps.DatabaseConfig',
-    'community.apps.CommunityConfig',
+    # 'database.apps.DatabaseConfig',
+    # 'community.apps.CommunityConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'rest_framework',
     'rest_access_policy',
+    'database',
+    'community'
 ]
 
 MIDDLEWARE = [
@@ -153,3 +155,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#User model
+
+AUTH_USER_MODEL = 'community.UserProfile'

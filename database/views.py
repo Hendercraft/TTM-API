@@ -15,9 +15,7 @@ from django.dispatch import receiver
 
 import json
 
-"""
-Database 
-"""
+
 @api_view(['POST'])
 def Search(request):
     # Note the use of `get_queryset()` instead of `self.queryset`
@@ -96,12 +94,19 @@ def Search(request):
     
     return Response(Serializer_list)
 
+
+
 class ModifyRessource(generics.ListAPIView):
     """
-    API endpoint that allow reserchers to validate data
+    API endpoint that allow reserchers to validate updated data
     """
     queryset = Modify.objects.all()
     serializer_class = ModifySerializer
+
+
+"""
+Database 
+"""
 
 class DateViewSet(viewsets.ModelViewSet):
     """

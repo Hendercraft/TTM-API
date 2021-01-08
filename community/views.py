@@ -1,15 +1,16 @@
 from rest_framework import viewsets, status
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 
 from rest_framework.decorators import action
-from rest_framework.permissions import BasePermission, AllowAny, SAFE_METHODS
+from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny, SAFE_METHODS
 
 from community.pagination import *
 from community.serializers import *
-from community.models import Profile, Discipline, ResearchEstablishment, ResearchField
+from community.models import *
 
 
 from API import accessPolicy
+from API.permission import *
 
 
 #Tests
@@ -34,9 +35,10 @@ class ListProfile(generics.ListAPIView):
     * Only admin users are able to access this view.
     """
 
-    queryset = Profile.objects.all().order_by('id')
-    serializer_class = ProfileSerializer
+    queryset = UserProfile.objects.all().order_by('id')
+    serializer_class = UserSerializer
     pagination_class = StandardResultsSetPagination
+    permission_classes = [AllowAny]
 
 class CreateProfile(generics.CreateAPIView):
     """
@@ -46,61 +48,45 @@ class CreateProfile(generics.CreateAPIView):
     * Only admin users are able to access this view.
     """
 
-    queryset = User.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
-class RetrieveProfile(generics.RetrieveAPIView):
-    """
-    View to retrieve a user in the system.
+# class RetrieveProfile(generics.RetrieveAPIView):
+#     """
+#     View to retrieve a user in the system.
 
-    * Requires token authentication.
-    * Only admin users and (is_user) are able to access this view.
-    """
+#     * Requires token authentication.
+#     * Only admin users and (is_user) are able to access this view.
+#     """
 
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+#     queryset = Profile.objects.all()
+#     serializer_class = ProfileSerializer
 
-class UpdateProfile(generics.UpdateAPIView):
-    """
-    View to update a user in the system.
+# class UpdateProfile(generics.UpdateAPIView):
+#     """
+#     View to update a user in the system.
 
-    * Requires token authentication.
-    * Only admin users or (is_user) are able to access this view.
-    """
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+#     * Requires token authentication.
+#     * Only admin users or (is_user) are able to access this view.
+#     """
+#     queryset = Profile.objects.all()
+#     serializer_class = ProfileSerializer
 
-class DeleteProfile(generics.RetrieveDestroyAPIView):
-    """
-    View to delete a user in the system.
+# class DeleteProfile(generics.RetrieveDestroyAPIView):
+#     """
+#     View to delete a user in the system.
 
-    * Requires token authentication.
-    * Only admin users or (is_user) are able to access this view.
-    """
+#     * Requires token authentication.
+#     * Only admin users or (is_user) are able to access this view.
+#     """
 
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+#     queryset = Profile.objects.all()
+#     serializer_class = ProfileSerializer
 
 
 
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    pagination_class = StandardResultsSetPagination
-    permission_classes = [accessPolicy.GroupPolicy]
-
-    @property
-    def access_policy(self):
-        return self.permission_classes[0]
     
-    # def get_queryset(self):
-    #     return self.access_policy.scope_queryset(
-    #         self.request, Group.objects.all()
-    #     )
 
 class DisciplineViewSet(viewsets.ModelViewSet):
     """
@@ -110,11 +96,18 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     serializer_class = DisciplineSerializer
     pagination_class = StandardResultsSetPagination
 
-    # permission_classes = [accessPolicy.DisciplinePolicy, ]
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = [IsAdminUser|IsAuthenticated]
+        elif self.action == 'list':
+            permission_classes = [IsUserObject]
+        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
+            permission_classes = [IsUserObject]
+        elif self.action == 'destroy':
+            permission_classes = [IsUserObject]
+        return [permission() for permission in permission_classes]
 
-    # @property
-    # def access_policy(self):
-    #     return self.permission_classes[0]
     
     @action(detail=True, methods=['post'])
     def create(self, request, *args, **kwargs):
@@ -129,10 +122,7 @@ class DisciplineViewSet(viewsets.ModelViewSet):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
     
-    # def get_queryset(self):
-    #     return self.access_policy.scope_queryset(
-    #         self.request, Discipline.objects.all()
-    #     )
+
 
 
 class ResearchFieldViewSet(viewsets.ModelViewSet):
@@ -142,17 +132,20 @@ class ResearchFieldViewSet(viewsets.ModelViewSet):
     queryset = ResearchField.objects.all()
     serializer_class = ResearchFieldSerializer
     pagination_class = StandardResultsSetPagination
-    # permission_classes = [accessPolicy.ResearchFieldPolicy]
 
-    @property
-    def access_policy(self):
-        return self.permission_classes[0]
     
-    
-    # def get_queryset(self):
-    #     return self.access_policy.scope_queryset(
-    #         self.request, ResearchField.objects.all()
-    #     )
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = [IsAdminUser]
+        elif self.action == 'list':
+            permission_classes = [IsAdminOrAnonymousUser]
+        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
+            permission_classes = [IsLoggedInUserOrAdmin]
+        elif self.action == 'destroy':
+            permission_classes = [IsLoggedInUserOrAdmin]
+        return [permission() for permission in permission_classes]
+
 
 class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
     """
@@ -161,13 +154,16 @@ class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
     queryset = ResearchEstablishment.objects.all()
     serializer_class = ResearchEstablishmentSerializer
     pagination_class = StandardResultsSetPagination
-    # permission_classes = [accessPolicy.ResearchEstablishmentPolicy]
 
-    @property
-    def access_policy(self):
-        return self.permission_classes[0]
-    
-    # def get_queryset(self):
-    #     return self.access_policy.scope_queryset(
-    #         self.request, ResearchEstablishment.objects.all()
-    #     )
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = [IsAdminUser]
+        elif self.action == 'list':
+            permission_classes = [IsAdminOrAnonymousUser]
+        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
+            permission_classes = [IsLoggedInUserOrAdmin]
+        elif self.action == 'destroy':
+            permission_classes = [IsLoggedInUserOrAdmin]
+        return [permission() for permission in permission_classes]
