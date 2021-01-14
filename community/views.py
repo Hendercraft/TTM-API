@@ -73,7 +73,7 @@ class DisciplineViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             permission_classes = [IsAdminUser|IsAuthenticated]
         elif self.action == 'list':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsAuthenticated]
         elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
             permission_classes = [IsUserObject]
         elif self.action == 'destroy':
