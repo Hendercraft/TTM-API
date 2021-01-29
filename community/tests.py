@@ -1,9 +1,9 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient, force_authenticate
-from django.contrib.auth.models import User, Group 
+from django.contrib.auth.models import Group
 
-from .models import Profile, Discipline, ResearchField, ResearchEstablishment
+from .models import UserProfile, Discipline, ResearchField, ResearchEstablishment
 
 class CommunityTestCase(APITestCase):
     def setUp(self):
@@ -12,11 +12,11 @@ class CommunityTestCase(APITestCase):
         self.client.post(reverse('create-user-profile'), self.data, format='json')
         
 
-        self.id = User.objects.get().id #get the id from user to update data
+        self.id = UserProfile.objects.get().id #get the id from user to update data
 
-        print("User "+str(self.id)+" created with name "+User.objects.get().username)
+        print("User "+str(self.id)+" created with name "+UserProfile.objects.get().username)
         
-        #With JWT
+        #With JWT (not working for now)
         # self.data = {"username": "TestUsername","password": "testPassword"}
         # response = self.client.post(reverse('token_obtain_pair'), self.data, format='json')
         # self.client.credentials(HTTP_AUTHORIZATION='Token ' + response.data['access'])
@@ -27,7 +27,8 @@ class CommunityTestCase(APITestCase):
         # print(self.assertTrue(
         # print(User.objects.get().password)
         # print(self.id)
-        user = User.objects.get(username='TestUsername')
+
+        user = UserProfile.objects.get(username='TestUsername')
         self.client.force_authenticate(user=user)
     
     def test_update_retrieve_delete_profile(self):
@@ -36,15 +37,12 @@ class CommunityTestCase(APITestCase):
         """
         #create profile
         self.data = {
-            "user":
-            {
                 "username": "ModifiedTestUsername","email" : "testmodified@email.com"
-            }
             }
         response = self.client.put(reverse('update-user-profile', args=(self.id,)), self.data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(User.objects.get().username, "ModifiedTestUsername")
+        self.assertEqual(UserProfile.objects.get().username, "ModifiedTestUsername")
 
         #Retrieve profile
         response = self.client.get(reverse('retrieve-user-profile', args=(self.id,)))
@@ -61,9 +59,6 @@ class CommunityTestCase(APITestCase):
         Test discipline create_update_retrieve_delete
         """        
         #Create discipline
-
-        # self.client.login(username='TestUsername',password='testPassword')
-
         self.data = {"user": self.id, "discipline": "Test discipline","commentsDiscipline": "Test comment discipline"}
         response = self.client.post(reverse('create-discipline'), self.data, format='json')
 

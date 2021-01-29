@@ -60,25 +60,3 @@ class ResearchEstablishment(models.Model):
 
     def __str__(self):
         return self.establishment + " " + self.laboratory
-
-# class Profile(models.Model):
-#     user = models.ForeignKey(User, on_delete= models.CASCADE)
-#     postalAdress = models.CharField(max_length=255, null=True, blank=True)
-#     phoneNumber = models.IntegerField(null=True, blank=True)
-#     profileImage = models.URLField(null=True, blank=True)
-    
-
-#     #If the user had worked on the site
-#     workedOnTheSite = models.BooleanField(default=False)
-#     workedInCompany = models.CharField(max_length=255, null=True, blank=True)
-#     workTimeDuration = models.IntegerField(null=True, blank=True) # Number of years
-    
-
-#     #If the user is a researcher
-#     disciplineFK = models.ForeignKey(Discipline, on_delete=models.CASCADE, default=None, null=True)
-#     researchFieldFK = models.ForeignKey(ResearchField, on_delete=models.CASCADE, default=None, null=True)
-#     researchEstablishmentFK = models.ForeignKey(ResearchEstablishment, on_delete=models.CASCADE, default=None, null=True)
-
-#     def __str__(self):
-#         return self.user.username
-

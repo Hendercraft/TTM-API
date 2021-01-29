@@ -3,20 +3,17 @@ from community.serializers import *
 from community.models import *
 
 
-from API import accessPolicy
+# from API import accessPolicy
 from API.permission import *
 
 
 
 from rest_framework import generics, mixins
 from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 
 from rest_framework.decorators import action
-from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny, SAFE_METHODS
-
-import json
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 #Profile
@@ -83,16 +80,6 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    
-    # @action(detail=True, methods=['post'])
-    # def create(self, request, *args, **kwargs):
-    #     data = request.body
-    #     request_body = json.loads(data)
-    #     discipline_obj = Discipline.objects.create(user=request.user, discipline=request_body["discipline"], commentsDiscipline=request_body["commentsDiscipline"])
-    #     serializer = DisciplineSerializer(discipline_obj)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 class ResearchFieldViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allow research field model to be viewed or edited
@@ -118,16 +105,6 @@ class ResearchFieldViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    
-    @action(detail=True, methods=['post'])
-    def create(self, request, *args, **kwargs):
-        data = request.body
-        request_body = json.loads(data)
-        researchField_obj = ResearchField.objects.create(user=request.user, researchField=request_body["researchField"], commentsResearch=request_body["commentsResearch"])
-        serializer = ResearchFieldSerializer(researchField_obj)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allow research establishment model to be viewed or edited
@@ -152,12 +129,3 @@ class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-    
-    @action(detail=True, methods=['post'])
-    def create(self, request, *args, **kwargs):
-        data = request.body
-        request_body = json.loads(data)
-        researchEstablishment_obj = ResearchEstablishment.objects.create(user=request.user, laboratory=request_body["laboratory"], establishment=request_body["establishment"], commentsEstablishment=request_body["commentsEstablishment"])
-        serializer = ResearchEstablishmentSerializer(researchEstablishment_obj)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
