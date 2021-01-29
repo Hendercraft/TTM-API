@@ -56,7 +56,7 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsUserOrReadOnly]
 
 
 class DisciplineViewSet(viewsets.ModelViewSet):
