@@ -32,7 +32,6 @@ class CreateProfile(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
-
 class ListProfile(generics.ListAPIView):
     """
     View to list all users in the system.
@@ -57,7 +56,8 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsUserObject]
+    permission_classes = [IsOwnerOrReadOnly]
+
 
 class DisciplineViewSet(viewsets.ModelViewSet):
     """
@@ -71,23 +71,26 @@ class DisciplineViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = []
         if self.action == 'create':
-            permission_classes = [IsAdminUser|IsAuthenticated]
+            permission_classes = [IsAdminUser|IsAuthenticated|IsOwnerOrReadOnly]
         elif self.action == 'list':
-            permission_classes = [IsAuthenticated]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         elif self.action == 'destroy':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         return [permission() for permission in permission_classes]
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     
-    @action(detail=True, methods=['post'])
-    def create(self, request, *args, **kwargs):
-        data = request.body
-        request_body = json.loads(data)
-        discipline_obj = Discipline.objects.create(user=request.user, discipline=request_body["discipline"], commentsDiscipline=request_body["commentsDiscipline"])
-        serializer = DisciplineSerializer(discipline_obj)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # @action(detail=True, methods=['post'])
+    # def create(self, request, *args, **kwargs):
+    #     data = request.body
+    #     request_body = json.loads(data)
+    #     discipline_obj = Discipline.objects.create(user=request.user, discipline=request_body["discipline"], commentsDiscipline=request_body["commentsDiscipline"])
+    #     serializer = DisciplineSerializer(discipline_obj)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ResearchFieldViewSet(viewsets.ModelViewSet):
@@ -105,12 +108,15 @@ class ResearchFieldViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             permission_classes = [IsAdminUser|IsAuthenticated]
         elif self.action == 'list':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         elif self.action == 'destroy':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         return [permission() for permission in permission_classes]
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     
     @action(detail=True, methods=['post'])
@@ -137,12 +143,15 @@ class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             permission_classes = [IsAdminUser|IsAuthenticated]
         elif self.action == 'list':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         elif self.action == 'destroy':
-            permission_classes = [IsUserObject]
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         return [permission() for permission in permission_classes]
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     
     @action(detail=True, methods=['post'])
