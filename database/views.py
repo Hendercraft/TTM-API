@@ -1,5 +1,5 @@
 from rest_framework import viewsets, generics
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from django.contrib.postgres.search import SearchVector
@@ -7,11 +7,8 @@ from django.contrib.auth.models import Group
 from database.serializers import *
 from database.models import *
 
-# Create your views here.
-
-from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from API.permission import *
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 
 import json
 
@@ -102,6 +99,7 @@ class ModifyRessource(generics.ListAPIView):
     """
     queryset = Modify.objects.all()
     serializer_class = ModifySerializer
+    permission_classes = [IsAdminUser]
 
 
 """
@@ -114,6 +112,7 @@ class DateViewSet(viewsets.ModelViewSet):
     """
     queryset = Date.objects.all().order_by('-date')
     serializer_class = DateSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class QualityViewSet(viewsets.ModelViewSet):
     """
@@ -121,6 +120,7 @@ class QualityViewSet(viewsets.ModelViewSet):
     """
     queryset = Quality.objects.all().order_by('name')
     serializer_class = QualitySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class KnowledgeViewSet(viewsets.ModelViewSet):
     """
@@ -128,6 +128,7 @@ class KnowledgeViewSet(viewsets.ModelViewSet):
     """
     queryset = Knowledge.objects.all()
     serializer_class = KnowledgeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Sources & associates viewsets
@@ -139,6 +140,7 @@ class SourceTypeViewSet(viewsets.ModelViewSet):
     """
     queryset = SourceType.objects.all()
     serializer_class = SourceTypeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class AuthorViewSet(viewsets.ModelViewSet):
     """
@@ -146,6 +148,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
     """
     queryset = Author.objects.all().order_by('name')
     serializer_class = AuthorSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class ContentViewSet(viewsets.ModelViewSet):
     """
@@ -153,6 +156,7 @@ class ContentViewSet(viewsets.ModelViewSet):
     """
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class UrlViewSet(viewsets.ModelViewSet):
     """
@@ -160,6 +164,7 @@ class UrlViewSet(viewsets.ModelViewSet):
     """
     queryset = Url.objects.all()
     serializer_class = UrlSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class SourceViewSet(viewsets.ModelViewSet):
     """
@@ -167,6 +172,7 @@ class SourceViewSet(viewsets.ModelViewSet):
     """
     queryset = Source.objects.all().order_by('-date')
     serializer_class = SourceSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Place & associates viewsets
@@ -178,6 +184,7 @@ class PlaceLocationViewSet(viewsets.ModelViewSet):
     """
     queryset = PlaceLocation.objects.all()
     serializer_class = PlaceLocationSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class PlaceTypeViewSet(viewsets.ModelViewSet):
     """
@@ -185,6 +192,7 @@ class PlaceTypeViewSet(viewsets.ModelViewSet):
     """
     queryset = PlaceType.objects.all()
     serializer_class = PlaceTypeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class PlaceViewSet(viewsets.ModelViewSet):
     """
@@ -192,6 +200,7 @@ class PlaceViewSet(viewsets.ModelViewSet):
     """
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Collective actor viewset
@@ -203,6 +212,7 @@ class CollectiveActorViewSet(viewsets.ModelViewSet):
     """
     queryset = CollectiveActor.objects.all()
     serializer_class = CollectiveActorSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Abstract object viewset
@@ -214,6 +224,7 @@ class AbstractObjectViewSet(viewsets.ModelViewSet):
     """
     queryset = AbstractObject.objects.all()
     serializer_class = AbstractObjectSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Profession viewset
@@ -225,6 +236,7 @@ class ProfessionViewSet(viewsets.ModelViewSet):
     """
     queryset = Profession.objects.all()
     serializer_class = ProfessionSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Social & associates viewsets
@@ -236,6 +248,7 @@ class SocialActivityViewSet(viewsets.ModelViewSet):
     """
     queryset = SocialActivity.objects.all()
     serializer_class = SocialActivitySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class SocialLinkViewSet(viewsets.ModelViewSet):
     """
@@ -243,6 +256,7 @@ class SocialLinkViewSet(viewsets.ModelViewSet):
     """
     queryset = SocialLink.objects.all()
     serializer_class = SocialLinkSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Actor & associates viewsets
@@ -254,6 +268,7 @@ class ActorViewSet(viewsets.ModelViewSet):
     """
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class NameActorViewSet(viewsets.ModelViewSet):
     """
@@ -261,6 +276,7 @@ class NameActorViewSet(viewsets.ModelViewSet):
     """
     queryset = NameActor.objects.all()
     serializer_class = NameActorSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 """
 Object & associates viewsets
@@ -272,6 +288,7 @@ class DetailCaracteristicViewSet(viewsets.ModelViewSet):
     """
     queryset = DetailCaracteristic.objects.all()
     serializer_class = DetailCaracteristicSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class TypeObjectViewSet(viewsets.ModelViewSet):
     """
@@ -279,6 +296,7 @@ class TypeObjectViewSet(viewsets.ModelViewSet):
     """
     queryset = TypeObject.objects.all()
     serializer_class = TypeObjectSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class EnergyViewSet(viewsets.ModelViewSet):
     """
@@ -286,6 +304,7 @@ class EnergyViewSet(viewsets.ModelViewSet):
     """
     queryset = Energy.objects.all()
     serializer_class = EnergySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class ObjectViewSet(viewsets.ModelViewSet):
     """
@@ -293,6 +312,7 @@ class ObjectViewSet(viewsets.ModelViewSet):
     """
     queryset = Object.objects.all()
     serializer_class = ObjectSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class CaracteristicViewSet(viewsets.ModelViewSet):
     """
@@ -300,3 +320,4 @@ class CaracteristicViewSet(viewsets.ModelViewSet):
     """
     queryset = Caracteristic.objects.all()
     serializer_class = CaracteristicSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
