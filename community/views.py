@@ -3,7 +3,6 @@ from community.serializers import *
 from community.models import *
 
 
-# from API import accessPolicy
 from API.permission import *
 
 
