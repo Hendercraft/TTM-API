@@ -122,6 +122,16 @@ class QualityViewSet(viewsets.ModelViewSet):
     queryset = Quality.objects.all().order_by('name')
     serializer_class = QualitySerializer
 
+class KnowledgeViewSet(viewsets.ModelViewSet):
+    """
+    API enpoint that allows knowledges to be edited or viewed
+    """
+    queryset = Knowledge.objects.all()
+    serializer_class = KnowledgeSerializer
+
+"""
+Sources & associates viewsets
+"""
 
 class SourceTypeViewSet(viewsets.ModelViewSet):
     """
@@ -157,4 +167,136 @@ class SourceViewSet(viewsets.ModelViewSet):
     """
     queryset = Source.objects.all().order_by('-date')
     serializer_class = SourceSerializer
-    #return Response(serializer.data)
+
+"""
+Place & associates viewsets
+"""
+
+class PlaceLocationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows place locations to be edited or viewed
+    """
+    queryset = PlaceLocation.objects.all()
+    serializer_class = PlaceLocationSerializer
+
+class PlaceTypeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows place types to be edited or viewed
+    """
+    queryset = PlaceType.objects.all()
+    serializer_class = PlaceTypeSerializer
+
+class PlaceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows places to be edited or viewed
+    """
+    queryset = Place.objects.all()
+    serializer_class = PlaceSerializer
+
+"""
+Collective actor viewset
+"""
+
+class CollectiveActorViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows collective actors to be edited or viewed
+    """
+    queryset = CollectiveActor.objects.all()
+    serializer_class = CollectiveActorSerializer
+
+"""
+Abstract object viewset
+"""
+
+class AbstractObjectViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows abstract objects to be edited or viewed
+    """
+    queryset = AbstractObject.objects.all()
+    serializer_class = AbstractObjectSerializer
+
+"""
+Profession viewset
+"""
+
+class ProfessionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows professions to be edited or viewed
+    """
+    queryset = Profession.objects.all()
+    serializer_class = ProfessionSerializer
+
+"""
+Social & associates viewsets
+"""
+
+class SocialActivityViewSet(viewsets.ModelViewSet):
+    """
+    API enpoint that allows social activities to be edited or viewed
+    """
+    queryset = SocialActivity.objects.all()
+    serializer_class = SocialActivitySerializer
+
+class SocialLinkViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows social links to be edited or viewed
+    """
+    queryset = SocialLink.objects.all()
+    serializer_class = SocialLinkSerializer
+
+"""
+Actor & associates viewsets
+"""
+
+class ActorViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows actors to be edited or viewed
+    """
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer
+
+class NameActorViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows actors names to be edited or viewed
+    """
+    queryset = NameActor.objects.all()
+    serializer_class = NameActorSerializer
+
+"""
+Object & associates viewsets
+"""
+
+class DetailCaracteristicViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows detail caracteristics of objects to be edited or viewed
+    """
+    queryset = DetailCaracteristic.objects.all()
+    serializer_class = DetailCaracteristicSerializer
+
+class TypeObjectViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows type of objects to be edited or viewed
+    """
+    queryset = TypeObject.objects.all()
+    serializer_class = TypeObjectSerializer
+
+class EnergyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows energy of an object to be edited or viewed
+    """
+    queryset = Energy.objects.all()
+    serializer_class = EnergySerializer
+
+class ObjectViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows objects to be edited or viewed
+    """
+    queryset = Object.objects.all()
+    serializer_class = ObjectSerializer
+
+class CaracteristicViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows caracteristics of an object to be edited or viewed
+    """
+    queryset = Caracteristic.objects.all()
+    serializer_class = CaracteristicSerializer
