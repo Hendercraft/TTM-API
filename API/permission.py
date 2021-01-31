@@ -2,6 +2,11 @@ from django.contrib.auth.models import Group
 from rest_framework import permissions
 
 
+
+"""
+    Functions used in permissions
+"""
+
 def _is_in_group(user, group_name):
     """
     Takes a user and a group name, and returns `True` if the user is in that group.
@@ -12,35 +17,20 @@ def _is_in_group(user, group_name):
         return None
 
 def _has_group_permission(user, required_groups):
+    """
+    Check if the user is in one (or several) of required_groups
+    """
     return any([_is_in_group(user, group_name) for group_name in required_groups])
 
-# def _is_user(user, model_id):
-#     try:
-#         return model_id.object.get().user_set.filter(id=user.id).exist()
-#     except model_id.DoesNotExist:
-#         return None
 
-# def _is_user_profile(user, model_id):
-#     try:
-#         return User.objects.get().user_set.filter(id=user.id).exist()
-#     except User.DoesNotExist:
-#         return None
-
-# def _has_object_permission(user, required_model_id):
-#     return any([_is_user(user,model_id) for model_id in required_model_id])
 """
-class IsAdminOrAnonymousUser(permissions.BasePermission):
-    required_groups = ['admin', 'anonymous']
-
-    def has_permission(self, request, view):
-        has_group_permission = _has_group_permission(request.user, self.required_groups)
-        return request.user and has_group_permission
-
+    Permissions
 """
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
-    Custom permission to only allow owners of an object to edit it.
+    Custom permission to only allow owner of an object to edit it.
+    If the user is not the owner it can only use "Safe methods like get".
     """
 
     def has_object_permission(self, request, view, obj):
@@ -54,7 +44,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 class IsUserOrReadOnly(permissions.BasePermission):
     """
-    Custom permission to only allow owners of an object to edit it.
+    Custom permission to only allow user to edit it's own profile.
+    If the user is not the owner it can only use "Safe methods like get".
     """
 
     def has_object_permission(self, request, view, obj):
@@ -101,7 +92,7 @@ class IsAnonymousUser(permissions.BasePermission):
         return request.user and has_group_permission
 
 class IsResearcherUser(permissions.BasePermission):
-    # Permission check if the user is researcher
+    # Permission check if the user is a researcher
     required_groups = ['researcher']
 
     def has_permission(self, request, view):
@@ -118,7 +109,7 @@ class IsResearcherUser(permissions.BasePermission):
         return request.user and has_group_permission
 
 class IsPublicUser(permissions.BasePermission):
-    # Permission check if the user is public
+    # Permission check if the user is a public user
     required_groups = ['publicUser']
 
     def has_permission(self, request, view):
