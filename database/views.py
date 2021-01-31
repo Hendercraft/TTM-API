@@ -99,7 +99,7 @@ class ModifyRessource(generics.ListAPIView):
     """
     queryset = Modify.objects.all()
     serializer_class = ModifySerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser|IsResearcherUser]
 
 
 """
@@ -113,6 +113,23 @@ class DateViewSet(viewsets.ModelViewSet):
     queryset = Date.objects.all().order_by('-date')
     serializer_class = DateSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_update(self, serializer):
+        data = self.request.data
+        # object = self.get_context_data
+        # id = object.objects.get().id
+        print(object)
+        # query = json.loads(data)
+        for key, value in data.items():
+            if key == 'id':
+                self.id = value
+            self.table = 'Date'
+            self.attribute_value = key
+            # self.instance_value = self.pk
+            self.content = value
+            Modify.objects.create(table = self.table, field_value = self.attribute_value, instance_value = 1, content = self.content) 
+        serializer.save(validated=False)
+
 
 class QualityViewSet(viewsets.ModelViewSet):
     """

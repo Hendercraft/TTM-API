@@ -19,6 +19,8 @@ urlpatterns = [
     # path('', include(router.urls)),
     path('search/', views.Search, name='search'),
 
+    path('modify/', views.ModifyRessource.as_view(), name='modify'),
+
     #Date endpoint
     path('date/', views.DateViewSet.as_view({'get': 'list'}), name='list-date'),
     path('date/create/', views.DateViewSet.as_view({'post': 'create'}), name='create-date'),

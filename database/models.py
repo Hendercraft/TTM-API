@@ -335,8 +335,8 @@ class Modify(models.Model):
         Object = 'Object'
         Caracteristic = 'Caracteristic'
     table = models.CharField(max_length=250, choices=Table.choices, blank=True)
-    x_value = models.IntegerField(blank=True)
-    y_value = models.IntegerField(blank=True)
+    field_value = models.CharField(max_length=250, blank=True)
+    instance_value = models.IntegerField(blank=True)
     content = models.CharField(max_length=10000, blank=True)
 
     def __str__(self):
