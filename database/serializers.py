@@ -173,7 +173,7 @@ class CaracteristicSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 #Modify
-class ModifySerializer(serializers.ModelSerializer):
+class ModifyAttributeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Modify
+        model = ModifyAttribute
         fields = '__all__'

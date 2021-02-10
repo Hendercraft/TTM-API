@@ -11,7 +11,7 @@ class UserProfile(AbstractUser):
 
     #If the user had worked on the site
     workedOnTheSite = models.BooleanField(default=False)
-    workedInCompany = models.CharField(max_length=255, null=True, blank=True)
+    workedInCompany = models.CharField(max_length=500, null=True, blank=True)
     workTimeDuration = models.IntegerField(null=True, blank=True) # Number of years
     
 
@@ -37,7 +37,7 @@ class UserProfile(AbstractUser):
 class Discipline (models.Model):
     user = models.ForeignKey(UserProfile, on_delete= models.CASCADE, default=None, null=True, blank=True)
     discipline = models.CharField(max_length=255, null=True, blank=True)
-    commentsDiscipline = models.CharField(max_length=255, null=True, blank=True)
+    commentsDiscipline = models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.discipline
@@ -46,7 +46,7 @@ class Discipline (models.Model):
 class ResearchField(models.Model):
     user = models.ForeignKey(UserProfile, on_delete= models.CASCADE, default=None)
     researchField = models.CharField(max_length=255, null=True, blank=True)
-    commentsResearch = models.CharField(max_length=255, null=True, blank=True)
+    commentsResearch = models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.researchField
@@ -56,7 +56,7 @@ class ResearchEstablishment(models.Model):
     user = models.ForeignKey(UserProfile, on_delete= models.CASCADE, default=None)
     laboratory = models.CharField(max_length=255, null=True, blank=True)
     establishment = models.CharField(max_length=255, null=True, blank=True)
-    commentsEstablishment = models.CharField(max_length=255, null=True, blank=True)
+    commentsEstablishment = models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.establishment + " " + self.laboratory

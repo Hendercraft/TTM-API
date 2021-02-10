@@ -43,7 +43,7 @@ class DatabaseTestCase(APITestCase):
         response = self.client.post(reverse('create-sourceType'), self.data, format='json')
         self.sourceType_id = SourceType.objects.get().id
 
-        #Creation
+        #Source creation
         self.data = {"name": "SourceTest", "author": self.author_id, "types": self.sourceType_id, "viability": 1, "conservationPlace": "Museum", "cote": 42}
         response = self.client.post(reverse('create-source'), self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

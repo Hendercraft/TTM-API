@@ -97,8 +97,8 @@ class ModifyRessource(generics.ListAPIView):
     """
     API endpoint that allow reserchers to validate updated data
     """
-    queryset = Modify.objects.all()
-    serializer_class = ModifySerializer
+    queryset = ModifyAttribute.objects.all()
+    serializer_class = ModifyAttributeSerializer
     permission_classes = [IsAdminUser|IsResearcherUser]
 
 

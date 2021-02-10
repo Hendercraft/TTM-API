@@ -3,7 +3,7 @@ from .models import *
 # Register your models here.
 
 #Modify table
-admin.site.register(Modify)
+admin.site.register(ModifyAttribute)
 
 #Source tables
 admin.site.register(Source)
