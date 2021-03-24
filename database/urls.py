@@ -19,7 +19,11 @@ urlpatterns = [
     # path('', include(router.urls)),
     path('search/', views.Search, name='search'),
 
+    #Modify ressources
     path('modify/', views.ModifyRessource.as_view(), name='modify'),
+
+    #Upload files
+    path('files/', views.FileUploadView.as_view({'post': 'create'}), name='upload-files'),
 
     #Date endpoint
     path('date/', views.DateViewSet.as_view({'get': 'list'}), name='list-date'),
