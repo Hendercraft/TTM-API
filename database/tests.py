@@ -14,6 +14,7 @@ from community.models import UserProfile
 """
 Testing the database with tests data
 Bugy for now
+
 """
 class DatabaseTestCase(APITestCase):
     
@@ -34,7 +35,7 @@ class DatabaseTestCase(APITestCase):
 
 
         #Author creation
-        self.data = {"name":"Jean", "lastName":"Martin", "status":"Teacher", "organisation":"School"}
+        self.data = {"user":self.id,"name":"Jean", "lastName":"Martin", "status":"Teacher", "organisation":"School"}
         response = self.client.post(reverse('create-author'), self.data, format='json')
         self.author_id = Author.objects.get().id
 
