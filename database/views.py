@@ -1,6 +1,8 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.parsers import FileUploadParser
+from rest_framework.views import APIView
 
 from django.contrib.postgres.search import SearchVector
 from django.contrib.auth.models import Group
@@ -11,6 +13,25 @@ from API.permission import *
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 
 import json
+
+
+class FileUploadView(viewsets.ModelViewSet):
+    queryset = Upload.objects.all()
+    serializer_class = FileSerializer
+
+# class FileUploadView(APIView):
+#     permission_classes = []
+#     parser_class = (FileUploadParser,)
+
+#     def post(self, request, *args, **kwargs):
+
+#       file_serializer = FileSerializer(data=request.data)
+
+#       if file_serializer.is_valid():
+#           file_serializer.save()
+#           return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+#       else:
+#           return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
