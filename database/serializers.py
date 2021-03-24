@@ -6,6 +6,14 @@ from .models import *
 Database
 """
 
+
+#Upload
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Upload
+        fields = "__all__"
+
+
 #DATE
 class DateSerializer(serializers.ModelSerializer):
     class Meta:
