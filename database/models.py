@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from django.db import models
 from community.models import UserProfile
 """
@@ -8,8 +10,16 @@ To do:
     -check translation
     -test model
     -test critical test case
+    -File upload system
 """
 
+# def images_path(folder):
+#     return os.path.join(settings.LOCAL_FILE_DIR, folder)
+
+class Upload(models.Model):
+    # file = models.FilePathField(path=images_path)
+
+    photo = models.FileField(upload_to='photo')
 
 """
 Date table
@@ -45,7 +55,7 @@ class SourceType(models.Model):
     typeSource = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.typesSource
+        return self.typeSource
 
 class Author(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True)
@@ -80,12 +90,18 @@ class Source(models.Model):
     date_source = models.ManyToManyField(Date, blank=True)
     types = models.ForeignKey(SourceType, on_delete=models.CASCADE, blank=True)
     content = models.ManyToManyField(Content, blank=True)
+
     url = models.ManyToManyField(Url, blank=True)
+    # file = models.FileField()
+    
     viability = models.IntegerField(choices=Rank.choices, default=0)
     conservationPlace = models.CharField(max_length=1000, null=True, blank=True)
     cote = models.CharField(max_length=200, blank=True) #To translate
     state = models.CharField(max_length=200, blank=True)
     validated = models.BooleanField(default=False)
+
+    # def upload_path(self,path):
+    #     self.file()
 
     def __str__(self):
         return self.name
