@@ -6,14 +6,6 @@ from .models import *
 Database
 """
 
-
-#Upload
-class FileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Upload
-        fields = "__all__"
-
-
 #DATE
 class DateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,11 +28,11 @@ class KnowledgeSerializer(serializers.ModelSerializer):
 Source & associates serializers
 """
 
-#Source type
-class SourceTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SourceType
-        fields = '__all__'
+# #Source type
+# class SourceTypeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = SourceType
+#         fields = '__all__'
 
 #Author
 class AuthorSerializer(serializers.ModelSerializer):
@@ -55,10 +47,16 @@ class ContentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 #URl
-class UrlSerializer(serializers.ModelSerializer):
+class FilesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Url
+        model = Files
         fields = '__all__'
+
+    def create(self, validated_data):
+        path = validated_data.pop('fileType') # As a result password can be set proprely (hash)
+        file_path = validated_data.pop('url')
+        createdFile = Files.objects.create(**validated_data, fileType=path, url=file_path)
+        return createdFile
 
 #Source
 class SourceSerializer(serializers.ModelSerializer):
