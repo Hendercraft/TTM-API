@@ -178,26 +178,26 @@ class DatabaseTestCase(APITestCase):
         response = self.client.delete(reverse('delete-content', args=(self.id,)), self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
     
-    """Url test"""
-    def test_url_creation_update_delete(self):
+    """Files test"""
+    def test_file_creation_update_delete(self):
 
         #Creation
         self.data = {"url":"https://www.django-rest-framework.org/api-guide/serializers/"}
-        response = self.client.post(reverse('create-url'), self.data, format='json')
+        response = self.client.post(reverse('create-files'), self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Url.objects.count(), 1)
-        self.assertEqual(Url.objects.get().url, 'https://www.django-rest-framework.org/api-guide/serializers/')
-        self.id = Url.objects.get().id
+        self.assertEqual(Files.objects.count(), 1)
+        self.assertEqual(Files.objects.get().url, 'https://www.django-rest-framework.org/api-guide/serializers/')
+        self.id = Files.objects.get().id
 
         #Update
         self.data = {"url":"https://www.django-rest-framework.org/api-guide/response/"}
-        response = self.client.put(reverse('update-url', args=(self.id,)), self.data, format='json')
+        response = self.client.put(reverse('update-files', args=(self.id,)), self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Url.objects.count(), 1)
-        self.assertEqual(Url.objects.get().url, 'https://www.django-rest-framework.org/api-guide/response/')
+        self.assertEqual(Files.objects.count(), 1)
+        self.assertEqual(Files.objects.get().url, 'https://www.django-rest-framework.org/api-guide/response/')
 
         #Delete
-        response = self.client.delete(reverse('delete-url', args=(self.id,)), self.data, format='json')
+        response = self.client.delete(reverse('delete-files', args=(self.id,)), self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
     
     """Source test"""
