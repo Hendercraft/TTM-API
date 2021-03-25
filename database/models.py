@@ -16,10 +16,6 @@ To do:
 # def images_path(folder):
 #     return os.path.join(settings.LOCAL_FILE_DIR, folder)
 
-class Upload(models.Model):
-    # file = models.FilePathField(path=images_path)
-
-    photo = models.FileField(upload_to='photo')
 
 """
 Date table
@@ -51,11 +47,11 @@ class Quality(models.Model):
 """
 Sources & associates tables
 """
-class SourceType(models.Model):
-    typeSource = models.CharField(max_length=200)
+# class SourceType(models.Model):
+#     typeSource = models.CharField(max_length=200)
 
-    def __str__(self):
-        return self.typeSource
+#     def __str__(self):
+#         return self.typeSource
 
 class Author(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True)
@@ -73,13 +69,19 @@ class Content(models.Model):
     def __str__(self):
         return self.sourceContent
 
-class Url(models.Model):
+class Files(models.Model):
+    class FileType(models.TextChoices):
+        Audio = 'Audio'
+        Video = 'Video'
+        Cao = 'Cao'
+        Image = 'Image'
     name = models.CharField(max_length=200, null=True, blank=True)
     definition = models.CharField(max_length=1000, null=True, blank=True)
-    url = models.URLField()
+    fileType = models.CharField(choices=FileType.choices, max_length=50,null=True, blank=True)
+    url = models.FileField(null=True, blank=True)
 
     def __str__(self):
-        return self.url
+        return self.name
 
 class Source(models.Model):
     class Rank(models.IntegerChoices):
@@ -88,10 +90,10 @@ class Source(models.Model):
     name = models.CharField(max_length=500, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
     date_source = models.ManyToManyField(Date, blank=True)
-    types = models.ForeignKey(SourceType, on_delete=models.CASCADE, blank=True)
+    # types = models.ForeignKey(SourceType, on_delete=models.CASCADE, blank=True)
     content = models.ManyToManyField(Content, blank=True)
 
-    url = models.ManyToManyField(Url, blank=True)
+    url = models.ManyToManyField(Files, blank=True)
     # file = models.FileField()
     
     viability = models.IntegerField(choices=Rank.choices, default=0)
