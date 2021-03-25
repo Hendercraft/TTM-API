@@ -22,9 +22,6 @@ urlpatterns = [
     #Modify ressources
     path('modify/', views.ModifyRessource.as_view(), name='modify'),
 
-    #Upload files
-    path('files/', views.FileUploadView.as_view({'post': 'create'}), name='upload-files'),
-
     #Date endpoint
     path('date/', views.DateViewSet.as_view({'get': 'list'}), name='list-date'),
     path('date/create/', views.DateViewSet.as_view({'post': 'create'}), name='create-date'),
@@ -90,11 +87,11 @@ urlpatterns = [
     # """
 
     #SourceType endpoint
-    path('sourceType/', views.SourceTypeViewSet.as_view({'get': 'list'}), name='list-sourceType'),
-    path('sourceType/create/', views.SourceTypeViewSet.as_view({'post': 'create'}), name='create-sourceType'),
-    path('sourceType/<int:pk>/', views.SourceTypeViewSet.as_view({'get': 'retrieve'}), name='retrieve-sourceType'),
-    path('sourceType/update/<int:pk>/', views.SourceTypeViewSet.as_view({'put': 'update'}), name='update-sourceType'),
-    path('sourceType/delete/<int:pk>/', views.SourceTypeViewSet.as_view({'delete': 'destroy'}), name='delete-sourceType'),
+    # path('sourceType/', views.SourceTypeViewSet.as_view({'get': 'list'}), name='list-sourceType'),
+    # path('sourceType/create/', views.SourceTypeViewSet.as_view({'post': 'create'}), name='create-sourceType'),
+    # path('sourceType/<int:pk>/', views.SourceTypeViewSet.as_view({'get': 'retrieve'}), name='retrieve-sourceType'),
+    # path('sourceType/update/<int:pk>/', views.SourceTypeViewSet.as_view({'put': 'update'}), name='update-sourceType'),
+    # path('sourceType/delete/<int:pk>/', views.SourceTypeViewSet.as_view({'delete': 'destroy'}), name='delete-sourceType'),
 
     #Author endpoint
     path('author/', views.AuthorViewSet.as_view({'get': 'list'}), name='list-author'),
@@ -110,12 +107,12 @@ urlpatterns = [
     path('content/update/<int:pk>/', views.ContentViewSet.as_view({'put': 'update'}), name='update-content'),
     path('content/delete/<int:pk>/', views.ContentViewSet.as_view({'delete': 'destroy'}), name='delete-content'),
 
-    #Url endpoint
-    path('url/', views.UrlViewSet.as_view({'get': 'list'}), name='list-url'),
-    path('url/create/', views.UrlViewSet.as_view({'post': 'create'}), name='create-url'),
-    path('url/<int:pk>/', views.UrlViewSet.as_view({'get': 'retrieve'}), name='retrieve-url'),
-    path('url/update/<int:pk>/', views.UrlViewSet.as_view({'put': 'update'}), name='update-url'),
-    path('url/delete/<int:pk>/', views.UrlViewSet.as_view({'delete': 'destroy'}), name='delete-url'),
+    #Files endpoint
+    path('files/', views.FilesViewSet.as_view({'get': 'list'}), name='list-files'),
+    path('files/create/', views.FilesViewSet.as_view({'post': 'create'}), name='create-files'),
+    path('files/<int:pk>/', views.FilesViewSet.as_view({'get': 'retrieve'}), name='retrieve-files'),
+    path('files/update/<int:pk>/', views.FilesViewSet.as_view({'put': 'update'}), name='update-files'),
+    path('files/delete/<int:pk>/', views.FilesViewSet.as_view({'delete': 'destroy'}), name='delete-files'),
 
     #Source endpoint
     path('source/', views.SourceViewSet.as_view({'get': 'list'}), name='list-source'),
