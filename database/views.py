@@ -15,25 +15,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 import json
 
 
-class FileUploadView(viewsets.ModelViewSet):
-    queryset = Upload.objects.all()
-    serializer_class = FileSerializer
-
-# class FileUploadView(APIView):
-#     permission_classes = []
-#     parser_class = (FileUploadParser,)
-
-#     def post(self, request, *args, **kwargs):
-
-#       file_serializer = FileSerializer(data=request.data)
-
-#       if file_serializer.is_valid():
-#           file_serializer.save()
-#           return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-#       else:
-#           return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(['POST'])
 def Search(request):
     # Note the use of `get_queryset()` instead of `self.queryset`
@@ -172,13 +153,13 @@ class KnowledgeViewSet(viewsets.ModelViewSet):
 Sources & associates viewsets
 """
 
-class SourceTypeViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows source types to be edited or viewed
-    """
-    queryset = SourceType.objects.all()
-    serializer_class = SourceTypeSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+# class SourceTypeViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows source types to be edited or viewed
+#     """
+#     queryset = SourceType.objects.all()
+#     serializer_class = SourceTypeSerializer
+#     permission_classes = [IsAuthenticatedOrReadOnly]
 
 class AuthorViewSet(viewsets.ModelViewSet):
     """
@@ -196,13 +177,16 @@ class ContentViewSet(viewsets.ModelViewSet):
     serializer_class = ContentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class UrlViewSet(viewsets.ModelViewSet):
+class FilesViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows urls to be edited or viewed
     """
-    queryset = Url.objects.all()
-    serializer_class = UrlSerializer
+    queryset = Files.objects.all()
+    serializer_class = FilesSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # def get_form(self):
+    #     if request.method == 'GET':
 
 class SourceViewSet(viewsets.ModelViewSet):
     """
