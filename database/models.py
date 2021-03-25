@@ -13,8 +13,9 @@ To do:
     -File upload system
 """
 
-# def images_path(folder):
-#     return os.path.join(settings.LOCAL_FILE_DIR, folder)
+def path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/<filename>
+    return '{0}'.format(filename)
 
 
 """
@@ -78,10 +79,10 @@ class Files(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     definition = models.CharField(max_length=1000, null=True, blank=True)
     fileType = models.CharField(choices=FileType.choices, max_length=50,null=True, blank=True)
-    url = models.FileField(null=True, blank=True)
+    url = models.FileField(upload_to=path,null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.url
 
 class Source(models.Model):
     class Rank(models.IntegerChoices):
@@ -94,16 +95,12 @@ class Source(models.Model):
     content = models.ManyToManyField(Content, blank=True)
 
     url = models.ManyToManyField(Files, blank=True)
-    # file = models.FileField()
     
     viability = models.IntegerField(choices=Rank.choices, default=0)
     conservationPlace = models.CharField(max_length=1000, null=True, blank=True)
     cote = models.CharField(max_length=200, blank=True) #To translate
     state = models.CharField(max_length=200, blank=True)
     validated = models.BooleanField(default=False)
-
-    # def upload_path(self,path):
-    #     self.file()
 
     def __str__(self):
         return self.name
