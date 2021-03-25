@@ -7,10 +7,10 @@ admin.site.register(ModifyAttribute)
 
 #Source tables
 admin.site.register(Source)
-admin.site.register(SourceType)
+# admin.site.register(SourceType)
 admin.site.register(Author)
 admin.site.register(Content)
-admin.site.register(Url)
+admin.site.register(Files)
 
 #Date table
 admin.site.register(Date)
