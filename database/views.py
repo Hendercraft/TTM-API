@@ -26,7 +26,7 @@ def Search(request):
     queryset_sourceType = SourceType.objects.filter(typeSource__search=query["search"])
     queryset_author = Author.objects.annotate(search=SearchVector('name', 'lastName'),).filter(search=query["search"])
     queryset_content = Content.objects.filter(sourceContent__search=query["search"])
-    queryset_url = Url.objects.filter(url__search=query["search"])
+    queryset_files = Files.objects.filter(name__search=query["search"])
     queryset_source = Source.objects.annotate(search=SearchVector('name', 'date'),).filter(search=query["search"])
     queryset_placeLocation = PlaceLocation.objects.annotate(search=SearchVector('street_name', 'city'),).filter(search=query["search"])
     queryset_placeType = PlaceType.objects.filter(placeType__search=query["search"])
@@ -49,7 +49,7 @@ def Search(request):
     serializer_sourceType = SourceTypeSerializer(queryset_sourceType, context={'request': request}, many=True)
     serializer_author = AuthorSerializer(queryset_author, context={'request': request}, many=True)
     serializer_content = ContentSerializer(queryset_content, context={'request': request}, many=True)
-    serializer_url = UrlSerializer(queryset_url, context={'request': request}, many=True)
+    serializer_files = FilesSerializer(queryset_files, context={'request': request}, many=True)
     serializer_source = SourceSerializer(queryset_source, context={'request': request}, many=True)
     serializer_placeLocation = PlaceLocationSerializer(queryset_placeLocation, context={'request': request}, many=True)
     serializer_placeType = PlaceTypeSerializer(queryset_placeType, context={'request': request}, many=True)
@@ -72,7 +72,7 @@ def Search(request):
                         serializer_sourceType.data,
                         serializer_author.data,
                         serializer_content.data,
-                        serializer_url.data,
+                        serializer_files.data,
                         serializer_source.data,
                         serializer_placeLocation.data,
                         serializer_placeType.data,
