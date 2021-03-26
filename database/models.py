@@ -15,7 +15,7 @@ To do:
 
 def path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<filename>
-    return '{0}'.format(filename)
+    return '{0}/{1}'.format(instance.fileType,filename)
 
 
 """
