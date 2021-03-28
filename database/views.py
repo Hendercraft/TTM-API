@@ -14,6 +14,36 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 
 import json
 
+@api_view(['GET'])
+def Date_struct(request):
+    data_structure = {
+        "keys": [
+            {
+                "name": "name",
+                "type": "char",
+                "values": "*"
+            },
+            {
+                "name": "date",
+                "type": "date",
+                "values": "*"
+            },
+            {
+                "name": "duration_date",
+                "type": "duration",
+                "values": "*"
+            },
+            {
+                "name": "source_date",
+                "type": "FK",
+                "values": "Source"
+            }
+        ]
+    }
+
+    return Response(data_structure)
+
+
 
 @api_view(['POST'])
 def Search(request):
