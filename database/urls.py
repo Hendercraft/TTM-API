@@ -19,6 +19,9 @@ urlpatterns = [
     # path('', include(router.urls)),
     path('search/', views.Search, name='search'),
 
+    #Data structure
+    path('structure/date/', views.Date_struct, name='struct-date'),
+
     #Modify ressources
     path('modify/', views.ModifyRessource.as_view(), name='modify'),
 
