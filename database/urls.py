@@ -110,6 +110,10 @@ urlpatterns = [
     path('content/update/<int:pk>/', views.ContentViewSet.as_view({'put': 'update'}), name='update-content'),
     path('content/delete/<int:pk>/', views.ContentViewSet.as_view({'delete': 'destroy'}), name='delete-content'),
 
+    #Ressource endpoint
+    path('ressource/', views.RessourceViewSet.as_view({'get':' list'}), name='list-ressources'),
+    path('ressource/create/', views.RessourceViewSet.as_view({'post': 'create'}), name='create-ressources'),
+
     #Files endpoint
     path('files/', views.FilesViewSet.as_view({'get': 'list'}), name='list-files'),
     path('files/create/', views.FilesViewSet.as_view({'post': 'create'}), name='create-files'),

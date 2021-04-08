@@ -19,24 +19,24 @@ def Date_struct(request):
     data_structure = {
         "keys": [
             {
-                "name": "name",
-                "type": "char",
-                "values": "*"
+                "id": 1,
+                "label": "name",
+                "type": "input",
             },
             {
-                "name": "date",
-                "type": "date",
-                "values": "*"
+                "id": 2,
+                "label": "date",
+                "type": "input"
             },
             {
-                "name": "duration_date",
-                "type": "duration",
-                "values": "*"
+                "id": 3,
+                "label": "duration_date",
+                "type": "input"
             },
             {
-                "name": "source_date",
-                "type": "FK",
-                "values": "Source"
+                "id": 4,
+                "label": "source_date",
+                "type": "input"
             }
         ]
     }
@@ -183,13 +183,13 @@ class KnowledgeViewSet(viewsets.ModelViewSet):
 Sources & associates viewsets
 """
 
-# class SourceTypeViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows source types to be edited or viewed
-#     """
-#     queryset = SourceType.objects.all()
-#     serializer_class = SourceTypeSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly]
+class RessourceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows source types to be edited or viewed
+    """
+    queryset = Ressource.objects.all()
+    serializer_class = RessourceSerializer
+    permission_classes = [IsAuthenticated]
 
 class AuthorViewSet(viewsets.ModelViewSet):
     """

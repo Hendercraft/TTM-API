@@ -46,17 +46,17 @@ class ContentSerializer(serializers.ModelSerializer):
         model = Content
         fields = '__all__'
 
-#URl
+#File
 class FilesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Files
         fields = '__all__'
 
-    # def create(self, validated_data):
-    #     path = validated_data.pop('fileType') # As a result password can be set proprely (hash)
-    #     file_path = validated_data.pop('url')
-    #     createdFile = Files.objects.create(**validated_data, fileType=path, url=file_path)
-    #     return createdFile
+#Ressource
+class RessourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ressource
+        fields = '__all__'
 
 #Source
 class SourceSerializer(serializers.ModelSerializer):
