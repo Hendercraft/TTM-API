@@ -76,6 +76,7 @@ class Files(models.Model):
         Video = 'Video'
         Cao = 'Cao'
         Image = 'Image'
+        Document = 'Document'
     name = models.CharField(max_length=200, null=True, blank=True)
     definition = models.CharField(max_length=1000, null=True, blank=True)
     fileType = models.CharField(choices=FileType.choices, max_length=50,null=True, blank=True)
@@ -83,6 +84,25 @@ class Files(models.Model):
 
     def __str__(self):
         return self.url
+
+class Ressource(models.Model):
+    designation = models.CharField(max_length=500, blank=True)
+    repere_historique = models.CharField(max_length=500, blank=True)
+    ressource_date = models.DateField(null=True, blank=True)
+    localization = models.CharField(max_length=250, blank=True)
+    adress = models.CharField(max_length=500, blank=True)
+    description = models.CharField(max_length=1000, blank=True)
+    mots_cles = models.CharField(max_length=500, blank=True)
+    ressource_source = models.CharField(max_length=500, blank=True)
+    editeur = models.CharField(max_length=500, blank=True)
+    droits = models.CharField(max_length=500, blank=True)
+    ressource_type = models.CharField(max_length=500, blank=True)
+    ressource_format = models.CharField(max_length=500, blank=True)
+    immatriculation = models.CharField(max_length=500, blank=True)
+    etude = models.CharField(max_length=500, blank=True)
+    auteur = models.CharField(max_length=500, blank=True)
+    date_etude = models.DateField(null=True, blank=True)
+    ressource_file = models.ManyToManyField(Files, blank=True)
 
 class Source(models.Model):
     class Rank(models.IntegerChoices):
