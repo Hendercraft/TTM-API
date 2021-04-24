@@ -24,6 +24,9 @@ Date table
 
 class Date(models.Model):
     name = models.CharField(max_length=200, blank=True)
+    day = models.IntegerField(max_length=2, blank=True)
+    month = models.IntegerField(max_length=2, blank=True)
+    year = models.IntegerField(max_length=4, blank=True)
     date = models.DateField(null=True, blank=True)
     duration_date = models.DurationField(null=True, blank=True)
     source_date = models.ManyToManyField("Source", blank=True)
@@ -101,8 +104,8 @@ class Ressource(models.Model):
     immatriculation = models.CharField(max_length=500, blank=True)
     etude = models.CharField(max_length=500, blank=True)
     auteur = models.CharField(max_length=500, blank=True)
-    date_etude = models.DateField(null=True, blank=True)
-    ressource_file = models.ManyToManyField(Files, blank=True)
+    date_etude = models.CharField(max_length=250, default='null', blank=True)
+    ressource_file = models.ForeignKey(Files, on_delete=models.CASCADE, null=True, blank=True)
 
 class Source(models.Model):
     class Rank(models.IntegerChoices):
@@ -187,7 +190,7 @@ class CollectiveActor(models.Model):
     knowledge = models.ManyToManyField(Knowledge, blank=True)
     place = models.ManyToManyField(Place, blank=True)
     source = models.ManyToManyField(Source, blank=True)
-    abstractObject = models.ManyToManyField("AbstractObject", blank=True)
+    abstract_object = models.ManyToManyField("AbstractObject", blank=True)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -204,7 +207,7 @@ class AbstractObject(models.Model):
     quality = models.ManyToManyField(Quality, blank=True)
     collectiveActor = models.ManyToManyField(CollectiveActor, blank=True)
     knowledge = models.ManyToManyField(Knowledge, blank=True)
-    objects = models.ManyToManyField("Object", blank=True)
+    ab_objects = models.ManyToManyField("Object", blank=True)
     place = models.ManyToManyField(Place, blank=True)
     source = models.ManyToManyField(Source, blank=True)
     validated = models.BooleanField(default=False)
@@ -220,8 +223,8 @@ class Profession(models.Model):
     name = models.CharField(max_length=200, blank=True)
     definition = models.CharField(max_length=1000, blank=True)
     autonomous = models.BooleanField(default=False)
-    abstractObject = models.ManyToManyField(AbstractObject, blank=True)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None)
+    abstract_object = models.ManyToManyField(AbstractObject, blank=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, null=True,)
     source = models.ManyToManyField(Source, blank=True)
     validated = models.BooleanField(default=False)
 
@@ -282,7 +285,11 @@ class Actor(models.Model):
         Male = 'Male'
         Female = 'Female'
         Other = 'Other'
+    
     gender = models.CharField(max_length=50, choices=Gender.choices, blank=True)
+    birth_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=True, blank=True, related_name='birth')
+    arrival_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='arrival')
+    departure_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True)
     profession = models.ManyToManyField(Profession, blank=True)
     socialActivities = models.ManyToManyField(SocialActivity, blank=True)
     collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
@@ -334,23 +341,50 @@ class Energy(models.Model):
     def __str__(self):
         return self.energy
 
+
+
 class Object(models.Model):
+    class categorie_type(models.TextChoices):
+        architecture = 'architecture'
+        production = 'production'
+        hommes = 'hommes'
+        urbanisme = 'urbanisme'
+
+    class type_object(models.TextChoices):
+        building = 'building'
+        machine = 'machine'
+
     name = models.CharField(max_length=200, blank=True)
-    definition = models.CharField(max_length=1000, blank=True)
-    brand = models.CharField(max_length=500, null=True, blank=True)
-    content = models.CharField(max_length=1000, null=True, blank=True)
+    categorie = models.CharField(max_length=50, choices=categorie_type.choices, blank=True)
+    lower_categorie = models.CharField(max_length=100, blank=True)
+    description = models.CharField(max_length=1000, blank=True)
+    abstract_object = models.ManyToManyField(AbstractObject, blank=True)
+    
     date = models.ManyToManyField(Date, blank=True)
+    place = models.ManyToManyField(Place, blank=True)
     type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None, blank=True)
     collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
     actor = models.ManyToManyField(Actor, blank=True)
-    abstract_object = models.ManyToManyField(AbstractObject, blank=True)
+    
     energy = models.ForeignKey(Energy, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    place = models.ManyToManyField(Place, blank=True)
+    
     source = models.ManyToManyField(Source,blank=True)
+    content = models.CharField(max_length=1000, null=True, blank=True)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+class Building(models.Model):
+    fk_object = models.ForeignKey(Object, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    # Typologie
+    plan = models.CharField(max_length=500, blank=True)
+    wall = models.CharField(max_length=500, blank=True)
+    roof = models.CharField(max_length=500, blank=True)
+    floor = models.IntegerField(blank=True)
+    surface = models.IntegerField(blank=True)
+    light = models.CharField(max_length=500, blank=True)
+    materials = models.CharField(max_length=500, blank=True)
 
 class Caracteristic(models.Model):
     objectCaracteristic = models.ForeignKey(Object, on_delete=models.CASCADE,blank=True)

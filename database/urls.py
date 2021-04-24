@@ -111,7 +111,7 @@ urlpatterns = [
     path('content/delete/<int:pk>/', views.ContentViewSet.as_view({'delete': 'destroy'}), name='delete-content'),
 
     #Ressource endpoint
-    path('ressource/', views.RessourceViewSet.as_view({'get':' list'}), name='list-ressources'),
+    path('ressource/', views.RessourceViewSet.as_view({'get': 'list'}), name='list-ressources'),
     path('ressource/create/', views.RessourceViewSet.as_view({'post': 'create'}), name='create-ressources'),
 
     #Files endpoint
@@ -195,6 +195,13 @@ urlpatterns = [
     path('energy/<int:pk>/', views.EnergyViewSet.as_view({'get': 'retrieve'}), name='retrieve-energy'),
     path('energy/update/<int:pk>/', views.EnergyViewSet.as_view({'put': 'update'}), name='update-energy'),
     path('energy/delete/<int:pk>/', views.EnergyViewSet.as_view({'delete': 'destroy'}), name='delete-energy'),
+
+    #Building endpoint
+    path('building/', views.BuildingViewSet.as_view({'get': 'list'}), name='list-building'),
+    path('building/create/', views.BuildingViewSet.as_view({'post': 'create'}), name='create-building'),
+    path('building/<int:pk>/', views.BuildingViewSet.as_view({'get': 'retrieve'}), name='retrieve-building'),
+    path('building/update/<int:pk>/', views.BuildingViewSet.as_view({'put': 'update'}), name='update-building'),
+    path('building/delete/<int:pk>/', views.BuildingViewSet.as_view({'delete': 'destroy'}), name='delete-building'),
 
     #Object endpoint
     path('object/', views.ObjectViewSet.as_view({'get': 'list'}), name='list-object'),

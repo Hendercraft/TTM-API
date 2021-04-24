@@ -358,6 +358,14 @@ class EnergyViewSet(viewsets.ModelViewSet):
     serializer_class = EnergySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+class BuildingViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allow building objects to be edited or viewed
+    """
+    queryset = Building.objects.all()
+    serializer_class = BuildingSerializer
+     
+
 class ObjectViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows objects to be edited or viewed

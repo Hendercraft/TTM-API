@@ -166,6 +166,12 @@ class EnergySerializer(serializers.ModelSerializer):
         model = Energy
         fields = '__all__'
 
+#Building
+class BuildingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Building
+        fields = '__all__'
+
 #Object
 class ObjectSerializer(serializers.ModelSerializer):
     class Meta:
