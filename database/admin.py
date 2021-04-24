@@ -44,6 +44,7 @@ admin.site.register(Actor)
 admin.site.register(NameActor)
 
 #Object tables
+admin.site.register(Building)
 admin.site.register(Object)
 admin.site.register(TypeObject)
 admin.site.register(Energy)
