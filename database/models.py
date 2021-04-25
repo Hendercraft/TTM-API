@@ -24,9 +24,9 @@ Date table
 
 class Date(models.Model):
     name = models.CharField(max_length=200, blank=True)
-    day = models.IntegerField(max_length=2, blank=True)
-    month = models.IntegerField(max_length=2, blank=True)
-    year = models.IntegerField(max_length=4, blank=True)
+    day = models.IntegerField(null=True, blank=True)
+    month = models.IntegerField(null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
     date = models.DateField(null=True, blank=True)
     duration_date = models.DurationField(null=True, blank=True)
     source_date = models.ManyToManyField("Source", blank=True)
@@ -113,16 +113,23 @@ class Source(models.Model):
         RELIABLE  = 1
     name = models.CharField(max_length=500, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
+    editor = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True, null=True, related_name='editor')
     date_source = models.ManyToManyField(Date, blank=True)
+    rights = models.CharField(max_length=250, blank=True)
+
     # types = models.ForeignKey(SourceType, on_delete=models.CASCADE, blank=True)
     content = models.ManyToManyField(Content, blank=True)
 
     url = models.ManyToManyField(Files, blank=True)
     
+    registration = models.CharField(max_length=250, blank=True)
+    original_registration = models.CharField(max_length=250, blank=True)
+
     viability = models.IntegerField(choices=Rank.choices, default=0)
     conservationPlace = models.CharField(max_length=1000, null=True, blank=True)
     cote = models.CharField(max_length=200, blank=True) #To translate
     state = models.CharField(max_length=200, blank=True)
+    study = models.CharField(max_length=250, blank=True)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -297,6 +304,7 @@ class Actor(models.Model):
     socialLink = models.ManyToManyField(SocialLink, blank=True)
     place = models.ManyToManyField(Place, blank=True)
     knowledge = models.ManyToManyField(Knowledge, blank=True)
+    commentary = models.CharField(max_length=1000, blank=True)
     source = models.ManyToManyField(Source, blank=True)
     validated = models.BooleanField(default=False)
 
