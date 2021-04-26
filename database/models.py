@@ -116,15 +116,11 @@ class Source(models.Model):
     editor = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True, null=True, related_name='editor')
     date_source = models.ManyToManyField(Date, blank=True)
     rights = models.CharField(max_length=250, blank=True)
-
     # types = models.ForeignKey(SourceType, on_delete=models.CASCADE, blank=True)
     content = models.ManyToManyField(Content, blank=True)
-
     url = models.ManyToManyField(Files, blank=True)
-    
     registration = models.CharField(max_length=250, blank=True)
     original_registration = models.CharField(max_length=250, blank=True)
-
     viability = models.IntegerField(choices=Rank.choices, default=0)
     conservationPlace = models.CharField(max_length=1000, null=True, blank=True)
     cote = models.CharField(max_length=200, blank=True) #To translate
