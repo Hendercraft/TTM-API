@@ -282,7 +282,6 @@ class RelationLink(models.Model):
 Actor & associate class
 """
 
-
 class Actor(models.Model):
     class Gender(models.TextChoices):
         Male = 'Male'
