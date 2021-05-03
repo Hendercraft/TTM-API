@@ -123,8 +123,6 @@ def Search(request):
     
     return Response(Serializer_list)
 
-
-
 class ModifyRessource(generics.ListAPIView):
     """
     API endpoint that allow reserchers to validate updated data
@@ -132,7 +130,6 @@ class ModifyRessource(generics.ListAPIView):
     queryset = ModifyAttribute.objects.all()
     serializer_class = ModifyAttributeSerializer
     permission_classes = [IsAdminUser|IsResearcherUser]
-
 
 """
 Database 
