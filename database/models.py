@@ -363,6 +363,7 @@ class Object(models.Model):
     description = models.CharField(max_length=1000, blank=True)
     abstract_object = models.ManyToManyField(AbstractObject, blank=True)
     
+    fk_typologie = models.ForeignKey("Typologie", on_delete=models.CASCADE, default=None, null=True, blank=True)
     date = models.ManyToManyField(Date, blank=True)
     place = models.ManyToManyField(Place, blank=True)
     type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None, blank=True)
@@ -378,8 +379,7 @@ class Object(models.Model):
     def __str__(self):
         return self.name
 
-class Building(models.Model):
-    fk_object = models.ForeignKey(Object, on_delete=models.CASCADE, default=None, null=True, blank=True)
+class Typologie(models.Model):
     # Typologie
     plan = models.CharField(max_length=500, blank=True)
     wall = models.CharField(max_length=500, blank=True)

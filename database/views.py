@@ -355,12 +355,12 @@ class EnergyViewSet(viewsets.ModelViewSet):
     serializer_class = EnergySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class BuildingViewSet(viewsets.ModelViewSet):
+class TypologieViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allow building objects to be edited or viewed
     """
-    queryset = Building.objects.all()
-    serializer_class = BuildingSerializer
+    queryset = Typologie.objects.all()
+    serializer_class = TypologieSerializer
      
 
 class ObjectViewSet(viewsets.ModelViewSet):

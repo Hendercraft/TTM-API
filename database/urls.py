@@ -197,11 +197,11 @@ urlpatterns = [
     path('energy/delete/<int:pk>/', views.EnergyViewSet.as_view({'delete': 'destroy'}), name='delete-energy'),
 
     #Building endpoint
-    path('building/', views.BuildingViewSet.as_view({'get': 'list'}), name='list-building'),
-    path('building/create/', views.BuildingViewSet.as_view({'post': 'create'}), name='create-building'),
-    path('building/<int:pk>/', views.BuildingViewSet.as_view({'get': 'retrieve'}), name='retrieve-building'),
-    path('building/update/<int:pk>/', views.BuildingViewSet.as_view({'put': 'update'}), name='update-building'),
-    path('building/delete/<int:pk>/', views.BuildingViewSet.as_view({'delete': 'destroy'}), name='delete-building'),
+    path('typologie/', views.TypologieViewSet.as_view({'get': 'list'}), name='list-typologie'),
+    path('typologie/create/', views.TypologieViewSet.as_view({'post': 'create'}), name='create-typologie'),
+    path('typologie/<int:pk>/', views.TypologieViewSet.as_view({'get': 'retrieve'}), name='retrieve-typologie'),
+    path('typologie/update/<int:pk>/', views.TypologieViewSet.as_view({'put': 'update'}), name='update-typologie'),
+    path('typologie/delete/<int:pk>/', views.TypologieViewSet.as_view({'delete': 'destroy'}), name='delete-typologie'),
 
     #Object endpoint
     path('object/', views.ObjectViewSet.as_view({'get': 'list'}), name='list-object'),
