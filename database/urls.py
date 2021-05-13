@@ -206,4 +206,3 @@ urlpatterns = [
     path('caracteristic/delete/<int:pk>/', views.CaracteristicViewSet.as_view({'delete': 'destroy'}), name='delete-caracteristic'),
     
 ]
-
