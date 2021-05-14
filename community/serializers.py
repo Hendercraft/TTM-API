@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager
+from django.db.models import fields
 from rest_framework.utils import model_meta
 from rest_framework import serializers,request
 from rest_framework.request import Request
@@ -31,6 +32,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+class TestimonySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimony
+        fields = '__all__'
 
 class DisciplineSerializer(serializers.ModelSerializer):
     class Meta:

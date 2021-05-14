@@ -54,6 +54,28 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsUserOrReadOnly]
 
+class TestimonyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allow testimony model to be viewed or edited
+    """
+
+    queryset = Testimony.objects.all()
+    serializer_class = TestimonySerializer
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = [IsAdminUser|IsAuthenticated|IsOwnerOrReadOnly]
+        elif self.action == 'list':
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
+        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
+        elif self.action == 'destroy':
+            permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class DisciplineViewSet(viewsets.ModelViewSet):
     """
@@ -62,7 +84,6 @@ class DisciplineViewSet(viewsets.ModelViewSet):
 
     queryset = Discipline.objects.all()
     serializer_class = DisciplineSerializer
-    pagination_class = StandardResultsSetPagination
 
     def get_permissions(self):
         permission_classes = []
@@ -86,7 +107,6 @@ class ResearchFieldViewSet(viewsets.ModelViewSet):
 
     queryset = ResearchField.objects.all()
     serializer_class = ResearchFieldSerializer
-    pagination_class = StandardResultsSetPagination
 
     
     def get_permissions(self):
@@ -111,7 +131,6 @@ class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
 
     queryset = ResearchEstablishment.objects.all()
     serializer_class = ResearchEstablishmentSerializer
-    pagination_class = StandardResultsSetPagination
 
 
     def get_permissions(self):

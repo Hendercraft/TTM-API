@@ -33,6 +33,12 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return self.username
 
+# Testimony model
+class Testimony(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete= models.CASCADE, default=None, null=True, blank=True)
+    testimony = models.CharField(max_length=10000, null=False, blank=False)
+
+
 # Discipline model
 class Discipline (models.Model):
     user = models.ForeignKey(UserProfile, on_delete= models.CASCADE, default=None, null=True, blank=True)

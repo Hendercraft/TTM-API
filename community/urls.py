@@ -27,6 +27,13 @@ urlpatterns = [
     path('update/<int:pk>/', views.ProfileView.as_view(), name='update-user-profile'),
     path('delete/<int:pk>/', views.ProfileView.as_view(), name='delete-user-profile'),
 
+    #Testimony
+    path('testimony/', views.TestimonyViewSet.as_view({'get':'list'}), name='list-testimony'),
+    path('testimony/create/', views.TestimonyViewSet.as_view({'post':'create'}), name='create-testimony'),
+    path('testimony/<int:pk>/', views.TestimonyViewSet.as_view({'get':'retrieve'}), name='retrieve-testimony'),
+    path('testimony/update/<int:pk>/', views.TestimonyViewSet.as_view({'put': 'update'}), name='update-testimony'),
+    path('testimony/delete/<int:pk>/', views.TestimonyViewSet.as_view({'delete': 'destroy'}), name='delete-testimony'),
+
     #Discipline
     path('discipline/', views.DisciplineViewSet.as_view({'get':'list'}), name='list-discipline'),
     path('discipline/create/', views.DisciplineViewSet.as_view({'post':'create'}), name='create-discipline'),
