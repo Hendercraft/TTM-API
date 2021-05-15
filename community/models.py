@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group, AbstractUser
 class UserProfile(AbstractUser):
     postalAdress = models.CharField(max_length=255, null=True, blank=True)
     phoneNumber = models.IntegerField(null=True, blank=True)
+    userEmail = models.EmailField(max_length=254, null=True, blank=True)
     profileImage = models.URLField(null=True, blank=True)
     
 
@@ -66,3 +67,12 @@ class ResearchEstablishment(models.Model):
 
     def __str__(self):
         return self.establishment + " " + self.laboratory
+
+#Message sent from contact page
+class Contact(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    last_name = models.CharField(max_length=200, null=True, blank=True)
+    phone = models.BigIntegerField(null=True, blank=True)
+    email = models.EmailField(max_length=254, null=True, blank=True)
+    subject = models.CharField(max_length=254, null=True, blank=True)
+    message = models.CharField(max_length=2000, null=True, blank=True)

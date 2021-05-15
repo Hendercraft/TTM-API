@@ -147,3 +147,10 @@ class ResearchEstablishmentViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class ContactViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allow contact message model to be viewed or edited
+    """
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer

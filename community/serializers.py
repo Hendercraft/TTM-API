@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager
+from django.core.mail import send_mail
 from django.db.models import fields
 from rest_framework.utils import model_meta
 from rest_framework import serializers,request
@@ -52,6 +53,24 @@ class ResearchEstablishmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResearchEstablishment
         fields = '__all__'
+
+
+
+#Contact messages
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'
+    
+    def create(self, validated_data):
+
+        contactMessage = Contact.objects.create(**validated_data)
+        contactMessage.save()
+        
+        send_mail(contactMessage.subject, contactMessage.message, contactMessage.email, ['gabriel.garcia@utbm.fr'])
+
+        return contactMessage
 
 
 # class ProfileSerializer(serializers.ModelSerializer):
