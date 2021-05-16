@@ -54,4 +54,12 @@ urlpatterns = [
     path('researchEstablishment/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'get':'retrieve'}), name='retrieve-research-establishment'),
     path('researchEstablishment/update/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'put': 'update'}), name='update-research-establishment'),
     path('researchEstablishment/delete/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'delete': 'destroy'}), name='delete-research-establishment'),
+
+
+    #Contact message
+    path('contact/', views.ContactViewSet.as_view({'get':'list'}), name='list-contact'),
+    path('contact/create/', views.ContactViewSet.as_view({'post':'create'}), name='create-contact'),
+    path('contact/<int:pk>/', views.ContactViewSet.as_view({'get':'retrieve'}), name='retrieve-contact'),
+    path('contact/update/<int:pk>/', views.ContactViewSet.as_view({'put': 'update'}), name='update-contact'),
+    path('contact/delete/<int:pk>/', views.ContactViewSet.as_view({'delete': 'destroy'}), name='delete-contact'),
 ]
