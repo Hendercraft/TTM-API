@@ -164,5 +164,5 @@ class ContactViewSet(viewsets.ModelViewSet):
         elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
             permission_classes = [IsOwnerOrReadOnly|IsAdminUser]
         elif self.action == 'destroy':
-            permission_classes = [IsAdminUser]
+            permission_classes = [IsAdminUser|IsOwnerOrReadOnly]
         return [permission() for permission in permission_classes]
