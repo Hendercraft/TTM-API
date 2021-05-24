@@ -4,7 +4,12 @@ __pycache__/
 *$py.class
 
 #	Database
-media/
+media/Audio
+media/Cao
+media/Document
+media/Image
+media/ProfilePicture
+media/Video
 
 API/settings.py
 
