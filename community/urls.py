@@ -28,36 +28,36 @@ urlpatterns = [
     path('delete/<int:pk>/', views.ProfileView.as_view(), name='delete-user-profile'),
 
     #Testimony
-    path('testimony/', views.TestimonyViewSet.as_view({'get':'list'}), name='list-testimony'),
-    path('testimony/create/', views.TestimonyViewSet.as_view({'post':'create'}), name='create-testimony'),
-    path('testimony/<int:pk>/', views.TestimonyViewSet.as_view({'get':'retrieve'}), name='retrieve-testimony'),
-    path('testimony/update/<int:pk>/', views.TestimonyViewSet.as_view({'put': 'update'}), name='update-testimony'),
-    path('testimony/delete/<int:pk>/', views.TestimonyViewSet.as_view({'delete': 'destroy'}), name='delete-testimony'),
+    path('temoignages/', views.TestimonyViewSet.as_view({'get':'list'}), name='list-testimony'),
+    path('temoignages/create/', views.TestimonyViewSet.as_view({'post':'create'}), name='create-testimony'),
+    path('temoignages/<int:pk>/', views.TestimonyViewSet.as_view({'get':'retrieve'}), name='retrieve-testimony'),
+    path('temoignages/update/<int:pk>/', views.TestimonyViewSet.as_view({'put': 'update'}), name='update-testimony'),
+    path('temoignages/delete/<int:pk>/', views.TestimonyViewSet.as_view({'delete': 'destroy'}), name='delete-testimony'),
 
     #Discipline
-    path('discipline/', views.DisciplineViewSet.as_view({'get':'list'}), name='list-discipline'),
+    path('disciplines/', views.DisciplineViewSet.as_view({'get':'list'}), name='list-discipline'),
     path('discipline/create/', views.DisciplineViewSet.as_view({'post':'create'}), name='create-discipline'),
     path('discipline/<int:pk>/', views.DisciplineViewSet.as_view({'get':'retrieve'}), name='retrieve-discipline'),
     path('discipline/update/<int:pk>/', views.DisciplineViewSet.as_view({'put': 'update'}), name='update-discipline'),
     path('discipline/delete/<int:pk>/', views.DisciplineViewSet.as_view({'delete': 'destroy'}), name='delete-discipline'),
 
     #Research Fields
-    path('researchField/', views.ResearchFieldViewSet.as_view({'get':'list'}), name='list-research-field'),
-    path('researchField/create/', views.ResearchFieldViewSet.as_view({'post':'create'}), name='create-research-field'),
-    path('researchField/<int:pk>/', views.ResearchFieldViewSet.as_view({'get':'retrieve'}), name='retrieve-research-field'),
-    path('researchField/update/<int:pk>/', views.ResearchFieldViewSet.as_view({'put': 'update'}), name='update-research-field'),
-    path('researchField/delete/<int:pk>/', views.ResearchFieldViewSet.as_view({'delete': 'destroy'}), name='delete-research-field'),
+    path('champsRecherches/', views.ResearchFieldViewSet.as_view({'get':'list'}), name='list-research-field'),
+    path('champRecherche/create/', views.ResearchFieldViewSet.as_view({'post':'create'}), name='create-research-field'),
+    path('champRecherche/<int:pk>/', views.ResearchFieldViewSet.as_view({'get':'retrieve'}), name='retrieve-research-field'),
+    path('champRecherche/update/<int:pk>/', views.ResearchFieldViewSet.as_view({'put': 'update'}), name='update-research-field'),
+    path('champRecherche/delete/<int:pk>/', views.ResearchFieldViewSet.as_view({'delete': 'destroy'}), name='delete-research-field'),
 
     #Research Establishment
-    path('researchEstablishment/', views.ResearchEstablishmentViewSet.as_view({'get':'list'}), name='list-research-establishment'),
-    path('researchEstablishment/create/', views.ResearchEstablishmentViewSet.as_view({'post':'create'}), name='create-research-establishment'),
-    path('researchEstablishment/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'get':'retrieve'}), name='retrieve-research-establishment'),
-    path('researchEstablishment/update/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'put': 'update'}), name='update-research-establishment'),
-    path('researchEstablishment/delete/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'delete': 'destroy'}), name='delete-research-establishment'),
+    path('etablisementsRecherches/', views.ResearchEstablishmentViewSet.as_view({'get':'list'}), name='list-research-establishment'),
+    path('etablisementRecherche/create/', views.ResearchEstablishmentViewSet.as_view({'post':'create'}), name='create-research-establishment'),
+    path('etablisementRecherche/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'get':'retrieve'}), name='retrieve-research-establishment'),
+    path('etablisementRecherche/update/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'put': 'update'}), name='update-research-establishment'),
+    path('etablisementRecherche/delete/<int:pk>/', views.ResearchEstablishmentViewSet.as_view({'delete': 'destroy'}), name='delete-research-establishment'),
 
 
     #Contact message
-    path('contact/', views.ContactViewSet.as_view({'get':'list'}), name='list-contact'),
+    path('contacts/', views.ContactViewSet.as_view({'get':'list'}), name='list-contact'),
     path('contact/create/', views.ContactViewSet.as_view({'post':'create'}), name='create-contact'),
     path('contact/<int:pk>/', views.ContactViewSet.as_view({'get':'retrieve'}), name='retrieve-contact'),
     path('contact/update/<int:pk>/', views.ContactViewSet.as_view({'put': 'update'}), name='update-contact'),

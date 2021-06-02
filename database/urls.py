@@ -14,7 +14,7 @@ urlpatterns = [
     path('modify/', views.ModifyRessource.as_view(), name='modify'),
 
     #Date endpoint
-    path('date/', views.DateViewSet.as_view({'get': 'list'}), name='list-date'),
+    path('dates/', views.DateViewSet.as_view({'get': 'list'}), name='list-date'),
     path('date/create/', views.DateViewSet.as_view({'post': 'create'}), name='create-date'),
     path('date/<int:pk>/', views.DateViewSet.as_view({'get': 'retrieve'}), name='retrieve-date'),
     path('date/update/<int:pk>/', views.DateViewSet.as_view({'put': 'update'}), name='update-date'),
@@ -76,13 +76,6 @@ urlpatterns = [
     # """
     # Sources & associates endpoint
     # """
-
-    #SourceType endpoint
-    # path('sourceType/', views.SourceTypeViewSet.as_view({'get': 'list'}), name='list-sourceType'),
-    # path('sourceType/create/', views.SourceTypeViewSet.as_view({'post': 'create'}), name='create-sourceType'),
-    # path('sourceType/<int:pk>/', views.SourceTypeViewSet.as_view({'get': 'retrieve'}), name='retrieve-sourceType'),
-    # path('sourceType/update/<int:pk>/', views.SourceTypeViewSet.as_view({'put': 'update'}), name='update-sourceType'),
-    # path('sourceType/delete/<int:pk>/', views.SourceTypeViewSet.as_view({'delete': 'destroy'}), name='delete-sourceType'),
 
     #Author endpoint
     path('author/', views.AuthorViewSet.as_view({'get': 'list'}), name='list-author'),
