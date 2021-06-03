@@ -2,8 +2,12 @@
 
 class Date {
     name: char
+    day: int
+    month: int
+    year: int
     date: date
     duration: duration
+    validated: bool
 
     __str__()
 }
@@ -11,13 +15,9 @@ class Date {
 class Quality {
     name: char
     definition: char
+    validated: char
     
     __str__()
-}
-
-
-class SourceType {
-    typesource: char
 }
 
 class Author {
@@ -31,22 +31,48 @@ class Author {
 
 class Content {
     sourceContent: char
+
+    __str__()
 }
 
-class Url {
+class Files {
+    name: char
+    definition: char
+    file_type: char
+    file_extension: char
     url: url
+
+    __str__()
 }
+
+enum FileType {
+    Audio: Audio
+    Video: Video
+    Cao: Cao
+    Image: Image
+    Document: Document
+}
+
 
 class Source {
     name: char
-    author: foreignKey
-    date: manyToMany
-    type: foreignKey
-    content: manyToMany
-    url: manyToMany
-    viability: int
-    conservationPlace: char
+    date_source: foreignKey
+    conservation_place: char
     cote: char
+    author: foreignKey
+    editor: foreignKey
+    rights: char
+    url: manyToMany
+
+    registration: char
+    original_registration: char
+    viability: int
+    content: manyToMany
+    
+    state: char
+    study: char
+    validated: bool
+    
 
     __str__()
 }
@@ -60,16 +86,19 @@ class PlaceLocation {
     street_number: int
     street_type: char
     street_name: char
-    city: char
+    borough: int
     post_code: int
+    city: char
     country: char
     place_said: char
+    validated: bool
 
     __str__()
 }
 
 class PlaceType {
     placeType: char
+    validated: bool
 
     __str__()
 }
@@ -82,6 +111,7 @@ class Place {
     latitude: float
     place_type: manyToMany
     source: manyToMany
+    validated: bool
 
     __str__()
 }
@@ -89,6 +119,7 @@ class Place {
 class Knowledge {
     name: char
     definition: char
+    validated: bool
 
     __str__()
 }
@@ -101,6 +132,8 @@ class CollectiveActor {
     knowledge: manyToMany
     place: manyToMany
     source: manyToMany
+    abstract_object: manyToMany
+    validated: bool
 
     __str__()
 }
@@ -112,8 +145,10 @@ class AbstractObject {
     quality: manyToMany
     collectiveActor: manyToMany
     knowledge: manyToMany
+    ab_objects: manyToMany
     place: manyToMany
     source: manyToMany
+    validated: bool
 
     __str__()
 }
@@ -125,6 +160,7 @@ class Profession {
     abstractObject: manyToMany
     place: foreignKey
     source: manyToMany
+    validated: bool
 
     __str__()
 }
@@ -134,13 +170,16 @@ class SocialActivity{
     definition: char
     place: manyToMany
     source: manyToMany
+    validated: bool
 
     __str__()
 }
 
 class SocialLink {
     link: char
-    actorLink: foreignKey
+    actor_link: foreignKey
+    source: manyToMany
+    validated: bool
 }
 
 enum SocialLinkType{
@@ -152,15 +191,60 @@ enum SocialLinkType{
     Coworker
 }
 
+class RelationLink {
+    link: char
+    object_id: foreignKey
+    source: manyToMany
+    validated: bool
+}
+
+enum RelationLinkType{
+    OLD
+    MADEBY
+    USE
+    CREATE
+}
+
 class Actor {
-    gender: char
+    categorie: char
+    domain: char
+    building: char
+    name: char
+    last_name: char
     profession: manyToMany
+    instruction_level: char
+
+    birth_date: foreignKey
+    birth_place: char
+
+
+    gender: char
+    arrival_date: foreignKey
+    departure_date: foreignKey
+    nationality: char
+    living_place: foreignKey
+
+    home_status: char
+    home_size: int
+    wedding_date: foreignKey
+    wedding_place: char
+    wedding_name: char
+    wedding_lastName: char
+    death_date: foreignKey
+    death_place: char
+
+    commentary: char
+
     socialActivities: manyToMany
     collectiveActor: manyToMany
     quality: manyToMany
     socialLink: manyToMany
-    place: manyToMany
+    knowledge: manyToMany
+
     source: manyToMany
+    validated: bool
+
+    __str__()
 }
 
 enum Gender {
@@ -169,11 +253,29 @@ enum Gender {
     Other
 }
 
+enum LevelOfInstruction {
+    zero
+    one
+    two
+    three
+    four
+    five
+    X
+}
+
+enum RessourceDomain {
+    MainE
+    OeuvresSoc
+    Formation
+}
+
+
 class NameActor {
     actors: foreignKey
     name: char
     last_name: char
     typeOfActor: char
+    validated: bool
     
     __str__()
 }
@@ -198,19 +300,53 @@ class Energy {
 
 class Object {
     name: char
-    definition: char
-    brand: char
-    content: char
+    categorie: char
+    lower_categorie: char
+    description: char
+    abstract_object: char
+
+    fk_typologie: foreignKey
+    date: manyToMany
+    place:manyToMany
+    type_object: foreignKey
+    collective_actors: manyToMany
+    actor: manyToMany
+    
     date: manyToMany
     type_object: foreignKey
     collectiveActors: manyToMany
     actor: manyToMany
-    abstract_object: manyToMany
+
     energy: foreignKey
-    place: manyToMany
+    
     source: manyToMany
+    content: char
+    validated: bool
 
     __str__()
+}
+
+enum categorie_type {
+    Architecture
+    Production
+    Hommes
+    Urbanisme
+}
+
+enum type_object {
+    building
+    machine
+}
+
+class Typologie {
+    plan: foreignKey
+    wall: float
+    roof: float
+    floor: float
+    surface: float
+    light: float
+    materials: manyToMany
+
 }
 
 class Caracteristic {
@@ -221,9 +357,45 @@ class Caracteristic {
     weight: float
     surface: float
     detail_caracteristics: manyToMany
-    source: manyToMany
 
     __str__()
+}
+
+class ModifyAttribute {
+    table: foreignKey
+    field_value: float
+    instance_value: float
+    content: float
+    
+    __str__()
+}
+
+enum Table {
+    Date
+    Quality
+    Author
+    Content
+    Files
+    Source
+    PlaceLocation
+    PlaceType
+    Place
+    Knowledge
+    CollectiveActor
+    AbstractObject
+    Profession
+    SocialActivity
+    SocialLink
+    RelationLink
+    Actor
+    NameActor
+    DetailCaracteristic
+    TypeObject
+    Energy
+    Object
+    Typologie
+    Caracteristic
+    Ressource
 }
 
 Source -- SourceType
