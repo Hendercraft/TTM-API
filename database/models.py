@@ -29,7 +29,6 @@ class Date(models.Model):
     year = models.IntegerField(null=True, blank=True)
     date = models.DateField(null=True, blank=True)
     duration_date = models.DurationField(null=True, blank=True)
-    source_date = models.ManyToManyField("Source", blank=True)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -42,7 +41,6 @@ Quality table
 class Quality(models.Model):
     name = models.CharField(max_length=200, blank=True)
     definition = models.CharField(max_length=1000, blank=True)
-    source_quality = models.ManyToManyField("Source", blank=True)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -58,7 +56,6 @@ Sources & associates tables
 #         return self.typeSource
 
 class Author(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=200, blank=True)
     lastName = models.CharField(max_length=200, null=True, blank=True)
     status = models.CharField(max_length=200, null=True, blank=True) #To upgrade
@@ -82,7 +79,8 @@ class Files(models.Model):
         Document = 'Document'
     name = models.CharField(max_length=200, null=True, blank=True)
     definition = models.CharField(max_length=1000, null=True, blank=True)
-    fileType = models.CharField(choices=FileType.choices, max_length=50,null=True, blank=True)
+    file_type = models.CharField(choices=FileType.choices, max_length=50,null=True, blank=True)
+    file_extension = models.CharField(max_length=20, null=True, blank=True)
     url = models.FileField(upload_to=path,null=True, blank=True)
 
     def __str__(self):
@@ -112,18 +110,22 @@ class Source(models.Model):
         NOTRELIABLE = 0
         RELIABLE  = 1
     name = models.CharField(max_length=500, blank=True)
+    date_source = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True)
+    conservation_place = models.CharField(max_length=1000, null=True, blank=True)
+    cote = models.CharField(max_length=200, blank=True)
+
     author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
     editor = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True, null=True, related_name='editor')
-    date_source = models.ManyToManyField(Date, blank=True)
+    
     rights = models.CharField(max_length=250, blank=True)
-    # types = models.ForeignKey(SourceType, on_delete=models.CASCADE, blank=True)
-    content = models.ManyToManyField(Content, blank=True)
+
     url = models.ManyToManyField(Files, blank=True)
+    
     registration = models.CharField(max_length=250, blank=True)
     original_registration = models.CharField(max_length=250, blank=True)
     viability = models.IntegerField(choices=Rank.choices, default=0)
-    conservationPlace = models.CharField(max_length=1000, null=True, blank=True)
-    cote = models.CharField(max_length=200, blank=True) #To translate
+    content = models.ManyToManyField(Content, blank=True)
+    
     state = models.CharField(max_length=200, blank=True)
     study = models.CharField(max_length=250, blank=True)
     validated = models.BooleanField(default=False)
@@ -262,7 +264,7 @@ class SocialLink(models.Model):
         COWORKER = 'CO-WORKERS'
 
     link = models.CharField(max_length=50, choices=SocialLinkType.choices, blank=True)
-    actorlink = models.ForeignKey('Actor', on_delete=models.CASCADE, default=None, null=True, blank=True)
+    actor_link = models.ForeignKey('Actor', on_delete=models.CASCADE, default=None, null=True, blank=True)
     source = models.ManyToManyField(Source, blank=True)
     validated = models.BooleanField(default=False)
 
@@ -284,24 +286,73 @@ Actor & associate class
 
 class Actor(models.Model):
     class Gender(models.TextChoices):
-        Male = 'Male'
-        Female = 'Female'
-        Other = 'Other'
+        Male = 'Homme'
+        Female = 'Femme'
+        Other = 'Autre'
     
+    class LevelOfInstruction(models.TextChoices):
+        zero = '0'
+        one = '1'
+        two = '2'
+        three = '3'
+        four = '4'
+        five = '5'
+        X = 'X'
+
+    class RessourceDomain(models.TextChoices):
+        MainE = "Main d'oeuvre"
+        OeuvresSoc = "Oeuvres sociales"
+        Formation = 'Formation'
+    
+    class Categorie(models.TextChoices):
+        Hommes = 'Hommes'
+
+    categorie = models.CharField(max_length=50, choices=Categorie.choices, blank=True)
+    domain = models.CharField(max_length=50, choices=RessourceDomain.choices, blank=True)
+    
+    building = models.CharField(max_length=500, blank=True)
+
+    name = models.CharField(max_length=200, blank=True)
+    last_name = models.CharField(max_length=200, blank=True)
+    profession = models.ForeignKey(Profession,on_delete=models.CASCADE, default=True, blank=True)
+    instruction_level = models.CharField(max_length=50, choices=LevelOfInstruction.choices, blank=True)
+    
+    birth_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=True, blank=True, related_name='birth')    
+    birth_place = models.CharField(max_length=500, blank=True)
+    # birth_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='birth_place')
+
     gender = models.CharField(max_length=50, choices=Gender.choices, blank=True)
-    birth_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=True, blank=True, related_name='birth')
     arrival_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='arrival')
     departure_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True)
-    profession = models.ManyToManyField(Profession, blank=True)
+    nationality = models.CharField(max_length=200, blank=True)
+    living_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True)
+    
+    home_status = models.CharField(max_length=200, blank=True)
+    home_size = models.IntegerField(blank=True, null=True)
+    wedding_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_date')
+    wedding_place = models.CharField(max_length=500, blank=True)
+    # wedding_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_place')
+    wedding_name = models.CharField(max_length=200, blank=True)
+    wedding_lastName = models.CharField(max_length=200, blank=True)
+    death_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='death_date')
+    death_place = models.CharField(max_length=500, blank=True)
+    # death_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='death_place')
+
+    commentary = models.CharField(max_length=1000, blank=True)
+    
+    
+    #Not used for TTM
     socialActivities = models.ManyToManyField(SocialActivity, blank=True)
     collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
     quality = models.ManyToManyField(Quality, blank=True)
     socialLink = models.ManyToManyField(SocialLink, blank=True)
-    place = models.ManyToManyField(Place, blank=True)
     knowledge = models.ManyToManyField(Knowledge, blank=True)
-    commentary = models.CharField(max_length=1000, blank=True)
+   
     source = models.ManyToManyField(Source, blank=True)
     validated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
 
 
 class NameActor(models.Model):
@@ -321,8 +372,6 @@ Object and associate tables
 """
 class DetailCaracteristic(models.Model):
     detailCaracteristicsObject = models.CharField(max_length=1000, blank=True)
-    source = models.ManyToManyField(Source, blank=True)
-    validated = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.detailCaracteristicsObject
@@ -330,16 +379,12 @@ class DetailCaracteristic(models.Model):
 
 class TypeObject(models.Model):
     typeObject = models.CharField(max_length=500, blank=True)
-    source = models.ManyToManyField(Source, blank=True)
-    validated = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.typeObject
 
 class Energy(models.Model):
     energy = models.CharField(max_length=200, blank=True)
-    source = models.ManyToManyField(Source, blank=True)
-    validated = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.energy
@@ -348,10 +393,10 @@ class Energy(models.Model):
 
 class Object(models.Model):
     class categorie_type(models.TextChoices):
-        architecture = 'architecture'
-        production = 'production'
-        hommes = 'hommes'
-        urbanisme = 'urbanisme'
+        Architecture = 'Architecture'
+        Production = 'Production'
+        Hommes = 'Hommes'
+        Urbanisme = 'Urbanisme'
 
     class type_object(models.TextChoices):
         building = 'building'
@@ -367,7 +412,7 @@ class Object(models.Model):
     date = models.ManyToManyField(Date, blank=True)
     place = models.ManyToManyField(Place, blank=True)
     type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None, blank=True)
-    collectiveActors = models.ManyToManyField(CollectiveActor, blank=True)
+    collective_actors = models.ManyToManyField(CollectiveActor, blank=True)
     actor = models.ManyToManyField(Actor, blank=True)
     
     energy = models.ForeignKey(Energy, on_delete=models.CASCADE, default=None, null=True, blank=True)
@@ -397,8 +442,6 @@ class Caracteristic(models.Model):
     weight = models.FloatField(null=True, blank=True, default=None)
     surface = models.FloatField(null=True, blank=True, default=None)
     detail_caracteristics = models.ManyToManyField(DetailCaracteristic, blank=True)
-    source = models.ManyToManyField(Source, blank=True)
-    validated = models.BooleanField(default=False)
 
     def __str__(self):
         return ("Caracteristics of " + self.objectCaracteristic.name)
