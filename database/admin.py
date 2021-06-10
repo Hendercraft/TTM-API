@@ -5,6 +5,9 @@ from .models import *
 #Modify table
 admin.site.register(ModifyAttribute)
 
+#Ressource table
+admin.site.register(Ressource)
+
 #Source tables
 admin.site.register(Source)
 # admin.site.register(SourceType)
