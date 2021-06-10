@@ -14,37 +14,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 
 import json
 
-@api_view(['GET'])
-def Date_struct(request):
-    data_structure = {
-        "keys": [
-            {
-                "id": 1,
-                "label": "name",
-                "type": "input",
-            },
-            {
-                "id": 2,
-                "label": "date",
-                "type": "input"
-            },
-            {
-                "id": 3,
-                "label": "duration_date",
-                "type": "input"
-            },
-            {
-                "id": 4,
-                "label": "source_date",
-                "type": "input"
-            }
-        ]
-    }
-
-    return Response(data_structure)
-
-
-
 @api_view(['POST'])
 def Search(request):
     # Note the use of `get_queryset()` instead of `self.queryset`
@@ -53,7 +22,7 @@ def Search(request):
     # queryset_date = Date.objects.filter(name__search=query["search"])
     queryset_date = Date.objects.annotate(search=SearchVector('name', 'date'),).filter(search=query["search"])
     queryset_quality = Quality.objects.filter(name__search=query["search"])
-    queryset_sourceType = SourceType.objects.filter(typeSource__search=query["search"])
+    # queryset_sourceType = SourceType.objects.filter(typeSource__search=query["search"])
     queryset_author = Author.objects.annotate(search=SearchVector('name', 'lastName'),).filter(search=query["search"])
     queryset_content = Content.objects.filter(sourceContent__search=query["search"])
     queryset_files = Files.objects.filter(name__search=query["search"])
@@ -76,7 +45,7 @@ def Search(request):
     
     serializer_date = DateSerializer(queryset_date, context={'request': request}, many=True)
     serializer_quality = QualitySerializer(queryset_quality, context={'request': request}, many=True)
-    serializer_sourceType = SourceTypeSerializer(queryset_sourceType, context={'request': request}, many=True)
+    # serializer_sourceType = SourceTypeSerializer(queryset_sourceType, context={'request': request}, many=True)
     serializer_author = AuthorSerializer(queryset_author, context={'request': request}, many=True)
     serializer_content = ContentSerializer(queryset_content, context={'request': request}, many=True)
     serializer_files = FilesSerializer(queryset_files, context={'request': request}, many=True)
@@ -86,7 +55,7 @@ def Search(request):
     serializer_place = PlaceSerializer(queryset_place, context={'request': request}, many=True)
     serializer_knowledge = KnowledgeSerializer(queryset_knowledge, context={'request': request}, many=True)
     serializer_collectiveActor = CollectiveActorSerializer(queryset_collectiveActor, context={'request': request}, many=True)
-    serializer_abstractObject = AbstractOvjectSerializer(queryset_abstractObject, context={'request': request}, many=True)
+    serializer_abstractObject = AbstractObjectSerializer(queryset_abstractObject, context={'request': request}, many=True)
     serializer_profession = ProfessionSerializer(queryset_profession, context={'request': request}, many=True)
     serializer_socialActivity = SocialActivitySerializer(queryset_socialActivity, context={'request': request}, many=True)
     serializer_socialLink = SocialLinkSerializer(queryset_socialLink, context={'request': request}, many=True)
@@ -99,7 +68,7 @@ def Search(request):
 
     Serializer_list = [serializer_date.data, 
                         serializer_quality.data,
-                        serializer_sourceType.data,
+                        # serializer_sourceType.data,
                         serializer_author.data,
                         serializer_content.data,
                         serializer_files.data,
@@ -156,7 +125,7 @@ class DateViewSet(viewsets.ModelViewSet):
             self.attribute_value = key
             # self.instance_value = self.pk
             self.content = value
-            Modify.objects.create(table = self.table, field_value = self.attribute_value, instance_value = 1, content = self.content) 
+            ModifyAttribute.objects.create(table = self.table, field_value = self.attribute_value, instance_value = 1, content = self.content) 
         serializer.save(validated=False)
 
 
@@ -184,9 +153,9 @@ class RessourceViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows source types to be edited or viewed
     """
-    queryset = Ressource.objects.all()
+    queryset = Ressource.objects.all().order_by('id')
     serializer_class = RessourceSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class AuthorViewSet(viewsets.ModelViewSet):
     """
@@ -219,7 +188,7 @@ class SourceViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Sources to be edited or viewed
     """
-    queryset = Source.objects.all().order_by('-date')
+    queryset = Source.objects.all().order_by('date_source')
     serializer_class = SourceSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
