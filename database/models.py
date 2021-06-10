@@ -1,6 +1,9 @@
 import os
 from django.conf import settings
 from django.db import models
+from django.db.models import fields
+from django.db.models.fields.related import ManyToManyField
+# from django.utils.translation import Trans
 from community.models import UserProfile
 """
 Implementation of relationnal models define in static files of the API
@@ -87,23 +90,15 @@ class Files(models.Model):
         return self.url
 
 class Ressource(models.Model):
-    designation = models.CharField(max_length=500, blank=True)
-    repere_historique = models.CharField(max_length=500, blank=True)
-    ressource_date = models.DateField(null=True, blank=True)
-    localization = models.CharField(max_length=250, blank=True)
-    adress = models.CharField(max_length=500, blank=True)
-    description = models.CharField(max_length=1000, blank=True)
-    mots_cles = models.CharField(max_length=500, blank=True)
-    ressource_source = models.CharField(max_length=500, blank=True)
-    editeur = models.CharField(max_length=500, blank=True)
-    droits = models.CharField(max_length=500, blank=True)
-    ressource_type = models.CharField(max_length=500, blank=True)
-    ressource_format = models.CharField(max_length=500, blank=True)
-    immatriculation = models.CharField(max_length=500, blank=True)
-    etude = models.CharField(max_length=500, blank=True)
-    auteur = models.CharField(max_length=500, blank=True)
-    date_etude = models.CharField(max_length=250, default='null', blank=True)
-    ressource_file = models.ForeignKey(Files, on_delete=models.CASCADE, null=True, blank=True)
+    class RessourcesField(models.TextChoices):
+        Architecture = 'Architecture'
+        Production = 'Production'
+        Homme = 'Homme'
+    name = models.CharField(max_length=200, blank=True)
+    description = models.CharField(max_length=1500, blank=True)
+    field = models.CharField(choices=RessourcesField.choices, max_length=20, null=True, blank=True)
+    objects_son = models.ManyToManyField('Object', blank=True)
+    actors_son = models.ManyToManyField('Actor', blank=True)
 
 class Source(models.Model):
     class Rank(models.IntegerChoices):
@@ -299,7 +294,7 @@ class Actor(models.Model):
         five = '5'
         X = 'X'
 
-    class RessourceDomain(models.TextChoices):
+    class RessourcesDomain(models.TextChoices):
         MainE = "Main d'oeuvre"
         OeuvresSoc = "Oeuvres sociales"
         Formation = 'Formation'
@@ -307,8 +302,10 @@ class Actor(models.Model):
     class Categorie(models.TextChoices):
         Hommes = 'Hommes'
 
+    father = ManyToManyField(Ressource, blank=True,related_name='actor_father')
+
     categorie = models.CharField(max_length=50, choices=Categorie.choices, blank=True)
-    domain = models.CharField(max_length=50, choices=RessourceDomain.choices, blank=True)
+    domain = models.CharField(max_length=50, choices=RessourcesDomain.choices, blank=True)
     
     building = models.CharField(max_length=500, blank=True)
 
@@ -401,6 +398,8 @@ class Object(models.Model):
     class type_object(models.TextChoices):
         building = 'building'
         machine = 'machine'
+
+    father = ManyToManyField(Ressource, blank=True,related_name='object_father')
 
     name = models.CharField(max_length=200, blank=True)
     categorie = models.CharField(max_length=50, choices=categorie_type.choices, blank=True)
