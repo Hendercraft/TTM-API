@@ -18,7 +18,7 @@ To do:
 
 def path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<fileType>/<filename>
-    return '{0}/{1}'.format(instance.fileType,filename)
+    return '{0}/{1}'.format(instance.file_type,filename)
 
 
 """
@@ -31,6 +31,7 @@ class Date(models.Model):
     month = models.IntegerField(null=True, blank=True)
     year = models.IntegerField(null=True, blank=True)
     date = models.DateField(null=True, blank=True)
+    complement = models.CharField(max_length=200, blank=True)
     duration_date = models.DurationField(null=True, blank=True)
     validated = models.BooleanField(default=False)
 
@@ -93,7 +94,7 @@ class Ressource(models.Model):
     class RessourcesField(models.TextChoices):
         Architecture = 'Architecture'
         Production = 'Production'
-        Homme = 'Homme'
+        Hommes = 'Hommes'
     name = models.CharField(max_length=200, blank=True)
     description = models.CharField(max_length=1500, blank=True)
     field = models.CharField(choices=RessourcesField.choices, max_length=20, null=True, blank=True)
@@ -293,11 +294,6 @@ class Actor(models.Model):
         four = '4'
         five = '5'
         X = 'X'
-
-    class RessourcesDomain(models.TextChoices):
-        MainE = "Main d'oeuvre"
-        OeuvresSoc = "Oeuvres sociales"
-        Formation = 'Formation'
     
     class Categorie(models.TextChoices):
         Hommes = 'Hommes'
@@ -305,7 +301,7 @@ class Actor(models.Model):
     father = ManyToManyField(Ressource, blank=True,related_name='actor_father')
 
     categorie = models.CharField(max_length=50, choices=Categorie.choices, blank=True)
-    domain = models.CharField(max_length=50, choices=RessourcesDomain.choices, blank=True)
+    domain = models.CharField(max_length=200, blank=True)
     
     building = models.CharField(max_length=500, blank=True)
 
@@ -315,7 +311,7 @@ class Actor(models.Model):
     instruction_level = models.CharField(max_length=50, choices=LevelOfInstruction.choices, blank=True)
     
     birth_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=True, blank=True, related_name='birth')    
-    birth_place = models.CharField(max_length=500, blank=True)
+    birth_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='birth_place')
     # birth_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='birth_place')
 
     gender = models.CharField(max_length=50, choices=Gender.choices, blank=True)
@@ -327,13 +323,13 @@ class Actor(models.Model):
     home_status = models.CharField(max_length=200, blank=True)
     home_size = models.IntegerField(blank=True, null=True)
     wedding_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_date')
-    wedding_place = models.CharField(max_length=500, blank=True)
-    # wedding_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_place')
+    wedding_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_place')
+    
     wedding_name = models.CharField(max_length=200, blank=True)
     wedding_lastName = models.CharField(max_length=200, blank=True)
     death_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='death_date')
-    death_place = models.CharField(max_length=500, blank=True)
-    # death_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='death_place')
+    death_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='death_place')
+    
 
     commentary = models.CharField(max_length=1000, blank=True)
     
@@ -399,15 +395,28 @@ class Object(models.Model):
         building = 'building'
         machine = 'machine'
 
+    class period_duration(models.TextChoices):
+        firstNine = '1er quart 19e siècle'
+        secondNine = '2e quart 19e siècle'
+        thirdNine = '3e quart 19e siècle'
+        fourthNine = '4e quart 19e siècle'
+        firstTwenty = '1er quart 20e siècle'
+        secondTwenty = '2e quart 20e siècle'
+        thirdTwenty = '3e quart 20e siècle'
+        fourthTwenty = '4e quart 20e siècle'
+        firstTwentyOne = '1er quart 21e siècle'
+
     father = ManyToManyField(Ressource, blank=True,related_name='object_father')
 
     name = models.CharField(max_length=200, blank=True)
     categorie = models.CharField(max_length=50, choices=categorie_type.choices, blank=True)
+    domain = models.CharField(max_length=200, blank=True)
     lower_categorie = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=1000, blank=True)
     abstract_object = models.ManyToManyField(AbstractObject, blank=True)
     
     fk_typologie = models.ForeignKey("Typologie", on_delete=models.CASCADE, default=None, null=True, blank=True)
+    period = models.CharField(max_length=200, choices=period_duration.choices, blank=True)
     date = models.ManyToManyField(Date, blank=True)
     place = models.ManyToManyField(Place, blank=True)
     type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None, blank=True)
