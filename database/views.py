@@ -347,3 +347,4 @@ class CaracteristicViewSet(viewsets.ModelViewSet):
     queryset = Caracteristic.objects.all()
     serializer_class = CaracteristicSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
