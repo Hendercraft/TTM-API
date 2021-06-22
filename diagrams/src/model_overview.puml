@@ -6,7 +6,8 @@ class Date {
     month: int
     year: int
     date: date
-    duration: duration
+    complement: char
+    duration_date: duration
     validated: bool
 
     __str__()
@@ -40,7 +41,7 @@ class Files {
     definition: char
     file_type: char
     file_extension: char
-    url: url
+    url: fileField
 
     __str__()
 }
@@ -206,6 +207,8 @@ enum RelationLinkType{
 }
 
 class Actor {
+    father: manyToMany
+
     categorie: char
     domain: char
     building: char
@@ -215,7 +218,7 @@ class Actor {
     instruction_level: char
 
     birth_date: foreignKey
-    birth_place: char
+    birth_place: foreignKey
 
 
     gender: char
@@ -227,11 +230,11 @@ class Actor {
     home_status: char
     home_size: int
     wedding_date: foreignKey
-    wedding_place: char
+    wedding_place: foreignKey
     wedding_name: char
     wedding_lastName: char
     death_date: foreignKey
-    death_place: char
+    death_place: foreignKey
 
     commentary: char
 
@@ -261,12 +264,6 @@ enum LevelOfInstruction {
     four
     five
     X
-}
-
-enum RessourceDomain {
-    MainE
-    OeuvresSoc
-    Formation
 }
 
 
@@ -299,22 +296,21 @@ class Energy {
 }
 
 class Object {
+    father: manyToMany
+
     name: char
     categorie: char
+    domain: char
     lower_categorie: char
     description: char
-    abstract_object: char
+    abstract_object: manyToMany
 
     fk_typologie: foreignKey
+    period: char
     date: manyToMany
     place:manyToMany
     type_object: foreignKey
     collective_actors: manyToMany
-    actor: manyToMany
-    
-    date: manyToMany
-    type_object: foreignKey
-    collectiveActors: manyToMany
     actor: manyToMany
 
     energy: foreignKey
@@ -326,26 +322,29 @@ class Object {
     __str__()
 }
 
-enum categorie_type {
+class Ressource {
+    name: char
+    description: char
+    field: char
+    object_son: manyToMany
+    actor_son: manyToMany
+}
+
+enum RessourcesField {
     Architecture
     Production
     Hommes
     Urbanisme
 }
 
-enum type_object {
-    building
-    machine
-}
-
 class Typologie {
-    plan: foreignKey
-    wall: float
-    roof: float
-    floor: float
+    plan: char
+    wall: char
+    roof: char
+    floor: int
     surface: float
-    light: float
-    materials: manyToMany
+    light: char
+    materials: char
 
 }
 
@@ -362,9 +361,9 @@ class Caracteristic {
 }
 
 class ModifyAttribute {
-    table: foreignKey
-    field_value: float
-    instance_value: float
+    table: char
+    field_value: char
+    instance_value: int
     content: float
     
     __str__()
@@ -398,60 +397,71 @@ enum Table {
     Ressource
 }
 
-Source -- SourceType
-Source -- Url
-Source -- Author
-Source -- Content
+Source <-- Author
+Source <-- Content
 
-Rank -- Source
+Table --> ModifyAttribute
 
-Date -- Source
+FileType --> Files
+Files --> Source
+Rank --> Source
 
-Place -- PlaceType
-Place -- PlaceLocation
-Place -- Source
+Date --> Source
 
-CollectiveActor -- Date
-CollectiveActor -- Quality
-CollectiveActor -- Knowledge
-CollectiveActor -- Source
-CollectiveActor -- Place
+Place <-- PlaceType
+Place <-- PlaceLocation
+Place <-- Source
 
-AbstractObject -- Date
-AbstractObject -- Quality
-AbstractObject -- Knowledge
-AbstractObject -- CollectiveActor
-AbstractObject -- Place
-AbstractObject -- Source
+CollectiveActor <-- Date
+CollectiveActor <-- Quality
+CollectiveActor <-- Knowledge
+CollectiveActor <-- Source
+CollectiveActor <-- Place
 
-Profession -- Place
-Profession -- Source
+AbstractObject <-- Date
+AbstractObject <-- Quality
+AbstractObject <-- Knowledge
+AbstractObject <-- CollectiveActor
+AbstractObject <-- Place
+AbstractObject <-- Source
 
-SocialActivity -- Place
-SocialActivity -- Source
+Profession <-- Place
+Profession <-- Source
 
-SocialLink -- Actor
-SocialLinkType -- SocialLink
+SocialActivity <-- Place
+SocialActivity <-- Source
 
-Actor -- Profession
-Actor -- SocialActivity
-Actor -- CollectiveActor
-Actor -- Quality
-Actor -- SocialLink
-Actor -- Place
-Actor -- Source
+SocialLink --> Actor
+SocialLinkType --> SocialLink
 
-Gender -- Actor
+Actor <-- Ressource
+Actor <-- Profession
+Actor <-- SocialActivity
+Actor <-- CollectiveActor
+Actor <-- Quality
+Actor <-- SocialLink
+Actor <-- Place
+Actor <-- LevelOfInstruction
+Actor <-- Gender
+Actor <-- Source
 
-NameActor -- Actor
 
-Object -- TypeObject
-Object -- Energy
-Object -- CollectiveActor
-Object -- AbstractObject
-Object -- Actor
-Object -- Place
-Object -- Source
+RelationLink <-- RelationLinkType
+Ressource <-- RessourcesField
+Object <-- Ressource
+Actor <-- Ressource
+
+NameActor --> Actor
+
+Object <-- Ressource
+Object <-- TypeObject
+Object <-- Energy
+Object <-- CollectiveActor
+Object <-- AbstractObject
+Object <-- Actor
+Object <-- Place
+Object <-- Typologie
+Object <-- Source
 
 Caracteristic -- Object
 Caracteristic -- DetailCaracteristic
