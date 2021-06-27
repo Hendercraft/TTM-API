@@ -131,28 +131,28 @@ SIMPLE_JWT = {
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 #Test 1
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'database',
-        'USER':'ggarcia',
-        'PASSWORD':'2019@ETudianTInfEn',
-        'HOST':'localhost',
-        'PORT':'5432',
-    }
-}
-
-#Test 2
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'sqldatabase',
+#         'NAME': 'database',
 #         'USER':'ggarcia',
-#         'PASSWORD':'7PjN29tFATTCQF6',
-#         'HOST':'serv-gi-15.utbm.fr',
+#         'PASSWORD':'2019@ETudianTInfEn',
+#         'HOST':'localhost',
 #         'PORT':'5432',
 #     }
 # }
+
+#Test 2
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sqldatabase',
+        'USER':'ggarcia',
+        'PASSWORD':'7PjN29tFATTCQF6',
+        'HOST':'serv-gi-15.utbm.fr',
+        'PORT':'5432',
+    }
+}
 
 
 # Password validation
