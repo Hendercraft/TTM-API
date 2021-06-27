@@ -110,12 +110,14 @@ class Source(models.Model):
     conservation_place = models.CharField(max_length=1000, null=True, blank=True)
     cote = models.CharField(max_length=200, blank=True)
 
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
-    editor = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True, null=True, related_name='editor')
-    
+    # author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
+    # editor = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True, null=True, related_name='editor')
+    author = models.CharField(max_length=200, default=None, blank=True)
+    editor = models.CharField(max_length=200, default=None, blank=True)
+
     rights = models.CharField(max_length=250, blank=True)
 
-    url = models.ManyToManyField(Files, blank=True)
+    url = models.ForeignKey(Files, on_delete=models.CASCADE, default=None, blank=True)
     
     registration = models.CharField(max_length=250, blank=True)
     original_registration = models.CharField(max_length=250, blank=True)
@@ -302,7 +304,7 @@ class Actor(models.Model):
 
     categorie = models.CharField(max_length=50, choices=Categorie.choices, blank=True)
     domain = models.CharField(max_length=200, blank=True)
-    
+    abstract_object = models.ForeignKey(AbstractObject,on_delete=models.CASCADE, default=True, blank=True)
     building = models.CharField(max_length=500, blank=True)
 
     name = models.CharField(max_length=200, blank=True)
@@ -311,8 +313,8 @@ class Actor(models.Model):
     instruction_level = models.CharField(max_length=50, choices=LevelOfInstruction.choices, blank=True)
     
     birth_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=True, blank=True, related_name='birth')    
-    birth_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='birth_place')
     # birth_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='birth_place')
+    birth_place = models.CharField(max_length=500,blank=True)
 
     gender = models.CharField(max_length=50, choices=Gender.choices, blank=True)
     arrival_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='arrival')
@@ -323,12 +325,14 @@ class Actor(models.Model):
     home_status = models.CharField(max_length=200, blank=True)
     home_size = models.IntegerField(blank=True, null=True)
     wedding_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_date')
-    wedding_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_place')
+    # wedding_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='wedding_place')
+    wedding_place = models.CharField(max_length=500,blank=True)
     
     wedding_name = models.CharField(max_length=200, blank=True)
     wedding_lastName = models.CharField(max_length=200, blank=True)
     death_date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, blank=True, related_name='death_date')
-    death_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='death_place')
+    # death_place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, blank=True, related_name='death_place')
+    death_place = models.CharField(max_length=500,blank=True)
     
 
     commentary = models.CharField(max_length=1000, blank=True)
@@ -388,12 +392,6 @@ class Object(models.Model):
     class categorie_type(models.TextChoices):
         Architecture = 'Architecture'
         Production = 'Production'
-        Hommes = 'Hommes'
-        Urbanisme = 'Urbanisme'
-
-    class type_object(models.TextChoices):
-        building = 'building'
-        machine = 'machine'
 
     class period_duration(models.TextChoices):
         firstNine = '1er quart 19e siècle'
@@ -411,20 +409,31 @@ class Object(models.Model):
     name = models.CharField(max_length=200, blank=True)
     categorie = models.CharField(max_length=50, choices=categorie_type.choices, blank=True)
     domain = models.CharField(max_length=200, blank=True)
-    lower_categorie = models.CharField(max_length=100, blank=True)
-    description = models.CharField(max_length=1000, blank=True)
-    abstract_object = models.ManyToManyField(AbstractObject, blank=True)
-    
-    fk_typologie = models.ForeignKey("Typologie", on_delete=models.CASCADE, default=None, null=True, blank=True)
+    building = models.CharField(max_length=500, blank=True)
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    abstract_object = models.ForeignKey(AbstractObject, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    date = models.ForeignKey(Date, on_delete=models.CASCADE, default=None, null=True, blank=True)
     period = models.CharField(max_length=200, choices=period_duration.choices, blank=True)
-    date = models.ManyToManyField(Date, blank=True)
-    place = models.ManyToManyField(Place, blank=True)
-    type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, default=None, blank=True)
-    collective_actors = models.ManyToManyField(CollectiveActor, blank=True)
-    actor = models.ManyToManyField(Actor, blank=True)
+
+    fk_typologie = models.ForeignKey("Typologie", on_delete=models.CASCADE, default=None, null=True, blank=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    type_object = models.ForeignKey(TypeObject, on_delete=models.CASCADE, null=True, default=None, blank=True)
     
+    machine = models.CharField(max_length=500, blank=True)
+    material = models.CharField(max_length=200, blank=True)
+    constructor_inscription = models.CharField(max_length=200, blank=True)
+    constructor_precision = models.CharField(max_length=500, blank=True)
+    conservation_state = models.CharField(max_length=200,blank=True)
+    precision_conservation_state = models.CharField(max_length=200, blank=True)
+
+
     energy = models.ForeignKey(Energy, on_delete=models.CASCADE, default=None, null=True, blank=True)
     
+    collective_actors = models.ManyToManyField(CollectiveActor, blank=True)
+    actor = models.ManyToManyField(Actor, blank=True)
+
+    
+
     source = models.ManyToManyField(Source,blank=True)
     content = models.CharField(max_length=1000, null=True, blank=True)
     validated = models.BooleanField(default=False)
@@ -434,11 +443,13 @@ class Object(models.Model):
 
 class Typologie(models.Model):
     # Typologie
+    name = models.CharField(max_length=500, blank=True)
     plan = models.CharField(max_length=500, blank=True)
     wall = models.CharField(max_length=500, blank=True)
     roof = models.CharField(max_length=500, blank=True)
-    floor = models.IntegerField(blank=True)
-    surface = models.IntegerField(blank=True)
+    floor = models.CharField(max_length=500, blank=True)
+    cover = models.CharField(max_length=500, blank=True)
+    surface = models.IntegerField(blank=True, null=True)
     light = models.CharField(max_length=500, blank=True)
     materials = models.CharField(max_length=500, blank=True)
 
